@@ -1,4 +1,5 @@
 import multiprocessing
+import os
 
 import requests
 from websocket import create_connection
@@ -7,11 +8,11 @@ import rx
 from rx.scheduler import ThreadPoolScheduler
 from rx import operators as ops
 
-SCHEMA = "http"
-NEUTRON_SERVER = "neutron"
-NEUTRON_PORT = 8000
-PROTON_SERVER = "proton-server"
-PROTON_PORT = 3218
+SCHEMA = os.getenv("TIMEPLUS_SCHEMA", "http")
+NEUTRON_SERVER = os.getenv("NEUTRON_HOST", "localhost")
+NEUTRON_PORT = os.getenv("NEUTRON_PORT", "8000")
+PROTON_SERVER = os.getenv("PROTON_HOST", "localhost")
+PROTON_PORT = os.getenv("PROTON_PORT", "3218")
 
 
 class Base:
