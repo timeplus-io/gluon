@@ -11,15 +11,9 @@ from rx import operators as ops
 SCHEMA = os.getenv("TIMEPLUS_SCHEMA", "http")
 NEUTRON_SERVER = os.getenv("NEUTRON_HOST", "localhost")
 NEUTRON_PORT = os.getenv("NEUTRON_PORT", "8000")
-PROTON_SERVER = os.getenv("PROTON_HOST", "localhost")
-PROTON_PORT = os.getenv("PROTON_PORT", "3218")
 
 
 class Base:
-    _base_url = f"{SCHEMA}://{NEUTRON_SERVER}:{NEUTRON_PORT}/api/v1beta1"
-    _headers = {"Content-Type": "application/json"}
-    _resource_name = "resource"
-
     def __init__(self):
         self._data = {}
 
@@ -47,69 +41,77 @@ class Base:
     def id(self):
         return self._get("id")
 
+
+class ResourceBase(Base):
+    _base_url = f"{SCHEMA}://{NEUTRON_SERVER}:{NEUTRON_PORT}/api/v1beta1"
+    _headers = {"Content-Type": "application/json"}
+    _resource_name = "resource"
+
+    def __init__(self):
+        Base.__init__(self)
+
     def create(self):
-        print(f"post {Base._base_url}/{Base._resource_name}/")
+        print(f"post {self._base_url}/{self._resource_name}/")
         try:
             r = requests.post(
-                f"{Base._base_url}/{Base._resource_name}/",
+                f"{self._base_url}/{self._resource_name}/",
                 json=self.data(),
-                headers=Base._headers,
+                headers=self._headers,
             )
             if r.status_code < 200 or r.status_code > 299:
                 print(
-                    f"failed to create {Base._resource_name} {r.status_code } {r.text}"
+                    f"failed to create {self._resource_name} {r.status_code } {r.text}"
                 )
             else:
-                print(f"source {Base._resource_name} has been created")
+                print(f"source {self._resource_name} has been created")
                 self._data = r.json()
         except Exception as e:
-            print(f"failed to create {Base._resource_name} {e}")
+            print(f"failed to create {self._resource_name} {e}")
         finally:
             return self
 
     def get(self):
-        print("in base get")
-        print(f"get {Base._base_url}/{Base._resource_name}/")
+        print(f"get {self._base_url}/{self._resource_name}/")
         try:
-            r = requests.get(f"{Base._base_url}/{Base._resource_name}/{self.id()}")
+            r = requests.get(f"{self._base_url}/{self._resource_name}/{self.id()}")
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to get {Base._resource_name} {r.text}")
+                print(f"failed to get {self._resource_name} {r.text}")
             else:
-                print(f"get {Base._resource_name} success")
+                print(f"get {self._resource_name} success")
                 self._data = r.json()
         except Exception as e:
-            print(f"failed to get {Base._resource_name} {e}")
+            print(f"failed to get {self._resource_name} {e}")
         finally:
             return self
 
     def delete(self):
-        print(f"delete {Base._base_url}/{Base._resource_name}/{self.id()}")
+        print(f"delete {self._base_url}/{self._resource_name}/{self.id()}")
         try:
-            r = requests.delete(f"{Base._base_url}/{Base._resource_name}/{self.id()}")
+            r = requests.delete(f"{self._base_url}/{self._resource_name}/{self.id()}")
             if r.status_code < 200 or r.status_code > 299:
                 print(
-                    f"failed to delete {Base._resource_name} {r.status_code} {r.text}"
+                    f"failed to delete {self._resource_name} {r.status_code} {r.text}"
                 )
             else:
-                print(f"delete {Base._resource_name} success")
+                print(f"delete {self._resource_name} success")
         except Exception as e:
-            print(f"failed to delete {Base._resource_name} {e}")
+            print(f"failed to delete {self._resource_name} {e}")
         finally:
             return self
 
     def action(self, action_name):
-        print(f"post {Base._base_url}/{Base._resource_name}/{self.id()}/{action_name}")
+        print(f"post {self._base_url}/{self._resource_name}/{self.id()}/{action_name}")
         try:
             r = requests.post(
-                f"{Base._base_url}/{Base._resource_name}/{self.id()}/{action_name}",
-                headers=Base._headers,
+                f"{self._base_url}/{self._resource_name}/{self.id()}/{action_name}",
+                headers=self._headers,
             )
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to post {action_name} on {Base._resource_name} {r.text}")
+                print(f"failed to post {action_name} on {self._resource_name} {r.text}")
             else:
-                print(f"{action_name} {Base._resource_name} success")
+                print(f"{action_name} {self._resource_name} success")
         except Exception as e:
-            print(f"failed to {action_name} {Base._resource_name} {e}")
+            print(f"failed to {action_name} {self._resource_name} {e}")
         finally:
             return self
 
@@ -134,7 +136,7 @@ class SourceConnection(Base):
         self._set("auto_create", True)
 
     def stream(self, *args):
-        return self.prop("table_name", *args)
+        return self.prop("stream_name", *args)
 
     def auto_create(self, *args):
         return self.prop("auto_create", *args)
@@ -143,12 +145,11 @@ class SourceConnection(Base):
         return self.prop("event_time_column", *args)
 
 
-class Source(Base):
+class Source(ResourceBase):
     _resource_name = "sources"
 
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Source._resource_name
+        ResourceBase.__init__(self)
 
     @classmethod
     def build(cls, id):
@@ -197,7 +198,7 @@ class Source(Base):
         }
 
         try:
-            r = requests.post(f"{url}", json=previewRequest, headers=Base._headers)
+            r = requests.post(f"{url}", json=previewRequest, headers=self._headers)
             if r.status_code < 200 or r.status_code > 299:
                 print(f"failed to preview source {r.status_code} {r.text}")
             else:
@@ -209,8 +210,7 @@ class Source(Base):
 # stream generator source
 class GeneratorSource(Source):
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Source._resource_name
+        Source.__init__(self)
         self.type("stream_generator")
 
     def config(self, configuration):
@@ -276,8 +276,7 @@ class CSVProperties(Base):
 
 class CSVSource(Source):
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Source._resource_name
+        Source.__init__(self)
         self.type("file")
         self._properties = CSVProperties()
         self.properties(self._properties)
@@ -286,9 +285,6 @@ class CSVSource(Source):
         self._properties.path(path)
         self.properties(self._properties)
         return self
-
-
-# kafka source/sink properties
 
 
 class KafkaProperties(Base):
@@ -328,17 +324,15 @@ class KafkaProperties(Base):
 
 class KafkaSource(Source):
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Source._resource_name
+        Source.__init__(self)
         self.type("kafka")
 
 
-class Query(Base):
+class Query(ResourceBase):
     _resource_name = "queries"
 
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Query._resource_name
+        ResourceBase.__init__(self)
 
     @classmethod
     def build(cls, query):
@@ -348,12 +342,12 @@ class Query(Base):
 
     @classmethod
     def execSQL(cls, sql, timeout=10):
-        url = f"{Base._base_url}/sql"
+        url = f"{cls._base_url}/sql"
         print(f"post {url}")
         sqlRequest = {"sql": sql, "timeout": timeout}
 
         try:
-            r = requests.post(f"{url}", json=sqlRequest, headers=Base._headers)
+            r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
             if r.status_code < 200 or r.status_code > 299:
                 print(f"failed to run sql {r.status_code} {r.text}")
             else:
@@ -363,14 +357,14 @@ class Query(Base):
 
     @classmethod
     def exec(cls, sql):
-        url = f"{Base._base_url}/exec"
+        url = f"{cls._base_url}/exec"
         print(f"post {url}")
         sqlRequest = {
             "sql": sql,
         }
 
         try:
-            r = requests.post(f"{url}", json=sqlRequest, headers=Base._headers)
+            r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
             if r.status_code < 200 or r.status_code > 299:
                 print(f"failed to run exec {r.status_code} {r.text}")
             else:
@@ -410,12 +404,12 @@ class Query(Base):
         return self
 
     def sink_to(self, sink):
-        url = f"{Base._base_url}/{Query._resource_name}/{self.id()}/sinks"
+        url = f"{self._base_url}/{self._resource_name}/{self.id()}/sinks"
         print(f"post {url}")
         sinkRequest = {"sink_id": sink.id()}
 
         try:
-            r = requests.post(f"{url}", json=sinkRequest, headers=Base._headers)
+            r = requests.post(f"{url}", json=sinkRequest, headers=self._headers)
             if r.status_code < 200 or r.status_code > 299:
                 print(
                     f"failed to add sink {sink.id()} to query {self.id()} {r.status_code} {r.text}"
@@ -454,11 +448,7 @@ class Query(Base):
         return __query_op
 
     def get_result_stream(self, stopper):
-        optimal_thread_count = multiprocessing.cpu_count()
-        pool_scheduler = ThreadPoolScheduler(optimal_thread_count)
-        strem_query_ob = rx.create(self._query_op(stopper)).pipe(
-            ops.observe_on(pool_scheduler)
-        )
+        strem_query_ob = rx.create(self._query_op(stopper))
         return strem_query_ob
 
 
@@ -473,12 +463,11 @@ class Stopper:
         return self.stopped
 
 
-class Sink(Base):
+class Sink(ResourceBase):
     _resource_name = "sinks"
 
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Sink._resource_name
+        ResourceBase.__init__(self)
 
     @classmethod
     def build(cls, id):
@@ -498,22 +487,13 @@ class Sink(Base):
 
 class KafkaSink(Sink):
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Sink._resource_name
-        self.type("kafka")
-
-
-class KafkaSink(Sink):
-    def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Sink._resource_name
+        Sink.__init__(self)
         self.type("kafka")
 
 
 class SlackSink(Sink):
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Sink._resource_name
+        Sink.__init__(self)
         self.type("slack")
 
 
@@ -530,8 +510,7 @@ class SlackSinkProperty(Base):
 
 class SMTPSink(Sink):
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Sink._resource_name
+        Sink.__init__(self)
         self.type("smtp")
 
 
@@ -587,12 +566,11 @@ class StreamColumn(Base):
         return self.prop("ttl_expression", *args)
 
 
-class Stream(Base):
-    _resource_name = "tables"
+class Stream(ResourceBase):
+    _resource_name = "streams"
 
     def __init__(self):
-        Base.__init__(self)
-        Base._resource_name = Stream._resource_name
+        ResourceBase.__init__(self)
         self.prop("columns", [])
 
     @classmethod
@@ -601,6 +579,7 @@ class Stream(Base):
         obj._data = val
         return obj
 
+    ## the list api is not implemented, has to manually implement it here
     def get(self):
         print("in stream get")
         streams = Stream.list()
@@ -609,34 +588,36 @@ class Stream(Base):
                 return s
 
     def delete(self):
-        print(f"delete {Base._base_url}/{Base._resource_name}/{self.name()}")
+        print(f"delete {self._base_url}/{self._resource_name}/{self.name()}")
         try:
-            r = requests.delete(f"{Base._base_url}/{Base._resource_name}/{self.name()}")
+            r = requests.delete(f"{self._base_url}/{self._resource_name}/{self.name()}")
             if r.status_code < 200 or r.status_code > 299:
                 print(
-                    f"failed to delete {Base._resource_name} {r.status_code} {r.text}"
+                    f"failed to delete {self._resource_name} {r.status_code} {r.text}"
                 )
             else:
-                print(f"delete {Base._resource_name} success")
+                print(f"delete {self._resource_name} success")
         except Exception as e:
-            print(f"failed to delete {Base._resource_name} {e}")
+            print(f"failed to delete {self._resource_name} {e}")
         finally:
             return self
 
     def insert(self, data):
-        url = f"{SCHEMA}://{PROTON_SERVER}:{PROTON_PORT}/proton/v1/ingest/streams/{self.name()}"
+        url = f"{self._base_url}/{self._resource_name}/{self.name()}/ingest"
         print(f"post {url}")
         insertRequest = {"columns": self.columnNames(), "data": data}
         print(f"insert {insertRequest}")
 
         try:
-            r = requests.post(f"{url}", json=insertRequest, headers=Base._headers)
+            r = requests.post(f"{url}", json=insertRequest, headers=self._headers)
             if r.status_code < 200 or r.status_code > 299:
                 print(f"failed to insert {r.status_code} {r.text}")
             else:
                 print("insert success")
         except Exception as e:
             print(f"failed to insert {e}")
+        finally:
+            return self
 
     def name(self, *args):
         return self.prop("name", *args)
