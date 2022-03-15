@@ -12,6 +12,9 @@ def test_stream():
         .column(StreamColumn().name("b").type("Float64"))
     )
 
+    s.delete()
+    time.sleep(1)
+
     streams = [ss.name() for ss in Stream.list()]
     assert s.name() not in streams
 
