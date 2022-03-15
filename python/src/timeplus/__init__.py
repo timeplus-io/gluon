@@ -2,6 +2,7 @@ import multiprocessing
 import os
 
 import requests
+from requests.structures import CaseInsensitiveDict
 from websocket import create_connection
 
 import rx
@@ -42,17 +43,30 @@ class Base:
         return self._get("id")
 
 
+# sington of the environment class
 class Env(Base):
-    def __init__(self):
-        Base.__init__(self)
-        self.host("localhost")
-        self.port("8000")
-        self.schema("http")
+    __instance = None
 
-        self.auth0_domain = "timeplus.us.auth0.com"
-        self.audience = "https://timeplus.us.auth0.com/api/v2/"
-        self.grant_type = "client_credentials"
-        self.headers = {"Content-Type": "application/json"}
+    @staticmethod
+    def getInstance():
+        if Env.__instance == None:
+            Env()
+        return Env.__instance
+
+    def __init__(self):
+        if Env.__instance != None:
+            raise Exception("This class is a singleton!")
+        else:
+            Base.__init__(self)
+            Env.__instance = self
+            self.host("localhost")
+            self.port("8000")
+            self.schema("http")
+
+            self.auth0_domain = "timeplus.us.auth0.com"
+            self.audience = "https://timeplus.us.auth0.com/api/v2/"
+            self.grant_type = "client_credentials"
+            self.headers = {"Content-Type": "application/json"}
 
     def host(self, *args):
         return self.prop("host", *args)
@@ -65,6 +79,11 @@ class Env(Base):
 
     def token(self, *args):
         return self.prop("token", *args)
+
+    def access_token(self, *args):
+        if "token" in self._data:
+            return self._data["token"]["access_token"]
+        return ""
 
     def login(
         self,
@@ -95,17 +114,25 @@ class Env(Base):
         except Exception as e:
             raise e
 
+    def logout(self):
+        self.token({})
+        return self
+
 
 class ResourceBase(Base):
     _base_url = f"{SCHEMA}://{NEUTRON_SERVER}:{NEUTRON_PORT}/api/v1beta1"
-    _headers = {"Content-Type": "application/json"}
+    _headers = CaseInsensitiveDict()
+    _headers["Accept"] = "application/json"
+    _headers["Content-Type"] = "application/json"
     _resource_name = "resource"
 
     def __init__(self):
         Base.__init__(self)
+        env = Env.getInstance()
+        self._headers["Authorization"] = f"Bearer {env.access_token()}"
 
     def create(self):
-        print(f"post {self._base_url}/{self._resource_name}/")
+        print(f"post {self._base_url}/{self._resource_name}/ ")
         try:
             r = requests.post(
                 f"{self._base_url}/{self._resource_name}/",
@@ -127,7 +154,10 @@ class ResourceBase(Base):
     def get(self):
         print(f"get {self._base_url}/{self._resource_name}/")
         try:
-            r = requests.get(f"{self._base_url}/{self._resource_name}/{self.id()}")
+            r = requests.get(
+                f"{self._base_url}/{self._resource_name}/{self.id()}",
+                headers=self._headers,
+            )
             if r.status_code < 200 or r.status_code > 299:
                 print(f"failed to get {self._resource_name} {r.text}")
             else:
@@ -141,7 +171,10 @@ class ResourceBase(Base):
     def delete(self):
         print(f"delete {self._base_url}/{self._resource_name}/{self.id()}")
         try:
-            r = requests.delete(f"{self._base_url}/{self._resource_name}/{self.id()}")
+            r = requests.delete(
+                f"{self._base_url}/{self._resource_name}/{self.id()}",
+                headers=self._headers,
+            )
             if r.status_code < 200 or r.status_code > 299:
                 print(
                     f"failed to delete {self._resource_name} {r.status_code} {r.text}"
@@ -171,9 +204,14 @@ class ResourceBase(Base):
 
     @classmethod
     def list(cls):
+        env = Env.getInstance()
+        cls._headers["Authorization"] = f"Bearer {env.access_token()}"
+
         try:
             print(f"{cls._base_url}/{cls._resource_name}/")
-            r = requests.get(f"{cls._base_url}/{cls._resource_name}/")
+            r = requests.get(
+                f"{cls._base_url}/{cls._resource_name}/", headers=cls._headers
+            )
             if r.status_code < 200 or r.status_code > 299:
                 print(f"failed to list {cls._resource_name} {r.text}")
             else:
@@ -400,6 +438,9 @@ class Query(ResourceBase):
         print(f"post {url}")
         sqlRequest = {"sql": sql, "timeout": timeout}
 
+        env = Env.getInstance()
+        cls._headers["Authorization"] = f"Bearer {env.access_token()}"
+
         try:
             r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
             if r.status_code < 200 or r.status_code > 299:
@@ -416,6 +457,9 @@ class Query(ResourceBase):
         sqlRequest = {
             "sql": sql,
         }
+
+        env = Env.getInstance()
+        cls._headers["Authorization"] = f"Bearer {env.access_token()}"
 
         try:
             r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
@@ -644,7 +688,10 @@ class Stream(ResourceBase):
     def delete(self):
         print(f"delete {self._base_url}/{self._resource_name}/{self.name()}")
         try:
-            r = requests.delete(f"{self._base_url}/{self._resource_name}/{self.name()}")
+            r = requests.delete(
+                f"{self._base_url}/{self._resource_name}/{self.name()}",
+                headers=self._headers,
+            )
             if r.status_code < 200 or r.status_code > 299:
                 print(
                     f"failed to delete {self._resource_name} {r.status_code} {r.text}"

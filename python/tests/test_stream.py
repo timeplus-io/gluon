@@ -1,10 +1,13 @@
 import time
 from rx import operators as ops
 
-from timeplus import Stream, StreamColumn, Query, Stopper
+from timeplus import Stream, StreamColumn, Query, Stopper, Env
 
 
 def test_stream():
+    env = Env.getInstance()
+    env.login()
+
     s = (
         Stream()
         .name("abc")

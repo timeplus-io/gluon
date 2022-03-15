@@ -10,10 +10,14 @@ from timeplus import (
     Source,
     Stopper,
     Stream,
+    Env,
 )
 
 
 def test_query():
+    env = Env.getInstance()
+    env.login()
+
     stream_name = "clicks"
 
     Stream().name(stream_name).delete()
@@ -64,8 +68,6 @@ def test_query():
     )
 
     assert len(result) == 5
-
     source.delete()
-
     sourceIds = [s.id() for s in Source.list()]
     assert source.id() not in sourceIds
