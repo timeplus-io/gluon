@@ -42,6 +42,60 @@ class Base:
         return self._get("id")
 
 
+class Env(Base):
+    def __init__(self):
+        Base.__init__(self)
+        self.host("localhost")
+        self.port("8000")
+        self.schema("http")
+
+        self.auth0_domain = "timeplus.us.auth0.com"
+        self.audience = "https://timeplus.us.auth0.com/api/v2/"
+        self.grant_type = "client_credentials"
+        self.headers = {"Content-Type": "application/json"}
+
+    def host(self, *args):
+        return self.prop("host", *args)
+
+    def port(self, *args):
+        return self.prop("port", *args)
+
+    def schema(self, *args):
+        return self.prop("schema", *args)
+
+    def token(self, *args):
+        return self.prop("token", *args)
+
+    def login(
+        self,
+        client_id="Ed3T1s33G4CaLIZdZSrzccCuM5nklz2G",
+        client_secret="UdhOkap9ZqQjLvmuCRTf1w_T6TcoHL4RYCxuv3EWxNfnoVp8Dpu_udMQi5rGX5Ce",
+    ):
+        url = f"https://{self.auth0_domain}/oauth/token"
+        print(f"post {url}")
+        request_data = {
+            "client_id": client_id,
+            "client_secret": client_secret,
+            "audience": self.audience,
+            "grant_type": self.grant_type,
+        }
+        try:
+            r = requests.post(
+                url,
+                json=request_data,
+                headers=self.headers,
+            )
+            if r.status_code < 200 or r.status_code > 299:
+                print(f"failed to login {r.status_code } {r.text}")
+                raise Exception(f"failed to login {r.status_code } {r.text}")
+            else:
+                print(f"token has been granted")
+                self.token(r.json())
+                return self
+        except Exception as e:
+            raise e
+
+
 class ResourceBase(Base):
     _base_url = f"{SCHEMA}://{NEUTRON_SERVER}:{NEUTRON_PORT}/api/v1beta1"
     _headers = {"Content-Type": "application/json"}
