@@ -215,38 +215,38 @@ st.write(source.preview())
 source.create().start()
 st.write("generator source created")
 
-# sink = (
-#     SlackSink()
-#     .name("slack sink")
-#     .properties(
-#         SlackSinkProperty()
-#         .url(
-#             "https://hooks.slack.com/services/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"
-#         )
-#         .template(
-#             "You have a new alert click count {{.number}}:\n*<fakeLink.timeplus.com|Gang Tao - New Alert>*"
-#         )
-#     )
-# )
-# sink.create()
-
 sink = (
-    SMTPSink()
-    .name("email sink")
+    SlackSink()
+    .name("slack sink")
     .properties(
-        SMTPSinkProperty()
-        .f("eng@timeplus.io")
-        .to("gang.tao@outlook.com")
-        .username("AKIA264B774K6MEAKUOY")
-        .password("BJTl500n0eOd+e94BNuHiut2DuDXo3y34PnGChre19Zq")
-        .host("email-smtp.us-west-1.amazonaws.com")
-        .port(587)
-        .message("You have a new alert at {{.time}} with click count {{.number}}")
+        SlackSinkProperty()
+        .url(
+            "https://hooks.slack.com/services/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"
+        )
+        .message(
+            "You have a new alert click count {{.number}}:\n*<fakeLink.timeplus.com|Gang Tao - New Alert>*"
+        )
     )
 )
-
 sink.create()
-st.write(f"{sink.get().data()}")
+
+# sink = (
+#     SMTPSink()
+#     .name("email sink")
+#     .properties(
+#         SMTPSinkProperty()
+#         .f("eng@timeplus.io")
+#         .to("gang.tao@outlook.com")
+#         .username("AKIA264B774K6MEAKUOY")
+#         .password("BJTl500n0eOd+e94BNuHiut2DuDXo3y34PnGChre19Zq")
+#         .host("email-smtp.us-west-1.amazonaws.com")
+#         .port(587)
+#         .message("You have a new alert at {{.time}} with click count {{.number}}")
+#     )
+# )
+
+# sink.create()
+# st.write(f"{sink.get().data()}")
 
 query = (
     Query().name("ad hoc query").sql(f"select * from clicks where number > 4").create()
@@ -260,11 +260,9 @@ query.get_result_stream(stopper).pipe(ops.take(5)).subscribe(
     on_completed=lambda: stopper.stop(),
 )
 
-# time.sleep(10)
-
-# source.delete()
-# query.delete()
-# st.write("generator source deleted")
+source.delete()
+query.delete()
+st.write("generator source deleted")
 
 for q in Query.list():
     q.cancel().delete()
