@@ -2,14 +2,9 @@ from timeplus import Env
 
 
 def test_env():
-    env1 = Env.getInstance()
-    env2 = Env.getInstance()
-
-    assert env1 is env2
-
+    env1 = Env()
+    env2 = Env()
     env1.login()
 
-    assert env1 is Env.getInstance()
-    assert Env.getInstance().access_token() is not None
     assert env1.access_token() is not None
-    assert env2.access_token() is not None
+    assert env2.access_token() is ""

@@ -43,30 +43,20 @@ class Base:
         return self._get("id")
 
 
-# sington of the environment class
 class Env(Base):
-    __instance = None
-
-    @staticmethod
-    def getInstance():
-        if Env.__instance == None:
-            Env()
-        return Env.__instance
-
     def __init__(self):
-        if Env.__instance != None:
-            raise Exception("This class is a singleton!")
-        else:
-            Base.__init__(self)
-            Env.__instance = self
-            self.host("localhost")
-            self.port("8000")
-            self.schema("http")
+        Base.__init__(self)
+        self.host("localhost")
+        self.port("8000")
+        self.schema("http")
 
-            self.auth0_domain = "timeplus.us.auth0.com"
-            self.audience = "https://timeplus.us.auth0.com/api/v2/"
-            self.grant_type = "client_credentials"
-            self.headers = {"Content-Type": "application/json"}
+        self.auth0_domain = "timeplus.us.auth0.com"
+        self.audience = "https://timeplus.us.auth0.com/api/v2/"
+        self.grant_type = "client_credentials"
+
+        self._headers = CaseInsensitiveDict()
+        self._headers["Accept"] = "application/json"
+        self._headers["Content-Type"] = "application/json"
 
     def host(self, *args):
         return self.prop("host", *args)
@@ -79,6 +69,10 @@ class Env(Base):
 
     def base_url(self):
         return f"{self.schema()}://{self.host()}:{self.port()}/api/v1beta1"
+
+    def headers(self):
+        self._headers["Authorization"] = f"Bearer {self.access_token()}"
+        return self._headers
 
     def token(self, *args):
         return self.prop("token", *args)
@@ -101,11 +95,12 @@ class Env(Base):
             "audience": self.audience,
             "grant_type": self.grant_type,
         }
+        headers = {"Content-Type": "application/json"}
         try:
             r = requests.post(
                 url,
                 json=request_data,
-                headers=self.headers,
+                headers=headers,
             )
             if r.status_code < 200 or r.status_code > 299:
                 print(f"failed to login {r.status_code } {r.text}")
@@ -123,19 +118,20 @@ class Env(Base):
 
 
 class ResourceBase(Base):
-    _headers = CaseInsensitiveDict()
-    _headers["Accept"] = "application/json"
-    _headers["Content-Type"] = "application/json"
     _resource_name = "resource"
 
-    def __init__(self):
+    def __init__(self, env=None):
         Base.__init__(self)
-        env = Env.getInstance()
-        self._headers["Authorization"] = f"Bearer {env.access_token()}"
+        if env is None:
+            env = Env()
+        self._headers = env.headers()
         self._base_url = env.base_url()
+        self._env = env
+        print(f"init result with base url {self._base_url} header {self._headers}")
 
     def create(self):
-        print(f"post {self._base_url}/{self._resource_name}/ ")
+        url = f"{self._base_url}/{self._resource_name}/"
+        print(f"post {url} with header {self._headers}")
         try:
             r = requests.post(
                 f"{self._base_url}/{self._resource_name}/",
@@ -206,21 +202,20 @@ class ResourceBase(Base):
             return self
 
     @classmethod
-    def list(cls):
-        env = Env.getInstance()
-        cls._headers["Authorization"] = f"Bearer {env.access_token()}"
-        cls._base_url = env.base_url()
+    def list(cls, env=None):
+        if env is None:
+            env = Env()
+        headers = env.headers()
+        base_url = env.base_url()
 
         try:
-            print(f"{cls._base_url}/{cls._resource_name}/")
-            r = requests.get(
-                f"{cls._base_url}/{cls._resource_name}/", headers=cls._headers
-            )
+            url = f"{base_url}/{cls._resource_name}/"
+            r = requests.get(url, headers=headers)
             if r.status_code < 200 or r.status_code > 299:
                 print(f"failed to list {cls._resource_name} {r.text}")
             else:
                 print(f"list {cls._resource_name} success")
-                result = [cls.build(val) for val in r.json()]
+                result = [cls.build(val, env=env) for val in r.json()]
                 return result
         except Exception as e:
             print(f"failed to list {cls._resource_name}")
@@ -244,12 +239,12 @@ class SourceConnection(Base):
 class Source(ResourceBase):
     _resource_name = "sources"
 
-    def __init__(self):
-        ResourceBase.__init__(self)
+    def __init__(self, env=None):
+        ResourceBase.__init__(self, env)
 
     @classmethod
-    def build(cls, id):
-        obj = cls()
+    def build(cls, id, env=None):
+        obj = cls(env=env)
         obj._set("id", id)
         return obj
 
@@ -285,7 +280,7 @@ class Source(ResourceBase):
         return self
 
     def preview(self, size=3):
-        url = f"{Base._base_url}/source/preview"
+        url = f"{self._base_url}/source/preview"
         print(f"post {url}")
         previewRequest = {
             "properties": self.properties(),
@@ -305,8 +300,8 @@ class Source(ResourceBase):
 
 # stream generator source
 class GeneratorSource(Source):
-    def __init__(self):
-        Source.__init__(self)
+    def __init__(self, env=None):
+        Source.__init__(self, env)
         self.type("stream_generator")
 
     def config(self, configuration):
@@ -371,8 +366,8 @@ class CSVProperties(Base):
 
 
 class CSVSource(Source):
-    def __init__(self):
-        Source.__init__(self)
+    def __init__(self, env=None):
+        Source.__init__(self, env)
         self.type("file")
         self._properties = CSVProperties()
         self.properties(self._properties)
@@ -419,30 +414,32 @@ class KafkaProperties(Base):
 
 
 class KafkaSource(Source):
-    def __init__(self):
-        Source.__init__(self)
+    def __init__(self, env=None):
+        Source.__init__(self, env)
         self.type("kafka")
 
 
 class Query(ResourceBase):
     _resource_name = "queries"
 
-    def __init__(self):
-        ResourceBase.__init__(self)
+    def __init__(self, env=None):
+        ResourceBase.__init__(self, env)
 
     @classmethod
-    def build(cls, query):
-        obj = cls()
+    def build(cls, query, env=None):
+        obj = cls(env=env)
         obj._data = query
         return obj
 
     @classmethod
-    def execSQL(cls, sql, timeout=10):
+    def execSQL(cls, sql, timeout=10, env=None):
         url = f"{cls._base_url}/sql"
         print(f"post {url}")
         sqlRequest = {"sql": sql, "timeout": timeout}
 
-        env = Env.getInstance()
+        if env is None:
+            env = Env()
+
         cls._headers["Authorization"] = f"Bearer {env.access_token()}"
         cls._base_url = env.base_url()
 
@@ -456,14 +453,15 @@ class Query(ResourceBase):
             print(f"failed to run sql {e}")
 
     @classmethod
-    def exec(cls, sql):
+    def exec(cls, sql, env=None):
         url = f"{cls._base_url}/exec"
         print(f"post {url}")
         sqlRequest = {
             "sql": sql,
         }
 
-        env = Env.getInstance()
+        if env is None:
+            env = Env()
         cls._headers["Authorization"] = f"Bearer {env.access_token()}"
         cls._base_url = env.base_url()
 
@@ -526,12 +524,11 @@ class Query(ResourceBase):
             return self
 
     def show_query_result(self, count=10):
-        env = Env.getInstance()
         ws_schema = "ws"
-        if env.schema() == "https":
+        if self._env.schema() == "https":
             ws_schema = "wss"
         ws = create_connection(
-            f"{ws_schema}://{env.host()}:{env.port()}/ws/queries/{self.id()}"
+            f"{ws_schema}://{self._env.host()}:{self._env.port()}/ws/queries/{self.id()}"
         )
         for i in range(count):
             result = ws.recv()
@@ -540,12 +537,11 @@ class Query(ResourceBase):
     def _query_op(self, stopper):
         def __query_op(observer, scheduler):
             # TODO : use WebSocketApp
-            env = Env.getInstance()
             ws_schema = "ws"
-            if env.schema() == "https":
+            if self._env.schema() == "https":
                 ws_schema = "wss"
             ws = create_connection(
-                f"{ws_schema}://{env.host()}:{env.port()}/ws/queries/{self.id()}"
+                f"{ws_schema}://{self._env.host()}:{self._env.port()}/ws/queries/{self.id()}"
             )
             try:
                 while True:
@@ -578,12 +574,12 @@ class Stopper:
 class Sink(ResourceBase):
     _resource_name = "sinks"
 
-    def __init__(self):
-        ResourceBase.__init__(self)
+    def __init__(self, env=None):
+        ResourceBase.__init__(self, env)
 
     @classmethod
-    def build(cls, id):
-        obj = cls()
+    def build(cls, id, env=None):
+        obj = cls(env=env)
         obj._set("id", id)
         return obj
 
@@ -681,13 +677,13 @@ class StreamColumn(Base):
 class Stream(ResourceBase):
     _resource_name = "streams"
 
-    def __init__(self):
-        ResourceBase.__init__(self)
+    def __init__(self, env=None):
+        ResourceBase.__init__(self, env)
         self.prop("columns", [])
 
     @classmethod
-    def build(cls, val):
-        obj = cls()
+    def build(cls, val, env=None):
+        obj = cls(env=env)
         obj._data = val
         return obj
 

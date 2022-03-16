@@ -15,12 +15,12 @@ from timeplus import (
 
 
 def test_query():
-    env = Env.getInstance()
+    env = Env()
     env.schema("https").host("kafka1.dev.timeplus.io").port("443").login()
 
     stream_name = "clicks"
 
-    Stream().name(stream_name).delete()
+    Stream(env=env).name(stream_name).delete()
     time.sleep(1)
 
     config = (
@@ -43,7 +43,7 @@ def test_query():
     )
 
     source = (
-        GeneratorSource()
+        GeneratorSource(env=env)
         .name("click stream")
         .type("stream_generator")
         .connection(sourceConnection)
@@ -51,12 +51,12 @@ def test_query():
     )
 
     source.create().start()
-    sourceIds = [s.id() for s in Source.list()]
+    sourceIds = [s.id() for s in Source.list(env=env)]
     assert source.id() in sourceIds
 
     time.sleep(3)  ## still need to wait the stream to be created by source
 
-    query = Query().name("ad hoc query").sql(f"select * from {stream_name}")
+    query = Query(env=env).name("ad hoc query").sql(f"select * from {stream_name}")
     query.create()
 
     stopper = Stopper()
@@ -69,5 +69,5 @@ def test_query():
 
     assert len(result) == 5
     source.delete()
-    sourceIds = [s.id() for s in Source.list()]
+    sourceIds = [s.id() for s in Source.list(env=env)]
     assert source.id() not in sourceIds
