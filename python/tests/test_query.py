@@ -1,4 +1,5 @@
 import time
+import os
 from rx import operators as ops
 
 from timeplus import (
@@ -15,7 +16,17 @@ from timeplus import (
 
 
 def test_query():
-    env = Env().schema("https").host("kafka1.dev.timeplus.io").port("443").login()
+    client_id = os.environ.get("AUTH0_API_CLIENT_ID")
+    client_secret = os.environ.get("AUTH0_API_CLIENT_SECRET")
+
+    env = (
+        Env()
+        .schema("https")
+        .host("kafka1.dev.timeplus.io")
+        .port("443")
+        .login(client_id=client_id, client_secret=client_secret)
+    )
+
     Env.setCurrent(env)
 
     stream_name = "clicks"

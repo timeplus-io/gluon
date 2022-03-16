@@ -110,8 +110,8 @@ class Env(Base):
 
     def login(
         self,
-        client_id="Ed3T1s33G4CaLIZdZSrzccCuM5nklz2G",
-        client_secret="UdhOkap9ZqQjLvmuCRTf1w_T6TcoHL4RYCxuv3EWxNfnoVp8Dpu_udMQi5rGX5Ce",
+        client_id,
+        client_secret,
     ):
         url = f"https://{self.auth0_domain}/oauth/token"
         print(f"post {url}")
