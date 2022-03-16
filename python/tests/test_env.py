@@ -10,6 +10,6 @@ def test_env():
     env1.login()
 
     assert env1 is Env.getInstance()
-    assert Env.getInstance().token()["access_token"] is not None
-    assert env1.token()["access_token"] is not None
-    assert env2.token()["access_token"] is not None
+    assert Env.getInstance().access_token() is not None
+    assert env1.access_token() is not None
+    assert env2.access_token() is not None

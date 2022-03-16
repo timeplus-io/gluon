@@ -16,7 +16,7 @@ from timeplus import (
 
 def test_query():
     env = Env.getInstance()
-    env.login()
+    env.schema("https").host("kafka1.dev.timeplus.io").port("443").login()
 
     stream_name = "clicks"
 

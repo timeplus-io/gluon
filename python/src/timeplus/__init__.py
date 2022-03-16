@@ -77,6 +77,9 @@ class Env(Base):
     def schema(self, *args):
         return self.prop("schema", *args)
 
+    def base_url(self):
+        return f"{self.schema()}://{self.host()}:{self.port()}/api/v1beta1"
+
     def token(self, *args):
         return self.prop("token", *args)
 
@@ -120,7 +123,6 @@ class Env(Base):
 
 
 class ResourceBase(Base):
-    _base_url = f"{SCHEMA}://{NEUTRON_SERVER}:{NEUTRON_PORT}/api/v1beta1"
     _headers = CaseInsensitiveDict()
     _headers["Accept"] = "application/json"
     _headers["Content-Type"] = "application/json"
@@ -130,6 +132,7 @@ class ResourceBase(Base):
         Base.__init__(self)
         env = Env.getInstance()
         self._headers["Authorization"] = f"Bearer {env.access_token()}"
+        self._base_url = env.base_url()
 
     def create(self):
         print(f"post {self._base_url}/{self._resource_name}/ ")
@@ -206,6 +209,7 @@ class ResourceBase(Base):
     def list(cls):
         env = Env.getInstance()
         cls._headers["Authorization"] = f"Bearer {env.access_token()}"
+        cls._base_url = env.base_url()
 
         try:
             print(f"{cls._base_url}/{cls._resource_name}/")
@@ -440,6 +444,7 @@ class Query(ResourceBase):
 
         env = Env.getInstance()
         cls._headers["Authorization"] = f"Bearer {env.access_token()}"
+        cls._base_url = env.base_url()
 
         try:
             r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
@@ -460,6 +465,7 @@ class Query(ResourceBase):
 
         env = Env.getInstance()
         cls._headers["Authorization"] = f"Bearer {env.access_token()}"
+        cls._base_url = env.base_url()
 
         try:
             r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
@@ -520,8 +526,12 @@ class Query(ResourceBase):
             return self
 
     def show_query_result(self, count=10):
+        env = Env.getInstance()
+        ws_schema = "ws"
+        if env.schema() == "https":
+            ws_schema = "wss"
         ws = create_connection(
-            f"ws://{NEUTRON_SERVER}:{NEUTRON_PORT}/ws/queries/{self.id()}"
+            f"{ws_schema}://{env.host()}:{env.port()}/ws/queries/{self.id()}"
         )
         for i in range(count):
             result = ws.recv()
@@ -530,8 +540,12 @@ class Query(ResourceBase):
     def _query_op(self, stopper):
         def __query_op(observer, scheduler):
             # TODO : use WebSocketApp
+            env = Env.getInstance()
+            ws_schema = "ws"
+            if env.schema() == "https":
+                ws_schema = "wss"
             ws = create_connection(
-                f"ws://{NEUTRON_SERVER}:{NEUTRON_PORT}/ws/queries/{self.id()}"
+                f"{ws_schema}://{env.host()}:{env.port()}/ws/queries/{self.id()}"
             )
             try:
                 while True:

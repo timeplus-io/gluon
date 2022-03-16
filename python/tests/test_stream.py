@@ -6,6 +6,7 @@ from timeplus import Stream, StreamColumn, Query, Stopper, Env
 
 def test_stream():
     env = Env.getInstance()
+    env.schema("https").host("kafka1.dev.timeplus.io").port("443")
     env.login()
 
     s = (
