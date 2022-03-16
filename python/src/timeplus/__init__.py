@@ -175,11 +175,10 @@ class ResourceBase(Base):
         self._headers = env.headers()
         self._base_url = env.base_url()
         self._env = env
-        print(f"init result with base url {self._base_url} header {self._headers}")
 
     def create(self):
         url = f"{self._base_url}/{self._resource_name}/"
-        print(f"post {url} with header {self._headers}")
+        print(f"post {url}")
         try:
             r = requests.post(
                 f"{self._base_url}/{self._resource_name}/",
@@ -634,6 +633,9 @@ class Sink(ResourceBase):
     def name(self, *args):
         return self.prop("name", *args)
 
+    def id(self):
+        return self.prop("id")
+
     def type(self, *args):
         return self.prop("type", *args)
 
@@ -660,8 +662,8 @@ class SlackSinkProperty(Base):
     def url(self, *args):
         return self.prop("url", *args)
 
-    def template(self, *args):
-        return self.prop("name", *args)
+    def message(self, *args):
+        return self.prop("template", *args)
 
 
 class SMTPSink(Sink):
@@ -692,8 +694,11 @@ class SMTPSinkProperty(Base):
     def password(self, *args):
         return self.prop("password", *args)
 
-    def template(self, *args):
-        return self.prop("template", *args)
+    def message(self, *args):
+        return self.prop("message_template", *args)
+
+    def subject(self, *args):
+        return self.prop("subject_template", *args)
 
 
 class StreamColumn(Base):
