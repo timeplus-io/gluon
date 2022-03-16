@@ -15,20 +15,7 @@ from timeplus import (
 )
 
 
-def test_query():
-    client_id = os.environ.get("AUTH0_API_CLIENT_ID")
-    client_secret = os.environ.get("AUTH0_API_CLIENT_SECRET")
-
-    env = (
-        Env()
-        .schema("https")
-        .host("kafka1.dev.timeplus.io")
-        .port("443")
-        .login(client_id=client_id, client_secret=client_secret)
-    )
-
-    Env.setCurrent(env)
-
+def test_query(staging_environment):
     stream_name = "clicks"
 
     Stream().name(stream_name).delete()

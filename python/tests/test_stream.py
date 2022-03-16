@@ -5,20 +5,7 @@ from rx import operators as ops
 from timeplus import Stream, StreamColumn, Query, Stopper, Env
 
 
-def test_stream():
-    client_id = os.environ.get("AUTH0_API_CLIENT_ID")
-    client_secret = os.environ.get("AUTH0_API_CLIENT_SECRET")
-
-    env = (
-        Env()
-        .schema("https")
-        .host("kafka1.dev.timeplus.io")
-        .port("443")
-        .login(client_id=client_id, client_secret=client_secret)
-    )
-
-    Env.setCurrent(env)
-
+def test_stream(staging_environment):
     s = (
         Stream()
         .name("abc")
