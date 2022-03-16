@@ -44,6 +44,9 @@ class Base:
 
 
 class Env(Base):
+    _envs = None
+    _current_env = None
+
     def __init__(self):
         Base.__init__(self)
         self.host("localhost")
@@ -57,6 +60,29 @@ class Env(Base):
         self._headers = CaseInsensitiveDict()
         self._headers["Accept"] = "application/json"
         self._headers["Content-Type"] = "application/json"
+        Env.add(self)
+
+    @classmethod
+    def add(cls, env):
+        if cls._envs == None:
+            cls._envs = []
+
+        cls._envs.append(env)
+
+        if len(cls._envs) == 1:
+            cls._current_env = env
+
+    @classmethod
+    def current(cls):
+        return cls._current_env
+
+    @classmethod
+    def setCurrent(cls, env):
+        cls._current_env = env
+
+    @classmethod
+    def envs(cls):
+        return cls._envs
 
     def host(self, *args):
         return self.prop("host", *args)
@@ -123,7 +149,7 @@ class ResourceBase(Base):
     def __init__(self, env=None):
         Base.__init__(self)
         if env is None:
-            env = Env()
+            env = Env.current()
         self._headers = env.headers()
         self._base_url = env.base_url()
         self._env = env
@@ -204,7 +230,7 @@ class ResourceBase(Base):
     @classmethod
     def list(cls, env=None):
         if env is None:
-            env = Env()
+            env = Env.current()
         headers = env.headers()
         base_url = env.base_url()
 
@@ -438,7 +464,7 @@ class Query(ResourceBase):
         sqlRequest = {"sql": sql, "timeout": timeout}
 
         if env is None:
-            env = Env()
+            env = Env.current()
 
         cls._headers["Authorization"] = f"Bearer {env.access_token()}"
         cls._base_url = env.base_url()
@@ -461,7 +487,7 @@ class Query(ResourceBase):
         }
 
         if env is None:
-            env = Env()
+            env = Env.current()
         cls._headers["Authorization"] = f"Bearer {env.access_token()}"
         cls._base_url = env.base_url()
 
