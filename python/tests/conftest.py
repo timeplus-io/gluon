@@ -20,3 +20,10 @@ def staging_environment():
     )
     Env.setCurrent(env)  # set current environment when you have more than 1 environment
     return env
+
+
+@pytest.fixture
+def local_environment():
+    env = Env()
+    Env.setCurrent(env)
+    return env

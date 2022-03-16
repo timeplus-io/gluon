@@ -142,6 +142,28 @@ class Env(Base):
         self.token({})
         return self
 
+    def info(self):
+        url = f"{self.schema()}://{self.host()}:{self.port()}/info"
+        try:
+            r = requests.get(url)
+            if r.status_code < 200 or r.status_code > 299:
+                raise Exception(f"failed to show info {r.status_code } {r.text}")
+            else:
+                return r.json()
+        except Exception as e:
+            raise e
+
+    def ping(self):
+        url = f"{self.schema()}://{self.host()}:{self.port()}/health"
+        try:
+            r = requests.get(url)
+            if r.status_code < 200 or r.status_code > 299:
+                raise Exception(f"failed to ping {r.status_code } {r.text}")
+            else:
+                return r.json()
+        except Exception as e:
+            raise e
+
 
 class ResourceBase(Base):
     _resource_name = "resource"

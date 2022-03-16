@@ -15,7 +15,7 @@ from timeplus import (
 )
 
 
-def test_query(staging_environment):
+def test_query(local_environment):
     stream_name = "clicks"
 
     Stream().name(stream_name).delete()
