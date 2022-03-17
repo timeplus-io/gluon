@@ -4,3 +4,6 @@ install:
 
 run:
 	streamlit run timeplus_demo_app.py
+
+play:
+	streamlit run timeplus_playground.py

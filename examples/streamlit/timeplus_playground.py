@@ -3,6 +3,9 @@ import time
 import os
 import json
 
+from PIL import Image
+image = Image.open('playground.png')
+
 import pandas as pd
 import numpy as np
 
@@ -31,7 +34,7 @@ from rx import operators as ops
 from config import config
 from case import case
 
-st.title("Timeplus Playground")
+st.image(image, caption='Timeplus')
 st.write("Fast + powerful real-time analytics made intuitive.")
 st.write("See https://timeplus.com")
 
