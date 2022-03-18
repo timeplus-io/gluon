@@ -2,7 +2,7 @@
 config = {
     "staging" :{
         "schema" : "https",
-        "host" : "kafka1.dev.timeplus.io",
+        "host" : "staging.demo.timeplus.io",
         "port" : "443"
     },
     "playground" :{

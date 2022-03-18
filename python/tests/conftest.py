@@ -14,7 +14,7 @@ def staging_environment():
     env = (
         Env()
         .schema("https")
-        .host("kafka1.dev.timeplus.io")
+        .host("staging.demo.timeplus.io")
         .port("443")
         .login(client_id=client_id, client_secret=client_secret)
     )

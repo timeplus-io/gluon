@@ -38,7 +38,7 @@ client_secret = os.environ.get("AUTH0_API_CLIENT_SECRET")
 env = (
     Env()
     .schema("https")
-    .host("kafka1.dev.timeplus.io")
+    .host("staging.demo.timeplus.io")
     .port("443")
     .login(client_id=client_id, client_secret=client_secret)
 )
@@ -87,9 +87,9 @@ st.write(env.info())
 # st.write(f"inserting data to stream {s.name()}")
 # s.insert([["a", 100.1], ["b", 200.2]])
 
-# query = Query().name("ad hoc query").sql(f"select * from table({s.name()})").create()
+# time.sleep(5)
 
-# time.sleep(3)
+# query = Query().name("ad hoc query").sql(f"select * from table({s.name()})").create()
 # stopper = Stopper()
 # result = []
 # query.get_result_stream(stopper).pipe(ops.take(2)).subscribe(
@@ -98,8 +98,8 @@ st.write(env.info())
 #     on_completed=lambda: stopper.stop(),
 # )
 
-# st.write(f"deleting stream {s.name()}")
-# s.delete()
+#st.write(f"deleting stream {s.name()}")
+#s.delete()
 # streams = [ss.name() for ss in Stream.list()]
 # st.write(f"current streams are {streams}")
 
@@ -185,50 +185,50 @@ st.write(env.info())
 
 #### Generator to Slack
 
-config = (
-    GeneratorConfiguration()
-    .batch(1)
-    .interval(200)
-    .field(GeneratorField().name("number").type("int").limit([0, 10]))
-    .field(
-        GeneratorField()
-        .name("time")
-        .type("timestamp")
-        .timestamp_format("2006-01-02 15:04:05.000")
-    )
-)
+# config = (
+#     GeneratorConfiguration()
+#     .batch(1)
+#     .interval(200)
+#     .field(GeneratorField().name("number").type("int").limit([0, 10]))
+#     .field(
+#         GeneratorField()
+#         .name("time")
+#         .type("timestamp")
+#         .timestamp_format("2006-01-02 15:04:05.000")
+#     )
+# )
 
-sourceConnection = (
-    SourceConnection().stream("clicks").auto_create(True).event_time_column("time")
-)
-source = (
-    GeneratorSource()
-    .name("click stream")
-    .type("stream_generator")
-    .connection(sourceConnection)
-    .config(config)
-)
+# sourceConnection = (
+#     SourceConnection().stream("clicks").auto_create(True).event_time_column("time")
+# )
+# source = (
+#     GeneratorSource()
+#     .name("click stream")
+#     .type("stream_generator")
+#     .connection(sourceConnection)
+#     .config(config)
+# )
 
-st.write("generator source preview")
-st.write(source.preview())
+# st.write("generator source preview")
+# st.write(source.preview())
 
-source.create().start()
-st.write("generator source created")
+# source.create().start()
+# st.write("generator source created")
 
-sink = (
-    SlackSink()
-    .name("slack sink")
-    .properties(
-        SlackSinkProperty()
-        .url(
-            "https://hooks.slack.com/services/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"
-        )
-        .message(
-            "You have a new alert click count {{.number}}:\n*<fakeLink.timeplus.com|Gang Tao - New Alert>*"
-        )
-    )
-)
-sink.create()
+# sink = (
+#     SlackSink()
+#     .name("slack sink")
+#     .properties(
+#         SlackSinkProperty()
+#         .url(
+#             "https://hooks.slack.com/services/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"
+#         )
+#         .message(
+#             "You have a new alert click count {{.number}}:\n*<fakeLink.timeplus.com|Gang Tao - New Alert>*"
+#         )
+#     )
+# )
+# sink.create()
 
 # sink = (
 #     SMTPSink()
@@ -248,21 +248,21 @@ sink.create()
 # sink.create()
 # st.write(f"{sink.get().data()}")
 
-query = (
-    Query().name("ad hoc query").sql(f"select * from clicks where number > 4").create()
-)
-query.sink_to(sink)
+# query = (
+#     Query().name("ad hoc query").sql(f"select * from clicks where number > 4").create()
+# )
+# query.sink_to(sink)
 
-stopper = Stopper()
-query.get_result_stream(stopper).pipe(ops.take(5)).subscribe(
-    on_next=lambda i: st.write(f"get one result {i}"),
-    on_error=lambda e: print(f"error {e}"),
-    on_completed=lambda: stopper.stop(),
-)
+# stopper = Stopper()
+# query.get_result_stream(stopper).pipe(ops.take(5)).subscribe(
+#     on_next=lambda i: st.write(f"get one result {i}"),
+#     on_error=lambda e: print(f"error {e}"),
+#     on_completed=lambda: stopper.stop(),
+# )
 
-source.delete()
-query.delete()
-st.write("generator source deleted")
+# source.delete()
+# query.delete()
+# st.write("generator source deleted")
 
-for q in Query.list():
-    q.cancel().delete()
+# for q in Query.list():
+#     q.cancel().delete()
