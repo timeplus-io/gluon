@@ -9,3 +9,5 @@ from timeplus.query import Query, Stopper
 from timeplus.sink import Sink
 from timeplus.slack import SlackSink, SlackSinkProperty
 from timeplus.stream import Stream, StreamColumn
+from timeplus.alert import Alert
+from timeplus.saved_query import SavedQuery
