@@ -5,6 +5,13 @@ from requests.structures import CaseInsensitiveDict
 from timeplus.base import Base
 from loguru import logger
 
+logger.add(
+    sys.stdout,
+    colorize=True,
+    format="<green>{time}</green> <level>{message}</level>",
+)
+logger.add("gluon.log", rotation="500 MB")
+
 
 class Env(Base):
     _envs = None
@@ -23,15 +30,9 @@ class Env(Base):
         self._headers = CaseInsensitiveDict()
         self._headers["Accept"] = "application/json"
         self._headers["Content-Type"] = "application/json"
+        self._http_timeout = 10
         Env.add(self)
-
         self._logger = logger
-        self._logger.add(
-            sys.stdout,
-            colorize=True,
-            format="<green>{time}</green> <level>{message}</level>",
-        )
-        self._logger.add("gluon.log", rotation="500 MB")
 
     @classmethod
     def add(cls, env):
@@ -101,6 +102,7 @@ class Env(Base):
                 url,
                 json=request_data,
                 headers=headers,
+                timeout=self.http_timeout(),
             )
             if r.status_code < 200 or r.status_code > 299:
                 self._logger.error(f"failed to login {r.status_code } {r.text}")
@@ -120,7 +122,7 @@ class Env(Base):
     def info(self):
         url = f"{self.schema()}://{self.host()}:{self.port()}/info"
         try:
-            r = requests.get(url)
+            r = requests.get(url, timeout=self.http_timeout())
             if r.status_code < 200 or r.status_code > 299:
                 raise Exception(f"failed to show info {r.status_code } {r.text}")
             else:
@@ -131,7 +133,7 @@ class Env(Base):
     def ping(self):
         url = f"{self.schema()}://{self.host()}:{self.port()}/health"
         try:
-            r = requests.get(url)
+            r = requests.get(url, timeout=self.http_timeout())
             if r.status_code < 200 or r.status_code > 299:
                 raise Exception(f"failed to ping {r.status_code } {r.text}")
             else:
@@ -141,3 +143,6 @@ class Env(Base):
 
     def logger(self):
         return self._logger
+
+    def http_timeout(self):
+        return self._http_timeout

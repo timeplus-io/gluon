@@ -57,6 +57,7 @@ class Stream(ResourceBase):
             r = requests.delete(
                 url,
                 headers=self._headers,
+                timeout=self._env.http_timeout(),
             )
             if r.status_code < 200 or r.status_code > 299:
                 self._logger.error(
@@ -76,7 +77,12 @@ class Stream(ResourceBase):
         self._logger.debug(f"insert {insertRequest}")
 
         try:
-            r = requests.post(url, json=insertRequest, headers=self._headers)
+            r = requests.post(
+                url,
+                json=insertRequest,
+                headers=self._headers,
+                timeout=self._env.http_timeout(),
+            )
             if r.status_code < 200 or r.status_code > 299:
                 self._logger.error(f"failed to insert {r.status_code} {r.text}")
             else:

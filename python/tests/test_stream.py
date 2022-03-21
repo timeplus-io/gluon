@@ -22,7 +22,7 @@ def test_stream(staging_environment):
     streams = [ss.name() for ss in Stream.list()]
     assert s.name() in streams
 
-    s.insert([["a", 100.1], ["b", 200.2]])
+    s.insert([["aaa string", 100.1], ["bbb string", 200.2]])
 
     time.sleep(3)
     query = Query().name("ad hoc query").sql("select * from table(abc)").create()

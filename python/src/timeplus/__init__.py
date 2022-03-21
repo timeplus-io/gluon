@@ -1,4 +1,4 @@
-from .version import __version__
+from .version import __version__  # noqa: F401
 
 from timeplus.base import Base  # noqa: F401
 from timeplus.env import Env  # noqa: F401

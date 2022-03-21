@@ -24,6 +24,7 @@ class ResourceBase(Base):
                 f"{self._base_url}/{self._resource_name}/",
                 json=self.data(),
                 headers=self._headers,
+                timeout=self._env.http_timeout(),
             )
             if r.status_code < 200 or r.status_code > 299:
                 self._logger.error(
@@ -46,6 +47,7 @@ class ResourceBase(Base):
             r = requests.get(
                 url,
                 headers=self._headers,
+                timeout=self._env.http_timeout(),
             )
             if r.status_code < 200 or r.status_code > 299:
                 self._logger.error("failed to get {} {}", self._resource_name, r.text)
@@ -64,6 +66,7 @@ class ResourceBase(Base):
             r = requests.delete(
                 url,
                 headers=self._headers,
+                timeout=self._env.http_timeout(),
             )
             if r.status_code < 200 or r.status_code > 299:
                 self._logger.error(
@@ -83,6 +86,7 @@ class ResourceBase(Base):
             r = requests.post(
                 url,
                 headers=self._headers,
+                timeout=self._env.http_timeout(),
             )
             if r.status_code < 200 or r.status_code > 299:
                 self._logger.error(
@@ -105,7 +109,7 @@ class ResourceBase(Base):
         try:
             url = f"{base_url}/{cls._resource_name}/"
             env.logger().debug("get {}", url)
-            r = requests.get(url, headers=headers)
+            r = requests.get(url, headers=headers, timeout=env.http_timeout())
             if r.status_code < 200 or r.status_code > 299:
                 env.logger().error(f"failed to list {cls._resource_name} {r.text}")
             else:

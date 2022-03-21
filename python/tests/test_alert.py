@@ -1,4 +1,3 @@
-import time
 from timeplus import Alert, SlackSinkProperty
 
 

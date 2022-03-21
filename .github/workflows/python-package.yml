@@ -51,4 +51,4 @@ jobs:
         AUTH0_API_CLIENT_ID: ${{ secrets.AUTH0_API_CLIENT_ID }}
         AUTH0_API_CLIENT_SECRET: ${{ secrets.AUTH0_API_CLIENT_SECRET }}
       run: |
-        pytest ./tests/test_env.py
+        make test

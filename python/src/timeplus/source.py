@@ -72,7 +72,12 @@ class Source(ResourceBase):
         }
 
         try:
-            r = requests.post(f"{url}", json=previewRequest, headers=self._headers)
+            r = requests.post(
+                url,
+                json=previewRequest,
+                headers=self._headers,
+                timeout=self._env.http_timeout(),
+            )
             if r.status_code < 200 or r.status_code > 299:
                 self._logger.error(f"failed to preview source {r.status_code} {r.text}")
             else:
