@@ -1,7 +1,7 @@
 from timeplus import SavedQuery
 
 
-def test_saved_query(demo_environment):
+def test_saved_query(staging_environment):
     querys = SavedQuery.list()
     assert querys is not None
 

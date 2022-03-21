@@ -2,7 +2,7 @@ import time
 from timeplus import Alert, SlackSinkProperty
 
 
-def test_alerts(local_environment):
+def test_alerts(staging_environment):
     alerts = Alert.list()
     assert alerts is not None
 
