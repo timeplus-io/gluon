@@ -52,3 +52,8 @@ jobs:
         AUTH0_API_CLIENT_SECRET: ${{ secrets.AUTH0_API_CLIENT_SECRET }}
       run: |
         make test
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: gluon python package
+        path: ./python/dist
