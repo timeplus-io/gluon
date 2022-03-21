@@ -39,7 +39,7 @@ jobs:
     - name: Set Version
       id: version
       run: |
-        echo "::set-output name=git_tag::$(git fetch --prune --unshallow && git describe --tags | sed -e "s/v//g")"
+        echo "::set-output name=git_tag::$(git fetch --prune --unshallow && git describe --tags --abbrev=0 | sed -e "s/v//g")"
     - name: Build and Install
       working-directory: ./python
       run: |
