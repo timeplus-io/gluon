@@ -43,7 +43,7 @@ jobs:
     - name: Build and Install
       working-directory: ./python
       run: |
-        make product GIT_TAG=${{ steps.version.outputs.git_tag }}
+        make install VERSION=${{ steps.version.outputs.git_tag }}
     - name: Test with pytest
       working-directory: ./python
       run: |
