@@ -1,4 +1,5 @@
 import time
+from datetime import datetime
 from rx import operators as ops
 
 from timeplus import Stream, StreamColumn, Query, Stopper
@@ -10,6 +11,9 @@ def test_stream(staging_environment):
         .name("abc")
         .column(StreamColumn().name("a").type("String"))
         .column(StreamColumn().name("b").type("Float64"))
+        .column(StreamColumn().name("t0").type("Datetime64"))
+        .column(StreamColumn().name("t1").type("Datetime64(3)"))
+        .column(StreamColumn().name("t2").type("Datetime64(6)"))
     )
 
     s.delete()
@@ -22,7 +26,24 @@ def test_stream(staging_environment):
     streams = [ss.name() for ss in Stream.list()]
     assert s.name() in streams
 
-    s.insert([["aaa string", 100.1], ["bbb string", 200.2]])
+    s.insert(
+        [
+            [
+                "aaa string",
+                100.1,
+                datetime.now(),
+                datetime.now(),
+                datetime.now(),
+            ],
+            [
+                "bbb string",
+                200.2,
+                int(time.time() * 1000),
+                int(time.time() * 1000),
+                int(time.time() * 1000 * 1000),
+            ],
+        ]
+    )
 
     time.sleep(3)
     query = Query().name("ad hoc query").sql("select * from table(abc)").create()
@@ -37,9 +58,9 @@ def test_stream(staging_environment):
 
     assert len(result) == 2
 
-    s.delete()
+    # s.delete()
 
-    time.sleep(1)  # delete stream still need to wait
+    # time.sleep(1)  # delete stream still need to wait
 
-    streams = [ss.name() for ss in Stream.list()]
-    assert s.name() not in streams
+    # streams = [ss.name() for ss in Stream.list()]
+    # assert s.name() not in streams

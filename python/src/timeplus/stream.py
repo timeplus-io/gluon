@@ -1,7 +1,16 @@
 import requests
+import json
+from datetime import datetime
 
 from timeplus.base import Base
 from timeplus.resource import ResourceBase
+
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, datetime):
+            return o.isoformat()
+        return json.JSONEncoder.default(self, o)
 
 
 class StreamColumn(Base):
@@ -70,16 +79,27 @@ class Stream(ResourceBase):
         finally:
             return self
 
-    def insert(self, data):
+    def insert(self, data, headers=None):
         url = f"{self._base_url}/{self._resource_name}/{self.name()}/ingest"
         self._logger.debug("post {}", url)
-        insertRequest = {"columns": self.columnNames(), "data": data}
+
+        insert_headers = self.columnNames()
+        if headers is not None:
+            insert_headers = headers
+
+        insertRequest = {
+            "columns": insert_headers,
+            "data": data,
+        }
         self._logger.debug(f"insert {insertRequest}")
 
         try:
+            self._logger.debug(
+                f"insert {json.dumps(insertRequest, cls=DateTimeEncoder)}"
+            )
             r = requests.post(
                 url,
-                json=insertRequest,
+                data=json.dumps(insertRequest, cls=DateTimeEncoder),
                 headers=self._headers,
                 timeout=self._env.http_timeout(),
             )
