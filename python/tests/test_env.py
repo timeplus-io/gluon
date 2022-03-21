@@ -5,8 +5,6 @@ def test_env():
     env1 = Env()
     env2 = Env()
 
-    assert Env.current() is env1
-
     Env.setCurrent(env2)
     assert Env.current() is env2
 

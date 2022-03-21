@@ -47,5 +47,8 @@ jobs:
         make install VERSION=${{ steps.version.outputs.git_tag }}
     - name: Test with pytest
       working-directory: ./python
+      env: 
+        AUTH0_API_CLIENT_ID: ${{ secrets.AUTH0_API_CLIENT_ID }}
+        AUTH0_API_CLIENT_SECRET: ${{ secrets.AUTH0_API_CLIENT_SECRET }}
       run: |
         make test
