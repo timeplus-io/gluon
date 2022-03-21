@@ -58,9 +58,9 @@ def test_stream(staging_environment):
 
     assert len(result) == 2
 
-    # s.delete()
+    s.delete()
 
-    # time.sleep(1)  # delete stream still need to wait
+    time.sleep(1)  # delete stream still need to wait
 
-    # streams = [ss.name() for ss in Stream.list()]
-    # assert s.name() not in streams
+    streams = [ss.name() for ss in Stream.list()]
+    assert s.name() not in streams
