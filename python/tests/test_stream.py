@@ -1,8 +1,7 @@
 import time
-import os
 from rx import operators as ops
 
-from timeplus import Stream, StreamColumn, Query, Stopper, Env
+from timeplus import Stream, StreamColumn, Query, Stopper
 
 
 def test_stream(staging_environment):

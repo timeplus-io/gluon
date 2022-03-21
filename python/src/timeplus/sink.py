@@ -1,5 +1,6 @@
 from timeplus.resource import ResourceBase
 
+
 class Sink(ResourceBase):
     _resource_name = "sinks"
 

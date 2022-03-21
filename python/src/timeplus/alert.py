@@ -1,5 +1,6 @@
 from timeplus.resource import ResourceBase
 
+
 class Alert(ResourceBase):
     _resource_name = "alerts"
 
@@ -20,7 +21,7 @@ class Alert(ResourceBase):
 
     def type(self, *args):
         return self.prop("type", *args)
-    
+
     def rule(self, *args):
         return self.prop("rule", *args)
 

@@ -1,5 +1,4 @@
 import time
-import os
 from rx import operators as ops
 
 from timeplus import (
@@ -11,7 +10,6 @@ from timeplus import (
     Source,
     Stopper,
     Stream,
-    Env,
 )
 
 
@@ -52,7 +50,8 @@ def test_query(staging_environment):
     sourceIds = [s.id() for s in Source.list()]
     assert source.id() in sourceIds
 
-    time.sleep(3)  ## still need to wait the stream to be created by source
+    # still need to wait the stream to be created by source
+    time.sleep(3)
 
     query = Query().name("ad hoc query").sql(f"select * from {stream_name}")
     query.create()

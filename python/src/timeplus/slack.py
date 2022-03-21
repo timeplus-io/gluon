@@ -1,6 +1,6 @@
-
 from timeplus.sink import Sink
 from timeplus.base import Base
+
 
 class SlackSink(Sink):
     def __init__(self):

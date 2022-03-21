@@ -18,8 +18,10 @@ def staging_environment():
         .port("443")
         .login(client_id=client_id, client_secret=client_secret)
     )
-    Env.setCurrent(env)  # set current environment when you have more than 1 environment
+    # set current environment when you have more than 1 environment
+    Env.setCurrent(env)
     return env
+
 
 @pytest.fixture
 def demo_environment():
@@ -32,7 +34,7 @@ def demo_environment():
         .port("443")
         .login(client_id=client_id, client_secret=client_secret)
     )
-    Env.setCurrent(env)  # set current environment when you have more than 1 environment
+    Env.setCurrent(env)
     return env
 
 

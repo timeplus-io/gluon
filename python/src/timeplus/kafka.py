@@ -2,6 +2,7 @@ from timeplus.base import Base
 from timeplus.source import Source
 from timeplus.sink import Sink
 
+
 class KafkaProperties(Base):
     def __init__(self):
         Base.__init__(self)
@@ -13,7 +14,7 @@ class KafkaProperties(Base):
     def brokers(self, *args):
         return self.prop("brokers", *args)
 
-    ## none, plain or scram
+    # none, plain or scram
     def sasl(self, *args):
         return self.prop("sasl", *args)
 
@@ -41,6 +42,7 @@ class KafkaSource(Source):
     def __init__(self, env=None):
         Source.__init__(self, env)
         self.type("kafka")
+
 
 class KafkaSink(Sink):
     def __init__(self):

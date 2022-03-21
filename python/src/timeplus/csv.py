@@ -1,7 +1,7 @@
 from timeplus.base import Base
 from timeplus.source import Source
 
-# csv source
+
 class CSVProperties(Base):
     def __init__(self):
         Base.__init__(self)

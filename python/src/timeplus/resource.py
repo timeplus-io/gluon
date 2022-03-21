@@ -3,6 +3,7 @@ import requests
 from timeplus.base import Base
 from timeplus.env import Env
 
+
 class ResourceBase(Base):
     _resource_name = "resource"
 

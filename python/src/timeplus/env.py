@@ -3,6 +3,7 @@ from requests.structures import CaseInsensitiveDict
 
 from timeplus.base import Base
 
+
 class Env(Base):
     _envs = None
     _current_env = None
@@ -24,7 +25,7 @@ class Env(Base):
 
     @classmethod
     def add(cls, env):
-        if cls._envs == None:
+        if cls._envs is None:
             cls._envs = []
 
         cls._envs.append(env)
@@ -92,7 +93,7 @@ class Env(Base):
                 print(f"failed to login {r.status_code } {r.text}")
                 raise Exception(f"failed to login {r.status_code } {r.text}")
             else:
-                print(f"token has been granted")
+                print("token has been granted")
                 self.token(r.json())
                 return self
         except Exception as e:

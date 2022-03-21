@@ -1,7 +1,7 @@
 from timeplus.base import Base
 from timeplus.source import Source
 
-# stream generator source
+
 class GeneratorSource(Source):
     def __init__(self, env=None):
         Source.__init__(self, env)

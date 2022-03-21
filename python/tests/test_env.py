@@ -11,7 +11,7 @@ def test_env():
     assert Env.current() is env2
 
     assert env1.access_token() is not None
-    assert env2.access_token() is ""
+    assert env2.access_token() == ""
 
 
 def test_stage_env(staging_environment):

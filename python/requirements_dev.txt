@@ -2,3 +2,5 @@ pip==22.0.4
 wheel==0.33.1
 twine==1.13.0
 pytest==7.0.1
+flake8==4.0.1
+black==22.1.0

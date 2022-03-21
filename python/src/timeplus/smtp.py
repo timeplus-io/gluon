@@ -1,6 +1,7 @@
 from timeplus.sink import Sink
 from timeplus.base import Base
 
+
 class SMTPSink(Sink):
     def __init__(self):
         Sink.__init__(self)

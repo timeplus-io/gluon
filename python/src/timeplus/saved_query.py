@@ -1,5 +1,6 @@
 from timeplus.resource import ResourceBase
 
+
 class SavedQuery(ResourceBase):
     _resource_name = "savedqueries"
 
@@ -20,7 +21,7 @@ class SavedQuery(ResourceBase):
 
     def name(self, *args):
         return self.prop("name", *args)
-    
+
     def sql(self, *args):
         return self.prop("sql", *args)
 
