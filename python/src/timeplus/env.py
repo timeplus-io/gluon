@@ -1,7 +1,9 @@
+import sys
 import requests
 from requests.structures import CaseInsensitiveDict
 
 from timeplus.base import Base
+from loguru import logger
 
 
 class Env(Base):
@@ -15,13 +17,21 @@ class Env(Base):
         self.schema("http")
 
         self.auth0_domain = "timeplus.us.auth0.com"
-        self.audience = "https://timeplus.us.auth0.com/api/v2/"
+        self.audience("https://timeplus.us.auth0.com/api/v2/")
         self.grant_type = "client_credentials"
 
         self._headers = CaseInsensitiveDict()
         self._headers["Accept"] = "application/json"
         self._headers["Content-Type"] = "application/json"
         Env.add(self)
+
+        self._logger = logger
+        self._logger.add(
+            sys.stdout,
+            colorize=True,
+            format="<green>{time}</green> <level>{message}</level>",
+        )
+        self._logger.add("gluon.log", rotation="500 MB")
 
     @classmethod
     def add(cls, env):
@@ -54,6 +64,9 @@ class Env(Base):
     def schema(self, *args):
         return self.prop("schema", *args)
 
+    def audience(self, *args):
+        return self.prop("audience", *args)
+
     def base_url(self):
         return f"{self.schema()}://{self.host()}:{self.port()}/api/v1beta1"
 
@@ -75,11 +88,11 @@ class Env(Base):
         client_secret,
     ):
         url = f"https://{self.auth0_domain}/oauth/token"
-        print(f"post {url}")
+        self._logger.info("post {}", url)
         request_data = {
             "client_id": client_id,
             "client_secret": client_secret,
-            "audience": self.audience,
+            "audience": self.audience(),
             "grant_type": self.grant_type,
         }
         headers = {"Content-Type": "application/json"}
@@ -90,13 +103,14 @@ class Env(Base):
                 headers=headers,
             )
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to login {r.status_code } {r.text}")
+                self._logger.error(f"failed to login {r.status_code } {r.text}")
                 raise Exception(f"failed to login {r.status_code } {r.text}")
             else:
-                print("token has been granted")
+                self._logger.info("token has been granted")
                 self.token(r.json())
                 return self
         except Exception as e:
+            self._logger.error("failed to get token {}", e)
             raise e
 
     def logout(self):
@@ -124,3 +138,6 @@ class Env(Base):
                 return r.json()
         except Exception as e:
             raise e
+
+    def logger(self):
+        return self._logger

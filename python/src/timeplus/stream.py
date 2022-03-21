@@ -45,44 +45,44 @@ class Stream(ResourceBase):
 
     # the list api is not implemented, has to manually implement it here
     def get(self):
-        print("in stream get")
         streams = Stream.list()
         for s in streams:
             if s.name() == self.name():
                 return s
 
     def delete(self):
-        print(f"delete {self._base_url}/{self._resource_name}/{self.name()}")
+        url = f"{self._base_url}/{self._resource_name}/{self.name()}"
+        self._logger.debug("delete {}", url)
         try:
             r = requests.delete(
-                f"{self._base_url}/{self._resource_name}/{self.name()}",
+                url,
                 headers=self._headers,
             )
             if r.status_code < 200 or r.status_code > 299:
-                print(
+                self._logger.error(
                     f"failed to delete {self._resource_name} {r.status_code} {r.text}"
                 )
             else:
-                print(f"delete {self._resource_name} success")
+                self._logger.debug(f"delete {self._resource_name} success")
         except Exception as e:
-            print(f"failed to delete {self._resource_name} {e}")
+            self._logger.error(f"failed to delete {self._resource_name} {e}")
         finally:
             return self
 
     def insert(self, data):
         url = f"{self._base_url}/{self._resource_name}/{self.name()}/ingest"
-        print(f"post {url}")
+        self._logger.debug("post {}", url)
         insertRequest = {"columns": self.columnNames(), "data": data}
-        print(f"insert {insertRequest}")
+        self._logger.debug(f"insert {insertRequest}")
 
         try:
-            r = requests.post(f"{url}", json=insertRequest, headers=self._headers)
+            r = requests.post(url, json=insertRequest, headers=self._headers)
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to insert {r.status_code} {r.text}")
+                self._logger.error(f"failed to insert {r.status_code} {r.text}")
             else:
-                print("insert success")
+                self._logger.debug("insert success")
         except Exception as e:
-            print(f"failed to insert {e}")
+            self._logger.error(f"failed to insert {e}")
         finally:
             return self
 

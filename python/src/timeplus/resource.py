@@ -14,10 +14,11 @@ class ResourceBase(Base):
         self._headers = env.headers()
         self._base_url = env.base_url()
         self._env = env
+        self._logger = env.logger()
 
     def create(self):
         url = f"{self._base_url}/{self._resource_name}/"
-        print(f"post {url}")
+        self._logger.debug("post {}", url)
         try:
             r = requests.post(
                 f"{self._base_url}/{self._resource_name}/",
@@ -25,65 +26,72 @@ class ResourceBase(Base):
                 headers=self._headers,
             )
             if r.status_code < 200 or r.status_code > 299:
-                print(
-                    f"failed to create {self._resource_name} {r.status_code } {r.text}"
+                self._logger.error(
+                    "failed to create {} {}",
+                    self._resource_name,
+                    r.text,
                 )
             else:
-                print(f"source {self._resource_name} has been created")
+                self._logger.debug("source {} has been created", self._resource_name)
                 self._data = r.json()
         except Exception as e:
-            print(f"failed to create {self._resource_name} {e}")
+            self._logger.error("failed to create {} {}", self._resource_name, e)
         finally:
             return self
 
     def get(self):
-        print(f"get {self._base_url}/{self._resource_name}/")
+        url = f"{self._base_url}/{self._resource_name}/{self.id()}"
+        self._logger.debug("get {}", url)
         try:
             r = requests.get(
-                f"{self._base_url}/{self._resource_name}/{self.id()}",
+                url,
                 headers=self._headers,
             )
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to get {self._resource_name} {r.text}")
+                self._logger.error("failed to get {} {}", self._resource_name, r.text)
             else:
-                print(f"get {self._resource_name} success")
+                self._logger.debug("get {} success", self._resource_name)
                 self._data = r.json()
         except Exception as e:
-            print(f"failed to get {self._resource_name} {e}")
+            self._logger.error(f"failed to get {self._resource_name} {e}")
         finally:
             return self
 
     def delete(self):
-        print(f"delete {self._base_url}/{self._resource_name}/{self.id()}")
+        url = f"{self._base_url}/{self._resource_name}/{self.id()}"
+        self._logger.debug("delete {}", url)
         try:
             r = requests.delete(
-                f"{self._base_url}/{self._resource_name}/{self.id()}",
+                url,
                 headers=self._headers,
             )
             if r.status_code < 200 or r.status_code > 299:
-                print(
+                self._logger.error(
                     f"failed to delete {self._resource_name} {r.status_code} {r.text}"
                 )
             else:
-                print(f"delete {self._resource_name} success")
+                self._logger.debug(f"delete {self._resource_name} success")
         except Exception as e:
-            print(f"failed to delete {self._resource_name} {e}")
+            self._logger.error(f"failed to delete {self._resource_name} {e}")
         finally:
             return self
 
     def action(self, action_name):
-        print(f"post {self._base_url}/{self._resource_name}/{self.id()}/{action_name}")
+        url = f"{self._base_url}/{self._resource_name}/{self.id()}/{action_name}"
+        self._logger.debug("post {}", url)
         try:
             r = requests.post(
-                f"{self._base_url}/{self._resource_name}/{self.id()}/{action_name}",
+                url,
                 headers=self._headers,
             )
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to post {action_name} on {self._resource_name} {r.text}")
+                self._logger.error(
+                    f"failed to post {action_name} on {self._resource_name} {r.text}"
+                )
             else:
-                print(f"{action_name} {self._resource_name} success")
+                self._logger.debug(f"{action_name} {self._resource_name} success")
         except Exception as e:
-            print(f"failed to {action_name} {self._resource_name} {e}")
+            self._logger.error(f"failed to {action_name} {self._resource_name} {e}")
         finally:
             return self
 
@@ -96,12 +104,13 @@ class ResourceBase(Base):
 
         try:
             url = f"{base_url}/{cls._resource_name}/"
+            env.logger().debug("get {}", url)
             r = requests.get(url, headers=headers)
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to list {cls._resource_name} {r.text}")
+                env.logger().error(f"failed to list {cls._resource_name} {r.text}")
             else:
-                print(f"list {cls._resource_name} success")
+                env.logger().debug(f"list {cls._resource_name} success")
                 result = [cls.build(val, env=env) for val in r.json()]
                 return result
         except Exception as e:
-            print(f"failed to list {cls._resource_name} {e}")
+            env.logger().error(f"failed to list {cls._resource_name} {e}")

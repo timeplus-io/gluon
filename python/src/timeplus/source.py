@@ -64,7 +64,7 @@ class Source(ResourceBase):
 
     def preview(self, size=3):
         url = f"{self._base_url}/source/preview"
-        print(f"post {url}")
+        self._logger.debug("post {}", url)
         previewRequest = {
             "properties": self.properties(),
             "size": size,
@@ -74,8 +74,8 @@ class Source(ResourceBase):
         try:
             r = requests.post(f"{url}", json=previewRequest, headers=self._headers)
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to preview source {r.status_code} {r.text}")
+                self._logger.error(f"failed to preview source {r.status_code} {r.text}")
             else:
                 return r.json()
         except Exception as e:
-            print(f"failed to preivew {e}")
+            self._logger.error(f"failed to preivew {e}")
