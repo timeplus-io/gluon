@@ -37,7 +37,7 @@ class Source(ResourceBase):
     def connection(self, *args):
         try:
             return self.prop("connection_config", *args)
-        except:
+        except Exception:
             # TODO it is better to change connection_config to connection here
             return self.prop("connection", *args)
 

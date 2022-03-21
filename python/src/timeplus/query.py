@@ -137,7 +137,7 @@ class Query(ResourceBase):
                     result = ws.recv()
                     observer.on_next(result)
                 observer.on_complete()
-            except Exception as e:
+            except Exception:
                 pass
 
         return __query_op

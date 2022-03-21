@@ -43,7 +43,7 @@ class Stream(ResourceBase):
         obj._data = val
         return obj
 
-    ## the list api is not implemented, has to manually implement it here
+    # the list api is not implemented, has to manually implement it here
     def get(self):
         print("in stream get")
         streams = Stream.list()

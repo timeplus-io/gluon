@@ -104,4 +104,4 @@ class ResourceBase(Base):
                 result = [cls.build(val, env=env) for val in r.json()]
                 return result
         except Exception as e:
-            print(f"failed to list {cls._resource_name}")
+            print(f"failed to list {cls._resource_name} {e}")
