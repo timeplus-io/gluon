@@ -2,11 +2,11 @@
 install:
 	pip install -r requirements.txt
 
-run:
+run: install
 	streamlit run timeplus_demo_app.py
 
-play:
+play: install
 	streamlit run timeplus_playground.py
 
-stream:
+stream: install
 	streamlit run timeplus_stream_ml.py
