@@ -2,12 +2,11 @@ import streamlit as st
 import time
 import os
 import json
-
-from PIL import Image
-image = Image.open('playground.png')
+from rx import operators as ops
+from config import config
+from case import case
 
 import pandas as pd
-import numpy as np
 
 from timeplus import (
     Stream,
@@ -29,12 +28,13 @@ from timeplus import (
     SMTPSink,
     SMTPSinkProperty,
 )
-from rx import operators as ops
 
-from config import config
-from case import case
+from PIL import Image
 
-st.image(image, caption='Timeplus')
+image = Image.open("playground.png")
+
+
+st.image(image, caption="Timeplus")
 st.write("Fast + powerful real-time analytics made intuitive.")
 st.write("See https://timeplus.com")
 
@@ -59,25 +59,23 @@ environment = st.sidebar.selectbox(
     "Select which environment to use", ("staging", "playground", "demo", "local")
 )
 
-selected_case = st.sidebar.selectbox(
-    "Select query case", tuple(case.keys())
-)
+selected_case = st.sidebar.selectbox("Select query case", tuple(case.keys()))
 
 select_env(environment)
 
 with st.container():
     sql = st.text_area("query", value=case[selected_case][1])
-    if 'sql' not in st.session_state:
-        st.session_state['sql'] = sql
+    if "sql" not in st.session_state:
+        st.session_state["sql"] = sql
 
-    if sql != st.session_state['sql']:
-        st.session_state['sql'] = sql
-        if 'table' in st.session_state:  #delete session table in case new SQL input
-            del st.session_state['table']
+    if sql != st.session_state["sql"]:
+        st.session_state["sql"] = sql
+        if "table" in st.session_state:  # delete session table in case new SQL input
+            del st.session_state["table"]
 
     if sql != "":
         query = Query().sql(sql).create()
-        #st.write(query.header())
+        # st.write(query.header())
         col = [h["name"] for h in query.header()]
 
         def update_row(row):
@@ -85,9 +83,9 @@ with st.container():
             for i, f in enumerate(col):
                 data[f] = row[i]
             df = pd.DataFrame([data], columns=col)
-            if 'table' not in st.session_state:
+            if "table" not in st.session_state:
                 query_result_table = st.table(df)
-                st.session_state['table'] = query_result_table
+                st.session_state["table"] = query_result_table
             else:
                 st.session_state.table.add_rows(df)
 

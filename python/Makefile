@@ -6,7 +6,7 @@ init:
 
 build:
 	python3 -m pip install --upgrade build
-	echo __version__ = \"$(VERSION)\"  \# noqa: F401 > ./src/timeplus/version.py
+	echo __version__ = \"$(VERSION)\"  \ \ \# noqa: F401 > ./src/timeplus/version.py
 	python3 -m build
 
 install: build

@@ -7,3 +7,6 @@ run:
 
 play:
 	streamlit run timeplus_playground.py
+
+stream:
+	streamlit run timeplus_stream_ml.py
