@@ -22,6 +22,12 @@ from rx import operators as ops
 
 st.title("Timeplus Platform")
 st.write("Fast + powerful real-time analytics made intuitive.")
+st.write(
+    "This is a case where we use linear regression to predict one of the car's gas usage"
+)
+st.write(
+    "The query we used is `select time, gas_percent, speed_kmh from car_live_data where cid='c00004'`"
+)
 st.write("See https://timeplus.com")
 
 # Environment
@@ -71,8 +77,9 @@ def handle_result(result):
 
     data = json.loads(result)
     time = to_timestamp(data[0])
+    speed = data[2]
     value = data[1]
-    x = {"time": time}
+    x = {"time": time, "speed": speed}
     y = float(value)
     try:
         # st.write(f"predict one x={x},y ={y}")
@@ -82,11 +89,14 @@ def handle_result(result):
         # st.write(f"metric is {metric}")
         model = model.learn_one(x, y)
 
-        col = ["time", "value", "prediction"]
-        row_original = [time, y, "raw"]
-        row_predict = [time, y_pred, "predict"]
-        row_metrics = [time, metric.get(), "metric"]
-        df = pd.DataFrame([row_original, row_predict, row_metrics], columns=col)
+        col = ["time", "value", "value_type"]
+        row_original = [time, y, "gas"]
+        row_predict = [time, y_pred, "predict_gas"]
+        row_metrics = [time, metric.get(), "mae"]
+        row_speed = [time, speed, "speed"]
+        df = pd.DataFrame(
+            [row_original, row_predict, row_metrics, row_speed], columns=col
+        )
 
         if "chart" not in st.session_state:
             # query_result_table = st.table(df)
@@ -98,7 +108,7 @@ def handle_result(result):
                 .encode(
                     x="time",
                     y="value",
-                    color="prediction",
+                    color="value_type",
                 )
             )
             my_chart = st.altair_chart(c, use_container_width=True)
