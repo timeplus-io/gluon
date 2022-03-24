@@ -9,11 +9,11 @@ def test_stream(staging_environment):
     s = (
         Stream()
         .name("abc")
-        .column(StreamColumn().name("a").type("String"))
-        .column(StreamColumn().name("b").type("Float64"))
-        .column(StreamColumn().name("t0").type("Datetime64"))
-        .column(StreamColumn().name("t1").type("Datetime64(3)"))
-        .column(StreamColumn().name("t2").type("Datetime64(6)"))
+        .column(StreamColumn().name("a").type("string"))
+        .column(StreamColumn().name("b").type("float64"))
+        .column(StreamColumn().name("t0").type("datetime64"))
+        .column(StreamColumn().name("t1").type("datetime64(3)"))
+        .column(StreamColumn().name("t2").type("datetime64(6)"))
     )
 
     s.delete()
