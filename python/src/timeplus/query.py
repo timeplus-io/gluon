@@ -1,9 +1,12 @@
 import requests
+import json
 from websocket import create_connection
 import rx
+import dateutil.parser
 
 from timeplus.resource import ResourceBase
 from timeplus.env import Env
+from timeplus.type import Type
 
 
 class Query(ResourceBase):
@@ -21,7 +24,7 @@ class Query(ResourceBase):
     @classmethod
     def execSQL(cls, sql, timeout=10, env=None):
         url = f"{cls._base_url}/sql"
-        print(f"post {url}")
+        env.logger().debug(f"post {url}")
         sqlRequest = {"sql": sql, "timeout": timeout}
 
         if env is None:
@@ -33,16 +36,16 @@ class Query(ResourceBase):
         try:
             r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to run sql {r.status_code} {r.text}")
+                env.logger.error(f"failed to run sql {r.status_code} {r.text}")
             else:
                 return r.json()
         except Exception as e:
-            print(f"failed to run sql {e}")
+            env.logger.error(f"failed to run sql {e}")
 
     @classmethod
     def exec(cls, sql, env=None):
         url = f"{cls._base_url}/exec"
-        print(f"post {url}")
+        env.logger.debug(f"post {url}")
         sqlRequest = {
             "sql": sql,
         }
@@ -55,11 +58,11 @@ class Query(ResourceBase):
         try:
             r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
             if r.status_code < 200 or r.status_code > 299:
-                print(f"failed to run exec {r.status_code} {r.text}")
+                env.logger.error(f"failed to run exec {r.status_code} {r.text}")
             else:
                 return r.json()
         except Exception as e:
-            print(f"failed to run exec {e}")
+            env.logger.error(f"failed to run exec {e}")
 
     def name(self, *args):
         return self.prop("name", *args)
@@ -94,19 +97,19 @@ class Query(ResourceBase):
 
     def sink_to(self, sink):
         url = f"{self._base_url}/{self._resource_name}/{self.id()}/sinks"
-        print(f"post {url}")
+        self._logger.debug(f"post {url}")
         sinkRequest = {"sink_id": sink.id()}
 
         try:
             r = requests.post(f"{url}", json=sinkRequest, headers=self._headers)
             if r.status_code < 200 or r.status_code > 299:
-                print(
+                self._logger.error(
                     f"failed to add sink {sink.id()} to query {self.id()} {r.status_code} {r.text}"
                 )
             else:
-                print(f"add sink {sink.id()} to query {self.id()} success")
+                self._logger.debug(f"add sink {sink.id()} to query {self.id()} success")
         except Exception as e:
-            print(f"failed to add sink {e}")
+            self._logger.error(f"failed to add sink {e}")
         finally:
             return self
 
@@ -119,9 +122,10 @@ class Query(ResourceBase):
         )
         for i in range(count):
             result = ws.recv()
-            print(result)
+            self._logger.info(result)
 
-    def _query_op(self, stopper):
+    # TODO: refactor this complex method
+    def _query_op(self, stopper):  # noqa: C901
         def __query_op(observer, scheduler):
             # TODO : use WebSocketApp
             ws_schema = "ws"
@@ -135,7 +139,20 @@ class Query(ResourceBase):
                     if stopper.is_stopped():
                         break
                     result = ws.recv()
-                    observer.on_next(result)
+                    # convert string object to json(array)
+                    # todo convert by header type
+                    record = json.loads(result)
+
+                    for index, col in enumerate(self.header()):
+                        if col["type"].startswith(Type.Tuple.value):
+                            record[index] = tuple(record[index])
+                        elif col["type"].startswith(Type.Date.value):
+                            try:
+                                record[index] = dateutil.parser.isoparse(record[index])
+                            except Exception as e:
+                                self._logger.error("failed to parse datetime ", e)
+
+                    observer.on_next(record)
                 observer.on_complete()
             except Exception:
                 pass

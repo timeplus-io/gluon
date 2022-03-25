@@ -1,9 +1,9 @@
 import time
+import json
 from datetime import datetime
 from rx import operators as ops
 
 from timeplus import Stream, StreamColumn, Query, Stopper, Type
-
 from timeplus.utils import toDate
 
 
@@ -84,8 +84,11 @@ def test_stream(staging_environment):
 
     assert len(result) == 2
 
-    staging_environment._logger.info("result header is {}", query.header())
-    staging_environment._logger.info("result data is {}", result)
+    staging_environment.logger().info("result header is {}", query.header())
+    staging_environment.logger().info("result data is {}", result)
+
+    for r in result:
+        staging_environment._logger.info("record data is {}", r)
 
     s.delete()
 
