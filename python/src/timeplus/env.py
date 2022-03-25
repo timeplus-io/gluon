@@ -1,16 +1,20 @@
 import sys
+import os
 import requests
 from requests.structures import CaseInsensitiveDict
 
 from timeplus.base import Base
 from loguru import logger
 
+log_level = os.environ.get("GLUON_LOG_LEVEL", "INFO")
+
 logger.add(
     sys.stdout,
     colorize=True,
     format="<green>{time}</green> <level>{message}</level>",
+    level=log_level,
 )
-logger.add("gluon.log", rotation="500 MB")
+logger.add("gluon.log", rotation="500 MB", level=log_level)
 
 
 class Env(Base):
