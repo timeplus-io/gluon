@@ -14,7 +14,7 @@ logger.add(
     sys.stdout,
     colorize=True,
     format="{time} - {level} - {message}",
-    level="INFO",
+    level=log_level,
 )
 logger.add("gluon.log", rotation="500 MB", level=log_level)
 
