@@ -1,8 +1,6 @@
 import streamlit as st
 
 import os
-import json
-from datetime import datetime
 
 import pandas as pd
 import altair as alt
@@ -41,7 +39,7 @@ env = (
     .login(client_id=client_id, client_secret=client_secret)
 )
 Env.setCurrent(env)
-# st.write(env.info())
+st.write(env.info())
 
 # Get Data from Car live data
 query = (
@@ -62,21 +60,12 @@ if "model" not in st.session_state:
     st.session_state["metric"] = metric
 
 
-def to_timestamp(dt):
-    try:
-        time = datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%fZ").timestamp()
-        return time
-    except Exception:
-        time = datetime.strptime(dt, "%Y-%m-%dT%H:%M:%SZ").timestamp()
-        return time
-
-
 def handle_result(result):
     model = st.session_state["model"]
     metric = st.session_state["metric"]
 
-    data = json.loads(result)
-    time = to_timestamp(data[0])
+    data = result
+    time = data[0].timestamp()
     speed = data[2]
     value = data[1]
     x = {"time": time, "speed": speed}
@@ -99,9 +88,6 @@ def handle_result(result):
         )
 
         if "chart" not in st.session_state:
-            # query_result_table = st.table(df)
-            # st.session_state["table"] = query_result_table
-            # my_chart = st.line_chart(df)
             c = (
                 alt.Chart(df)
                 .mark_line()

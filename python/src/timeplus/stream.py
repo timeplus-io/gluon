@@ -5,6 +5,8 @@ from datetime import datetime
 from timeplus.base import Base
 from timeplus.resource import ResourceBase
 
+from timeplus.type import Type
+
 
 class DateTimeEncoder(json.JSONEncoder):
     def default(self, o):
@@ -21,7 +23,33 @@ class StreamColumn(Base):
         return self.prop("name", *args)
 
     def type(self, *args):
-        return self.prop("type", *args)
+        if len(args) == 0:
+            return Type(self._get("type"))
+        elif len(args) >= 1:
+            if isinstance(args[0], Type):
+                if args[0] == Type.Decimal:
+                    # TODO : need validate the args
+                    decimal_type = f"{args[0].value}({args[1]}, {args[2]})"
+                    return self._set("type", decimal_type)
+                elif args[0] == Type.Array and isinstance(args[1], Type):
+                    array_type = f"{args[0].value}({args[1].value})"
+                    return self._set("type", array_type)
+                elif (
+                    args[0] == Type.Map
+                    and isinstance(args[1], Type)
+                    and isinstance(args[2], Type)
+                ):
+                    map_type = f"{args[0].value}({args[1].value}, {args[2].value})"
+                    return self._set("type", map_type)
+                elif args[0] == Type.Tuple:
+                    tuple_values = ",".join([a.value for a in args[1:]])
+                    map_type = f"{args[0].value}({tuple_values})"
+                    return self._set("type", map_type)
+                else:
+                    return self._set("type", args[0].value)
+
+            else:
+                return self._set("type", args[0])
 
     def default(self, *args):
         return self.prop("default", *args)

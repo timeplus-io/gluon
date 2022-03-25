@@ -68,3 +68,27 @@ def test_query(staging_environment):
     source.delete()
     sourceIds = [s.id() for s in Source.list()]
     assert source.id() not in sourceIds
+
+    query.delete()
+
+
+def test_query1(staging_environment):
+    query = (
+        Query()
+        .name("ad hoc query")
+        .sql(
+            "select time, gas_percent, speed_kmh from car_live_data where cid='c00004'"
+        )
+    )
+    query.create()
+
+    stopper = Stopper()
+    result = []
+    query.get_result_stream(stopper).pipe(ops.take(5)).subscribe(
+        on_next=lambda i: result.append(i),
+        on_error=lambda e: print(f"error {e}"),
+        on_completed=lambda: stopper.stop(),
+    )
+
+    assert len(result) == 5
+    query.delete()
