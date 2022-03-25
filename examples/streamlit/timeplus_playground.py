@@ -92,7 +92,7 @@ with st.container():
         stopper = Stopper()
         result = []
         query.get_result_stream(stopper).pipe(ops.take(10)).subscribe(
-            on_next=lambda i: update_row(json.loads(i)),
+            on_next=lambda i: update_row(i),
             on_error=lambda e: print(f"error {e}"),
             on_completed=lambda: stopper.stop(),
         )
