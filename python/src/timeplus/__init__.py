@@ -19,3 +19,4 @@ from timeplus.smtp import SMTPSink, SMTPSinkProperty  # noqa: F401
 from timeplus.stream import Stream, StreamColumn  # noqa: F401
 from timeplus.alert import Alert  # noqa: F401
 from timeplus.saved_query import SavedQuery  # noqa: F401
+from timeplus.type import Type  # noqa: F401
