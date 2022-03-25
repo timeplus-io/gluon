@@ -8,11 +8,13 @@ from loguru import logger
 
 log_level = os.environ.get("GLUON_LOG_LEVEL", "INFO")
 
+logger.remove()
+
 logger.add(
     sys.stdout,
     colorize=True,
-    format="<green>{time}</green> <level>{message}</level>",
-    level=log_level,
+    format="{time} - {level} - {message}",
+    level="INFO",
 )
 logger.add("gluon.log", rotation="500 MB", level=log_level)
 
