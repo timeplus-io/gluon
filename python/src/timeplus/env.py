@@ -95,7 +95,7 @@ class Env(Base):
         client_secret,
     ):
         url = f"https://{self.auth0_domain}/oauth/token"
-        self._logger.info("post {}", url)
+        self._logger.debug("post {}", url)
         request_data = {
             "client_id": client_id,
             "client_secret": client_secret,
@@ -114,7 +114,7 @@ class Env(Base):
                 self._logger.error(f"failed to login {r.status_code } {r.text}")
                 raise Exception(f"failed to login {r.status_code } {r.text}")
             else:
-                self._logger.info("token has been granted")
+                self._logger.debug("token has been granted")
                 self.token(r.json())
                 return self
         except Exception as e:
