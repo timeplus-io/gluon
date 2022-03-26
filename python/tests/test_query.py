@@ -92,3 +92,8 @@ def test_query1(staging_environment):
 
     assert len(result) == 5
     query.delete()
+
+
+def test_sync_query(staging_environment):
+    result = Query.execSQL("select * from table(car_live_data) limit 2")
+    assert result is not None

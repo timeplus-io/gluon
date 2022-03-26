@@ -23,18 +23,18 @@ class Query(ResourceBase):
 
     @classmethod
     def execSQL(cls, sql, timeout=10, env=None):
-        url = f"{cls._base_url}/sql"
-        env.logger().debug(f"post {url}")
-        sqlRequest = {"sql": sql, "timeout": timeout}
-
         if env is None:
             env = Env.current()
 
-        cls._headers["Authorization"] = f"Bearer {env.access_token()}"
-        cls._base_url = env.base_url()
+        headers = env.headers()
+        base_url = env.base_url()
+
+        url = f"{base_url}/sql"
+        env.logger().debug(f"post {url}")
+        sqlRequest = {"sql": sql, "timeout": timeout}
 
         try:
-            r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
+            r = requests.post(f"{url}", json=sqlRequest, headers=headers)
             if r.status_code < 200 or r.status_code > 299:
                 env.logger.error(f"failed to run sql {r.status_code} {r.text}")
             else:
@@ -44,19 +44,19 @@ class Query(ResourceBase):
 
     @classmethod
     def exec(cls, sql, env=None):
-        url = f"{cls._base_url}/exec"
+        if env is None:
+            env = Env.current()
+        headers = env.headers()
+        base_url = env.base_url()
+
+        url = f"{base_url}/exec"
         env.logger.debug(f"post {url}")
         sqlRequest = {
             "sql": sql,
         }
 
-        if env is None:
-            env = Env.current()
-        cls._headers["Authorization"] = f"Bearer {env.access_token()}"
-        cls._base_url = env.base_url()
-
         try:
-            r = requests.post(f"{url}", json=sqlRequest, headers=cls._headers)
+            r = requests.post(f"{url}", json=sqlRequest, headers=headers)
             if r.status_code < 200 or r.status_code > 299:
                 env.logger.error(f"failed to run exec {r.status_code} {r.text}")
             else:
