@@ -22,7 +22,7 @@ class Query(ResourceBase):
         return obj
 
     @classmethod
-    def execSQL(cls, sql, timeout=10, env=None):
+    def execSQL(cls, sql, timeout=1000, env=None):
         if env is None:
             env = Env.current()
 
