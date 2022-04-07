@@ -32,22 +32,46 @@ class SlackSource:
         headers["Authorization"] = f"Bearer {self.token}"
         self.headers = headers
         self.wsurl = None
-        self.stream = None
         self.init_stream()
 
     def init_stream(self):
-        self.stream = (
+        self.event_stream = (
             Stream()
-            .name("timeplus_slack")
+            .name("timeplus_slack_events")
             .column(StreamColumn().name("message").type("string"))
             .column(StreamColumn().name("time").type("datetime64(3)"))
         )
 
         try:
-            self.stream.create()
+            self.event_stream.create()
         except Exception as e:
             print(f"failed to initialize stream {e}")
-            self.stream.get()
+            self.event_stream.get()
+
+        self.user_stream = (
+            Stream()
+            .name("timeplus_slack_users")
+            .column(StreamColumn().name("id").type("string"))
+            .column(StreamColumn().name("name").type("string"))
+        )
+
+        try:
+            self.user_stream.create()
+        except Exception as e:
+            print(f"failed to initialize stream {e}")
+            self.user_stream.get()
+
+    def get_user(self, id):
+        user_info_url = f"https://slack.com/api/users.info?user={id}"
+        resp = requests.get(user_info_url, headers=self.headers)
+
+        if resp.status_code == 200:
+            print("get user info success")
+            try:
+                user_info = resp.json()
+                self.user_stream.insert([[id, user_info["user"]["name"]]])
+            except Exception as e:
+                print(f"failed to insert stream {e}")
 
     def connect(self):
         resp = requests.get(self.url, headers=self.headers)
@@ -72,8 +96,10 @@ class SlackSource:
     def on_message(self, ws, message):
         print(message)
         event = json.loads(message)
+
         if event["type"] == "message":
-            self.stream.insert(
+            self.get_user(event["user"])
+            self.event_stream.insert(
                 [
                     [
                         message,
