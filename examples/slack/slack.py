@@ -92,7 +92,7 @@ class SlackSource:
         print("Opened connection")
 
 
-token = "your-bot-token"
+token = os.environ.get("SLACK_BOT_TOKEN")
 env = staging_environment()
 slack = SlackSource(token)
 slack.connect()
