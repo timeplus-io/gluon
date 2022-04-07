@@ -1,5 +1,4 @@
 import time
-import json
 from datetime import datetime
 from rx import operators as ops
 
@@ -10,7 +9,7 @@ from timeplus.utils import toDate
 def test_stream(staging_environment):
     s = (
         Stream()
-        .name("stream_with_all_types")
+        .name("datagen")
         .column(StreamColumn().name("c1").type(Type.Integer))
         .column(StreamColumn().name("c2").type(Type.Decimal, 4, 2))
         .column(StreamColumn().name("c3").type(Type.Float))
@@ -29,7 +28,7 @@ def test_stream(staging_environment):
     )
 
     s.delete()
-    time.sleep(1)
+    time.sleep(3)
 
     streams = [ss.name() for ss in Stream.list()]
     assert s.name() not in streams

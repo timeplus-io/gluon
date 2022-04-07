@@ -1,4 +1,8 @@
 from setuptools import setup, find_packages
+import os
+
+print("current dir")
+print(os.getcwd())
 
 exec(open("src/timeplus/version.py").read())
 

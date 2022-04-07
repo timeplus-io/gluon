@@ -14,6 +14,7 @@ def test_stream(staging_environment):
         .column(StreamColumn().name("t0").type("datetime64"))
         .column(StreamColumn().name("t1").type("datetime64(3)"))
         .column(StreamColumn().name("t2").type("datetime64(6)"))
+        .column(StreamColumn().name("_time").type("datetime64(3)"))
     )
 
     s.delete()
@@ -31,9 +32,10 @@ def test_stream(staging_environment):
             [
                 "aaa string",
                 100.1,
+                "2022-03-31 23:16:47.743",
                 datetime.now(),
                 datetime.now(),
-                datetime.now(),
+                "2022-03-31 23:16:47.743",
             ],
             [
                 "bbb string",
@@ -41,6 +43,7 @@ def test_stream(staging_environment):
                 int(time.time() * 1000),
                 int(time.time() * 1000),
                 int(time.time() * 1000 * 1000),
+                "2022-03-31 23:16:47.743",
             ],
         ]
     )
@@ -64,3 +67,25 @@ def test_stream(staging_environment):
 
     streams = [ss.name() for ss in Stream.list()]
     assert s.name() not in streams
+
+
+def test_stream1(staging_environment):
+    s = (
+        Stream()
+        .name("test")
+        .column(StreamColumn().name("_time").type("datetime64(3)"))
+        .column(StreamColumn().name("number").type("int"))
+    )
+
+    s.insert(
+        [
+            [
+                "2022-03-31 23:16:47.743",
+                1,
+            ],
+            [
+                "2022-03-31 23:16:47.123",
+                2,
+            ],
+        ]
+    )
