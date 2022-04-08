@@ -42,11 +42,11 @@ class SlackSource:
             .column(StreamColumn().name("time").type("datetime64(3)"))
         )
 
-        try:
-            self.event_stream.create()
-        except Exception as e:
-            print(f"failed to initialize stream {e}")
-            self.event_stream.get()
+        if(self.event_stream.get() is None):
+            try:
+                self.event_stream.create()
+            except Exception as e:
+                print(f"failed to create stream {e}")
 
         self.user_stream = (
             Stream()
@@ -55,11 +55,11 @@ class SlackSource:
             .column(StreamColumn().name("name").type("string"))
         )
 
-        try:
-            self.user_stream.create()
-        except Exception as e:
-            print(f"failed to initialize stream {e}")
-            self.user_stream.get()
+        if(self.user_stream.get() is None):
+            try:
+                self.user_stream.create()
+            except Exception as e:
+                print(f"failed to create stream {e}")
 
     def get_user(self, id):
         user_info_url = f"https://slack.com/api/users.info?user={id}"
