@@ -38,7 +38,6 @@ class Query(ResourceBase):
             r = requests.post(f"{url}", json=sqlRequest, headers=headers)
             if r.status_code < 200 or r.status_code > 299:
                 err_msg = f"failed to run sql due to {r.text}"
-                env.logger.error(err_msg)
                 raise TimeplusAPIError("post", r.status_code, err_msg)
             else:
                 return r.json()
@@ -63,7 +62,6 @@ class Query(ResourceBase):
             r = requests.post(f"{url}", json=sqlRequest, headers=headers)
             if r.status_code < 200 or r.status_code > 299:
                 err_msg = f"failed to run exec due to {r.text}"
-                env.logger.error(err_msg)
                 raise TimeplusAPIError("post", r.status_code, err_msg)
             else:
                 return r.json()
@@ -106,20 +104,17 @@ class Query(ResourceBase):
         url = f"{self._base_url}/{self._resource_name}/{self.id()}/sinks"
         self._logger.debug(f"post {url}")
         sinkRequest = {"sink_id": sink.id()}
-
         try:
             r = requests.post(f"{url}", json=sinkRequest, headers=self._headers)
             if r.status_code < 200 or r.status_code > 299:
                 err_msg = f"failed to add sink {sink.id()} to query {self.id()} {r.status_code} {r.text}"
-                self._logger.error(err_msg)
                 raise TimeplusAPIError("post", r.status_code, err_msg)
             else:
                 self._logger.debug(f"add sink {sink.id()} to query {self.id()} success")
+                return self
         except Exception as e:
             self._logger.error(f"failed to add sink {e}")
             raise e
-        finally:
-            return self
 
     def show_query_result(self, count=10):
         ws_schema = "ws"

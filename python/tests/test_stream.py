@@ -17,7 +17,11 @@ def test_stream(staging_environment):
         .column(StreamColumn().name("_time").type("datetime64(3)"))
     )
 
-    s.delete()
+    try:
+        s.delete()
+    except Exception as e:
+        pass
+
     time.sleep(1)
 
     streams = [ss.name() for ss in Stream.list()]
@@ -67,25 +71,3 @@ def test_stream(staging_environment):
 
     streams = [ss.name() for ss in Stream.list()]
     assert s.name() not in streams
-
-
-def test_stream1(staging_environment):
-    s = (
-        Stream()
-        .name("test")
-        .column(StreamColumn().name("_time").type("datetime64(3)"))
-        .column(StreamColumn().name("number").type("int"))
-    )
-
-    s.insert(
-        [
-            [
-                "2022-03-31 23:16:47.743",
-                1,
-            ],
-            [
-                "2022-03-31 23:16:47.123",
-                2,
-            ],
-        ]
-    )

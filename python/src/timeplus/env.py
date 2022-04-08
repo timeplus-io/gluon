@@ -113,13 +113,13 @@ class Env(Base):
             )
             if r.status_code < 200 or r.status_code > 299:
                 err_msg = f"failed to login due to {r.text}"
-                self._logger.error(err_msg)
                 raise TimeplusAPIError("post", r.status_code, err_msg)
             else:
-                self._logger.debug("token has been granted")
                 self.token(r.json())
+                self._logger.info(f"token has been granted {self.token()}")
                 return self
         except Exception as e:
+            self._logger.error(f"failed to login {e}")
             raise e
 
     def logout(self):

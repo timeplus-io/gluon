@@ -69,7 +69,7 @@ class SlackSource:
             print("get user info success")
             try:
                 user_info = resp.json()
-                self.user_stream.insert([[id, user_info["user"]["name"]]])
+                self.user_stream.insert([[id, user_info["user"]["real_name"]]])
             except Exception as e:
                 print(f"failed to insert stream {e}")
 
@@ -77,6 +77,7 @@ class SlackSource:
         resp = requests.get(self.url, headers=self.headers)
         if resp.status_code == 200:
             print("connecting success")
+            print(resp.json())
             self.wsurl = resp.json()["url"]
         else:
             raise Exception("failed to connect")

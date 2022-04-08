@@ -27,7 +27,11 @@ def test_stream(staging_environment):
         )
     )
 
-    s.delete()
+    try:
+        s.delete()
+    except Exception as e:
+        pass
+
     time.sleep(3)
 
     streams = [ss.name() for ss in Stream.list()]
