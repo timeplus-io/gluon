@@ -76,11 +76,15 @@ class SlackSource:
     def connect(self):
         resp = requests.get(self.url, headers=self.headers)
         if resp.status_code == 200:
-            print("connecting success")
-            print(resp.json())
-            self.wsurl = resp.json()["url"]
+            resp_json = resp.json()
+            print(resp_json)
+            if resp_json["ok"]:
+                print("connecting success")
+                self.wsurl = resp_json["url"]
+            else:
+                raise Exception(f"failed to connect with error {resp_json['error']}")
         else:
-            raise Exception("failed to connect")
+            raise Exception(f"failed to connect with status code {resp.status_code}")
 
         ws = websocket.WebSocketApp(
             self.wsurl,
