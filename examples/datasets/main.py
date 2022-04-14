@@ -29,7 +29,7 @@ def create_stream(name, dataset):
 
             try:
                 s.create()
-                time.sleep(3)
+                time.sleep(5)
             except Exception as e:
                 print(f"failed to create stream {e}")
 
@@ -37,6 +37,7 @@ def create_stream(name, dataset):
         data = [x[key] for key in x.keys()]
         data.append(y == 1)
         s.insert([data])
+        # time.sleep(0.01)
 
 
 env = local_environment()
