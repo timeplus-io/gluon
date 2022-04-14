@@ -42,7 +42,7 @@ class SlackSource:
             .column(StreamColumn().name("time").type("datetime64(3)"))
         )
 
-        if(self.event_stream.get() is None):
+        if self.event_stream.get() is None:
             try:
                 self.event_stream.create()
             except Exception as e:
@@ -55,7 +55,7 @@ class SlackSource:
             .column(StreamColumn().name("name").type("string"))
         )
 
-        if(self.user_stream.get() is None):
+        if self.user_stream.get() is None:
             try:
                 self.user_stream.create()
             except Exception as e:
@@ -100,14 +100,14 @@ class SlackSource:
 
         if event["type"] == "message":
             self.get_user(event["user"])
-            self.event_stream.insert(
+        self.event_stream.insert(
+            [
                 [
-                    [
-                        message,
-                        datetime.now(),
-                    ]
+                    message,
+                    datetime.now(),
                 ]
-            )
+            ]
+        )
 
     def on_error(self, ws, error):
         print(error)
