@@ -13,6 +13,7 @@ def local_environment():
 
 def create_stream(name, dataset):
     s = None
+    batch = []
     for x, y in dataset:
         if s is None:
             s = Stream().name(name)
@@ -36,8 +37,10 @@ def create_stream(name, dataset):
         # check the order of keys?
         data = [x[key] for key in x.keys()]
         data.append(y == 1)
-        s.insert([data])
-        # time.sleep(0.01)
+        batch.append(data)
+        if len(batch) == 16:
+            s.insert(batch)
+            batch = []
 
 
 env = local_environment()
