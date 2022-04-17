@@ -9,15 +9,9 @@ from timeplus import Env
 
 @pytest.fixture
 def staging_environment():
-    client_id = os.environ.get("AUTH0_API_CLIENT_ID")
-    client_secret = os.environ.get("AUTH0_API_CLIENT_SECRET")
+    token = os.environ.get("AUTH0_API_TOKEN")
     env = (
-        Env()
-        .schema("https")
-        .host("staging.demo.timeplus.io")
-        .port("443")
-        .audience("https://demo.timeplus.com/api/v1beta1")
-        .login(client_id=client_id, client_secret=client_secret)
+        Env().schema("https").host("staging.demo.timeplus.io").port("443").token(token)
     )
     # set current environment when you have more than 1 environment
     Env.setCurrent(env)
@@ -26,16 +20,8 @@ def staging_environment():
 
 @pytest.fixture
 def demo_environment():
-    client_id = os.environ.get("AUTH0_API_CLIENT_ID")
-    client_secret = os.environ.get("AUTH0_API_CLIENT_SECRET")
-    env = (
-        Env()
-        .schema("https")
-        .host("demo.timeplus.com")
-        .port("443")
-        .audience("https://demo.timeplus.com/api/v1beta1")
-        .login(client_id=client_id, client_secret=client_secret)
-    )
+    token = os.environ.get("AUTH0_API_TOKEN")
+    env = Env().schema("https").host("demo.timeplus.com").port("443").token(token)
     Env.setCurrent(env)
     return env
 

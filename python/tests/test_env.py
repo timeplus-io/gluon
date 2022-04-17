@@ -8,8 +8,8 @@ def test_env():
     Env.setCurrent(env2)
     assert Env.current() is env2
 
-    assert env1.access_token() is not None
-    assert env2.access_token() == ""
+    assert env1.token() is not None
+    assert env2.token() == ""
 
 
 def test_stage_env(staging_environment):
