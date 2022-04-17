@@ -2,7 +2,7 @@ import time
 from datetime import datetime
 from rx import operators as ops
 
-from timeplus import Stream, StreamColumn, Query, Stopper
+from timeplus import Stream, StreamColumn, Query
 
 
 def test_stream(staging_environment):
@@ -55,12 +55,11 @@ def test_stream(staging_environment):
     time.sleep(3)
     query = Query().name("ad hoc query").sql("select * from table(abc)").create()
 
-    stopper = Stopper()
     result = []
-    query.get_result_stream(stopper).pipe(ops.take(2)).subscribe(
+    query.get_result_stream().pipe(ops.take(2)).subscribe(
         on_next=lambda i: result.append(i),
         on_error=lambda e: print(f"error {e}"),
-        on_completed=lambda: stopper.stop(),
+        on_completed=lambda: query.stop(),
     )
 
     assert len(result) == 2

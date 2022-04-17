@@ -16,6 +16,7 @@ def staging_environment():
         .schema("https")
         .host("staging.demo.timeplus.io")
         .port("443")
+        .audience("https://demo.timeplus.com/api/v1beta1")
         .login(client_id=client_id, client_secret=client_secret)
     )
     # set current environment when you have more than 1 environment
@@ -32,6 +33,7 @@ def demo_environment():
         .schema("https")
         .host("demo.timeplus.com")
         .port("443")
+        .audience("https://demo.timeplus.com/api/v1beta1")
         .login(client_id=client_id, client_secret=client_secret)
     )
     Env.setCurrent(env)

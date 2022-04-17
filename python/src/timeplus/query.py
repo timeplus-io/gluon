@@ -15,6 +15,7 @@ class Query(ResourceBase):
 
     def __init__(self, env=None):
         ResourceBase.__init__(self, env)
+        self.stopped = False
 
     @classmethod
     def build(cls, query, env=None):
@@ -100,6 +101,9 @@ class Query(ResourceBase):
         self.action("cancel")
         return self
 
+    def stop(self):
+        self.stopped = True
+
     def sink_to(self, sink):
         url = f"{self._base_url}/{self._resource_name}/{self.id()}/sinks"
         self._logger.debug(f"post {url}")
@@ -128,7 +132,7 @@ class Query(ResourceBase):
             self._logger.info(result)
 
     # TODO: refactor this complex method
-    def _query_op(self, stopper):  # noqa: C901
+    def _query_op(self):  # noqa: C901
         def __query_op(observer, scheduler):
             # TODO : use WebSocketApp
             ws_schema = "ws"
@@ -139,7 +143,7 @@ class Query(ResourceBase):
             )
             try:
                 while True:
-                    if stopper.is_stopped():
+                    if self.stopped:
                         break
                     result = ws.recv()
                     # convert string object to json(array)
@@ -162,17 +166,6 @@ class Query(ResourceBase):
 
         return __query_op
 
-    def get_result_stream(self, stopper):
-        strem_query_ob = rx.create(self._query_op(stopper))
+    def get_result_stream(self):
+        strem_query_ob = rx.create(self._query_op())
         return strem_query_ob
-
-
-class Stopper:
-    def __init__(self):
-        self.stopped = False
-
-    def stop(self):
-        self.stopped = True
-
-    def is_stopped(self):
-        return self.stopped

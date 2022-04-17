@@ -8,7 +8,6 @@ from timeplus import (
     SourceConnection,
     Query,
     Source,
-    Stopper,
     Stream,
 )
 
@@ -56,12 +55,11 @@ def test_query(staging_environment):
     query = Query().name("ad hoc query").sql(f"select * from {stream_name}")
     query.create()
 
-    stopper = Stopper()
     result = []
-    query.get_result_stream(stopper).pipe(ops.take(5)).subscribe(
+    query.get_result_stream().pipe(ops.take(5)).subscribe(
         on_next=lambda i: result.append(i),
         on_error=lambda e: print(f"error {e}"),
-        on_completed=lambda: stopper.stop(),
+        on_completed=lambda: query.stop(),
     )
 
     assert len(result) == 5
@@ -82,12 +80,11 @@ def test_query1(staging_environment):
     )
     query.create()
 
-    stopper = Stopper()
     result = []
-    query.get_result_stream(stopper).pipe(ops.take(5)).subscribe(
+    query.get_result_stream().pipe(ops.take(5)).subscribe(
         on_next=lambda i: result.append(i),
         on_error=lambda e: print(f"error {e}"),
-        on_completed=lambda: stopper.stop(),
+        on_completed=lambda: query.stop(),
     )
 
     assert len(result) == 5

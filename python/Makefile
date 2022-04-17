@@ -1,5 +1,10 @@
 VERSION = $(shell git describe --tags --abbrev=0 | sed -e "s/v//g")
 
+BIN_NAME ?= gluon
+IMAGE_NAME ?= $(BIN_NAME):$(VERSION)
+FULLNAME=$(DOCKER_ID_USER)/${IMAGE_NAME}
+DOCKER_ID_USER ?= timeplus
+
 
 init:
 	pip install -r requirements_dev.txt
@@ -22,3 +27,9 @@ format:
 
 test:
 	pytest tests/
+
+docker: Dockerfile
+	docker build --build-arg VERSION="$(VERSION)" -t $(IMAGE_NAME) .
+
+run:
+	docker run -p 8888:8888 -e AUTH0_API_CLIENT_ID=$(AUTH0_API_CLIENT_ID) -e  AUTH0_API_CLIENT_SECRET=$(AUTH0_API_CLIENT_SECRET) $(IMAGE_NAME)
