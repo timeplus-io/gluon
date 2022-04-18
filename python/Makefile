@@ -32,4 +32,4 @@ docker: Dockerfile
 	docker build --build-arg VERSION="$(VERSION)" -t $(IMAGE_NAME) .
 
 run:
-	docker run -p 8888:8888 -e AUTH0_API_CLIENT_ID=$(AUTH0_API_CLIENT_ID) -e  AUTH0_API_CLIENT_SECRET=$(AUTH0_API_CLIENT_SECRET) $(IMAGE_NAME)
+	docker run -p 8888:8888 -e AUTH0_API_TOKEN=$(AUTH0_API_TOKEN) $(IMAGE_NAME)
