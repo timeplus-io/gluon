@@ -1,7 +1,19 @@
+"""
+saved_query
+
+This module defines saved_query class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
 from timeplus.resource import ResourceBase
 
 
 class SavedQuery(ResourceBase):
+    """
+    SavedQuery class defines saved query object
+    """
+
     _resource_name = "savedqueries"
 
     def __init__(self, env=None):

@@ -1,4 +1,17 @@
+"""
+base
+
+This module defines base class of resources.
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
+
 class Base:
+    """
+    Base class for API related object
+    """
+
     def __init__(self):
         self._data = {}
 

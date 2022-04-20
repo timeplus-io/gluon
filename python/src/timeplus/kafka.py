@@ -1,9 +1,22 @@
+"""
+kafka
+
+This module defines kafka sink and source class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
+
 from timeplus.base import Base
 from timeplus.source import Source
 from timeplus.sink import Sink
 
 
 class KafkaProperties(Base):
+    """
+    KafkaProperties class defines kafka source properties.
+    """
+
     def __init__(self):
         Base.__init__(self)
         self.prop("data_type", "json")
@@ -39,12 +52,20 @@ class KafkaProperties(Base):
 
 
 class KafkaSource(Source):
+    """
+    KafkaSource class defines kafka source.
+    """
+
     def __init__(self, env=None):
         Source.__init__(self, env)
         self.type("kafka")
 
 
 class KafkaSink(Sink):
+    """
+    KafkaSink class defines kafka sink.
+    """
+
     def __init__(self):
         Sink.__init__(self)
         self.type("kafka")

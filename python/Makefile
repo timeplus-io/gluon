@@ -25,6 +25,9 @@ format:
 	black ./src
 	black ./tests
 
+doc:
+	pdoc ./src/timeplus/*.py   -o ./docs
+
 test:
 	pytest tests/
 

@@ -1,8 +1,20 @@
+"""
+generator
+
+This module defines stream generator source class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
 from timeplus.base import Base
 from timeplus.source import Source
 
 
 class GeneratorSource(Source):
+    """
+    GeneratorSource class defines stream generator source.
+    """
+
     def __init__(self, env=None):
         Source.__init__(self, env)
         self.type("stream_generator")
@@ -14,6 +26,10 @@ class GeneratorSource(Source):
 
 
 class GeneratorProperties(Base):
+    """
+    GeneratorProperties class defines property of stream generator source.
+    """
+
     def __init__(self):
         Base.__init__(self)
 
@@ -22,6 +38,10 @@ class GeneratorProperties(Base):
 
 
 class GeneratorConfiguration(Base):
+    """
+    GeneratorConfiguration class defines configuration property of stream generator source.
+    """
+
     def __init__(self):
         Base.__init__(self)
         self._set("batch_size", 1)
@@ -42,6 +62,10 @@ class GeneratorConfiguration(Base):
 
 
 class GeneratorField(Base):
+    """
+    GeneratorField class defines field property of stream generator source.
+    """
+
     def __init__(self):
         Base.__init__(self)
 

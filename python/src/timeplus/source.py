@@ -1,3 +1,11 @@
+"""
+source
+
+This module defines base source class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
 import requests
 
 from timeplus.base import Base
@@ -5,6 +13,10 @@ from timeplus.resource import ResourceBase
 
 
 class SourceConnection(Base):
+    """
+    SourceConnection class defines source connection configuration
+    """
+
     def __init__(self):
         Base.__init__(self)
         self._set("auto_create", True)
@@ -20,6 +32,10 @@ class SourceConnection(Base):
 
 
 class Source(ResourceBase):
+    """
+    Source class defines source object
+    """
+
     _resource_name = "sources"
 
     def __init__(self, env=None):

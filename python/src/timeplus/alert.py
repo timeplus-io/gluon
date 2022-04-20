@@ -1,7 +1,19 @@
+"""
+alert
+
+This module defines alert class.
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
 from timeplus.resource import ResourceBase
 
 
 class Alert(ResourceBase):
+    """
+    Alert class
+    """
+
     _resource_name = "alerts"
 
     def __init__(self, env=None):

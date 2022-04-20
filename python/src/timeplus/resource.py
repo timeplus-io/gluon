@@ -1,3 +1,11 @@
+"""
+resource
+
+This module defines base class for REST resource class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
 import requests
 
 from timeplus.base import Base
@@ -6,6 +14,10 @@ from timeplus.error import TimeplusAPIError
 
 
 class ResourceBase(Base):
+    """
+    ResourceBase class defines base class for all REST resoruce objects
+    """
+
     _resource_name = "resource"
 
     def __init__(self, env=None):

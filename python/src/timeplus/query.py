@@ -1,3 +1,11 @@
+"""
+query
+
+This module defines query class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
 import requests
 import json
 from websocket import create_connection
@@ -11,6 +19,10 @@ from timeplus.error import TimeplusAPIError
 
 
 class Query(ResourceBase):
+    """
+    Query class defines query object.
+    """
+
     _resource_name = "queries"
 
     def __init__(self, env=None):

@@ -1,3 +1,11 @@
+"""
+__init__.py
+
+This module export timeplus functions and classes.
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
 from .version import __version__  # noqa: F401
 
 from timeplus.base import Base  # noqa: F401

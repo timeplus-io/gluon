@@ -1,14 +1,30 @@
+"""
+smtp
+
+This module defines smtp sink class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
 from timeplus.sink import Sink
 from timeplus.base import Base
 
 
 class SMTPSink(Sink):
+    """
+    SMTPSink class defines smtp sink
+    """
+
     def __init__(self):
         Sink.__init__(self)
         self.type("smtp")
 
 
 class SMTPSinkProperty(Base):
+    """
+    SMTPSinkProperty class defines smtp sink property
+    """
+
     def __init__(self):
         Base.__init__(self)
 

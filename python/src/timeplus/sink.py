@@ -1,7 +1,20 @@
+"""
+sink
+
+This module defines sink class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
+
 from timeplus.resource import ResourceBase
 
 
 class Sink(ResourceBase):
+    """
+    Sink class defines base class for sinks
+    """
+
     _resource_name = "sinks"
 
     def __init__(self, env=None):

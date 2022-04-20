@@ -1,3 +1,11 @@
+"""
+stream
+
+This module defines stream class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
+"""
+
 import requests
 import json
 from datetime import datetime
@@ -10,6 +18,10 @@ from timeplus.type import Type
 
 
 class DateTimeEncoder(json.JSONEncoder):
+    """
+    DateTimeEncoder class defines how to encode datetime object for json
+    """
+
     def default(self, o):
         if isinstance(o, datetime):
             return o.isoformat()
@@ -17,6 +29,10 @@ class DateTimeEncoder(json.JSONEncoder):
 
 
 class StreamColumn(Base):
+    """
+    StreamColumn class defines columne of a stream
+    """
+
     def __init__(self):
         Base.__init__(self)
 
@@ -69,6 +85,10 @@ class StreamColumn(Base):
 
 
 class Stream(ResourceBase):
+    """
+    Stream class defines stream object
+    """
+
     _resource_name = "streams"
 
     def __init__(self, env=None):

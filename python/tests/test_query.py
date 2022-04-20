@@ -15,7 +15,11 @@ from timeplus import (
 def test_query(staging_environment):
     stream_name = "clicks"
 
-    Stream().name(stream_name).delete()
+    try:
+        Stream().name(stream_name).delete()
+    except Exception:
+        pass
+
     time.sleep(1)
 
     config = (
