@@ -20,9 +20,11 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     url="https://github.com/timeplus-io/gluon/python",
-    packages=find_packages(where=""),
+    packages=find_packages(where="timeplus", exclude=("tests",)),
     install_requires=requirements,
     classifiers=[
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.9",
         "License :: OSI Approved ::  Apache License Version 2.0",
     ],
