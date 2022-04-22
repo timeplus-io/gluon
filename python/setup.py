@@ -4,7 +4,7 @@ import os
 print("current dir")
 print(os.getcwd())
 
-exec(open("src/timeplus/version.py").read())
+exec(open("timeplus/version.py").read())
 
 with open("README.md", "r") as readme_file:
     readme = readme_file.read()
@@ -20,7 +20,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     url="https://github.com/timeplus-io/gluon/python",
-    packages=find_packages(where="src"),
+    packages=find_packages(where=""),
     install_requires=requirements,
     classifiers=[
         "Programming Language :: Python :: 3.9",

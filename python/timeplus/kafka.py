@@ -27,6 +27,9 @@ class KafkaProperties(Base):
     def brokers(self, *args):
         return self.prop("brokers", *args)
 
+    def data_type(self, *args):
+        return self.prop("data_type", *args)
+
     # none, plain or scram
     def sasl(self, *args):
         return self.prop("sasl", *args)
