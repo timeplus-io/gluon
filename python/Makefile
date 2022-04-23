@@ -36,3 +36,6 @@ docker: Dockerfile
 
 run:
 	docker run -p 8888:8888 -e AUTH0_API_TOKEN=$(AUTH0_API_TOKEN) $(IMAGE_NAME)
+
+upload:
+	twine upload  dist/*
