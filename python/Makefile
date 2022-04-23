@@ -5,6 +5,7 @@ IMAGE_NAME ?= $(BIN_NAME):$(VERSION)
 FULLNAME=$(DOCKER_ID_USER)/${IMAGE_NAME}
 DOCKER_ID_USER ?= timeplus
 
+.PHONY: build 
 
 init:
 	pip install -r requirements_dev.txt
@@ -38,4 +39,7 @@ run:
 	docker run -p 8888:8888 -e AUTH0_API_TOKEN=$(AUTH0_API_TOKEN) $(IMAGE_NAME)
 
 upload:
-	twine upload  dist/*
+	twine upload  --config-file ./.pypirc  dist/*
+
+upload_test:
+	twine upload  --config-file ./.pypirc   --repository testpypi dist/*

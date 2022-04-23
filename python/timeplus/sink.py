@@ -21,9 +21,9 @@ class Sink(ResourceBase):
         ResourceBase.__init__(self, env)
 
     @classmethod
-    def build(cls, id, env=None):
+    def build(cls, sink, env=None):
         obj = cls(env=env)
-        obj._set("id", id)
+        obj._data = sink
         return obj
 
     def name(self, *args):

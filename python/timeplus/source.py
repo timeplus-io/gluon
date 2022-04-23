@@ -42,9 +42,9 @@ class Source(ResourceBase):
         ResourceBase.__init__(self, env)
 
     @classmethod
-    def build(cls, id, env=None):
+    def build(cls, source, env=None):
         obj = cls(env=env)
-        obj._set("id", id)
+        obj._data = source
         return obj
 
     def name(self, *args):
