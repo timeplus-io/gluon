@@ -9,7 +9,7 @@ from timeplus import Env
 
 @pytest.fixture
 def staging_environment():
-    token = os.environ.get("AUTH0_API_TOKEN")
+    token = os.environ.get("TIMEPLUS_API_TOKEN")
     env = (
         Env().schema("https").host("staging.demo.timeplus.io").port("443").token(token)
     )
@@ -20,7 +20,7 @@ def staging_environment():
 
 @pytest.fixture
 def demo_environment():
-    token = os.environ.get("AUTH0_API_TOKEN")
+    token = os.environ.get("TIMEPLUS_API_TOKEN")
     env = Env().schema("https").host("demo.timeplus.com").port("443").token(token)
     Env.setCurrent(env)
     return env

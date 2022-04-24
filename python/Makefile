@@ -36,7 +36,7 @@ docker: Dockerfile
 	docker build --build-arg VERSION="$(VERSION)" -t $(IMAGE_NAME) .
 
 run:
-	docker run -p 8888:8888 -e AUTH0_API_TOKEN=$(AUTH0_API_TOKEN) $(IMAGE_NAME)
+	docker run -p 8888:8888 -e TIMEPLUS_API_TOKEN=$(TIMEPLUS_API_TOKEN) $(IMAGE_NAME)
 
 upload:
 	twine upload  --config-file ./.pypirc  dist/*
