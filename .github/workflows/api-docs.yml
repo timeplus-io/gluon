@@ -48,7 +48,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-west-1'
         SOURCE_DIR: './python/docs/'
-        DEST_DIR: 'api/docs/python/${{ steps.vars.outputs.git_tag }}'
+        DEST_DIR: 'api/docs/python/${{ steps.version.outputs.git_tag }}'
 
     - name: Upload package
       uses: actions/upload-artifact@v3
