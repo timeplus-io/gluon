@@ -46,6 +46,7 @@ class Env(Base):
         self._headers = CaseInsensitiveDict()
         self._headers["Accept"] = "application/json"
         self._headers["Content-Type"] = "application/json"
+        self._headers["Timeplus-Request-From"] = "gluon"
         self._http_timeout = 10
 
         Env.add(self)
