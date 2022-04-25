@@ -1,3 +1,4 @@
+import time
 from timeplus import Alert, SlackSinkProperty
 
 
@@ -18,7 +19,7 @@ def test_alerts(staging_environment):
     alert.properties(prop)
     alert.create()
 
-    # assert alert.get().data() is not None
+    assert alert.get().data() is not None
 
-    # time.sleep(3)
-    # alert.delete()
+    time.sleep(3)
+    alert.delete()
