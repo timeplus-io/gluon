@@ -37,6 +37,19 @@ jobs:
       working-directory: ./python
       run: |
         make doc
+
+    - name: upload to s3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read
+      env:
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-west-1'
+        SOURCE_DIR: 'docs/'
+        DEST_DIR: 'api/docs/gluon/${{ steps.vars.outputs.git_tag }}'
+
     - name: Upload package
       uses: actions/upload-artifact@v3
       with:
