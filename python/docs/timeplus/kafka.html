@@ -45,6 +45,9 @@
                                 <a class="function" href="#KafkaProperties.brokers">brokers</a>
                         </li>
                         <li>
+                                <a class="function" href="#KafkaProperties.data_type">data_type</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#KafkaProperties.sasl">sasl</a>
                         </li>
                         <li>
@@ -140,6 +143,9 @@ timeplus<wbr>.kafka    </h1>
     <span class="k">def</span> <span class="nf">brokers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">(</span><span class="s2">&quot;brokers&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">data_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">(</span><span class="s2">&quot;data_type&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
     <span class="c1"># none, plain or scram</span>
     <span class="k">def</span> <span class="nf">sasl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">(</span><span class="s2">&quot;sasl&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
@@ -212,6 +218,9 @@ timeplus<wbr>.kafka    </h1>
 
     <span class="k">def</span> <span class="nf">brokers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">(</span><span class="s2">&quot;brokers&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">data_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">(</span><span class="s2">&quot;data_type&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
     <span class="c1"># none, plain or scram</span>
     <span class="k">def</span> <span class="nf">sasl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -293,6 +302,25 @@ timeplus<wbr>.kafka    </h1>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">brokers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">(</span><span class="s2">&quot;brokers&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+    
+
+                            </div>
+                            <div id="KafkaProperties.data_type" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#KafkaProperties.data_type">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">data_type</span><span class="signature">(self, *args)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">data_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prop</span><span class="p">(</span><span class="s2">&quot;data_type&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 </pre></div>
 
         </details>

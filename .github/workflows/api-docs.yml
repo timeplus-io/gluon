@@ -1,0 +1,57 @@
+name: Python SDK Document
+
+on:
+  push:
+    branches: [ develop ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9"]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      working-directory: ./python
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Set Version
+      id: version
+      run: |
+        echo "::set-output name=git_tag::$(git fetch --prune --unshallow && git describe --tags --abbrev=0 | sed -e "s/v//g")"
+    - name: Generate Document
+      working-directory: ./python
+      run: |
+        make doc
+
+    - name: upload to s3
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --acl public-read
+      env:
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: 'us-west-1'
+        SOURCE_DIR: './python/docs/'
+        DEST_DIR: 'api/docs/python/${{ steps.version.outputs.git_tag }}'
+
+    - name: Upload package
+      uses: actions/upload-artifact@v3
+      with:
+        name: gluon python doc package
+        path: ./python/docs
