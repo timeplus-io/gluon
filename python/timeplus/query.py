@@ -1,9 +1,9 @@
 """
 query
 
-This module defines query class
-:copyright: (c) 2022 by Timeplus
-:license: Apache2, see LICENSE for more details.
+This module defines query class  
+:copyright: (c) 2022 by Timeplus  
+:license: Apache2, see LICENSE for more details.  
 """
 
 import requests

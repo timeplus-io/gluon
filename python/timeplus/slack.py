@@ -1,9 +1,9 @@
 """
 slack
 
-This module defines slack sink class
-:copyright: (c) 2022 by Timeplus
-:license: Apache2, see LICENSE for more details.
+This module defines slack sink class  
+:copyright: (c) 2022 by Timeplus  
+:license: Apache2, see LICENSE for more details.  
 """
 
 from timeplus.sink import Sink

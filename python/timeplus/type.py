@@ -1,9 +1,9 @@
 """
 type
 
-This module defines timeplust suppported data types
-:copyright: (c) 2022 by Timeplus
-:license: Apache2, see LICENSE for more details.
+This module defines timeplust suppported data types  
+:copyright: (c) 2022 by Timeplus  
+:license: Apache2, see LICENSE for more details.  
 """
 
 from enum import Enum
