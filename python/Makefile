@@ -27,7 +27,7 @@ format:
 	black ./tests
 
 doc:
-	pdoc ./timeplus/*.py   -o ./docs
+	VERSION=$(VERSION) pdoc --template-dir ./template  -o ./docs ./timeplus/ --logo "https://s3.us-west-1.amazonaws.com/timeplus.io/Option3_W.png"
 
 test:
 	pytest tests/

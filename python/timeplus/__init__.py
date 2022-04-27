@@ -1,9 +1,8 @@
 """
-__init__.py
+Timeplus Python SDK provide API access to Timeplus's core resoruces including `Stream`, `Query`, `Source` and `Sink`
 
-This module export timeplus functions and classes.
-:copyright: (c) 2022 by Timeplus
-:license: Apache2, see LICENSE for more details.
+
+.. include:: ./documentation.md
 """
 
 from .version import __version__  # noqa: F401
