@@ -53,6 +53,9 @@ class GeneratorConfiguration(Base):
     def interval(self, *args):
         return self.prop("interval", *args)
 
+    def datasets(self, *args):
+        return self.prop("datasets", *args)
+
     def field(self, field_instance):
         if "fields" not in self._data:
             self._data["fields"] = []
