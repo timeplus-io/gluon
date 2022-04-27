@@ -25,6 +25,4 @@ from timeplus.sink import Sink  # noqa: F401
 from timeplus.slack import SlackSink, SlackSinkProperty  # noqa: F401
 from timeplus.smtp import SMTPSink, SMTPSinkProperty  # noqa: F401
 from timeplus.stream import Stream, StreamColumn  # noqa: F401
-from timeplus.alert import Alert  # noqa: F401
-from timeplus.saved_query import SavedQuery  # noqa: F401
 from timeplus.type import Type  # noqa: F401
