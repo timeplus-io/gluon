@@ -27,7 +27,7 @@ format:
 	black ./tests
 
 doc:
-	pdoc ./timeplus/*.py   -o ./docs
+	VERSION=$(VERSION) pdoc3 --html --template-dir ./template  -o ./docs --force ./timeplus/
 
 test:
 	pytest tests/
