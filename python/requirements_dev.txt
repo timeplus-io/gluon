@@ -6,3 +6,5 @@ flake8==4.0.1
 black==22.1.0
 pdoc==11.1.0
 dateutils==0.6.12
+kafka-python==2.0.2
+python-snappy==0.6.1
