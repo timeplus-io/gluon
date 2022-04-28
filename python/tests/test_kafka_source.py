@@ -12,8 +12,9 @@ from timeplus import (
 )
 
 
-def test_kafka_source(local_environment):
+def test_kafka_source(local_environment, test_broker):
     stream_name = "covid19"
+    source_topic = "covid19"
 
     try:
         Stream().name(stream_name).delete()
@@ -25,8 +26,8 @@ def test_kafka_source(local_environment):
         .name("kafka")
         .properties(
             KafkaProperties()
-            .topic("covid19")
-            .brokers("pkc-ld537.ca-central-1.aws.confluent.cloud:9092")
+            .topic(source_topic)
+            .brokers(test_broker)
             .sasl("plain")
             .username(os.environ.get("KAFKA_USER"))
             .password(os.environ.get("KAFKA_PASS"))

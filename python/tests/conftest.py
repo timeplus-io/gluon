@@ -38,3 +38,8 @@ def local_environment():
     env = Env()
     Env.setCurrent(env)
     return env
+
+
+@pytest.fixture
+def test_broker():
+    return "pkc-ld537.ca-central-1.aws.confluent.cloud:9092"
