@@ -43,6 +43,7 @@ class Env(Base):
         self.schema("http")
         self.api_version("api/v1beta1")
         self.token("")
+        self.domain = "timeplus.us.auth0.com"
 
         self._headers = CaseInsensitiveDict()
         self._headers["Accept"] = "application/json"
@@ -91,7 +92,7 @@ class Env(Base):
         return self.prop("client_id", *args)
 
     def client_secret(self, *args):
-        return self.prop("client_id", *args)
+        return self.prop("client_secret", *args)
 
     def api_version(self, *args):
         return self.prop("api_version", *args)
@@ -127,6 +128,30 @@ class Env(Base):
                 err_msg = f"failed to ping due to {r.text}"
                 self._logger.error(err_msg)
                 raise TimeplusAPIError("get", r.status_code, err_msg)
+            else:
+                return r.json()
+        except Exception as e:
+            raise e
+
+    def request_token(self):
+        url = f"https://{self.domain}/oauth/token"
+        self.logger().debug(f"request token from {url}")
+
+        try:
+            data = {
+                "client_id": self.client_id(),
+                "client_secret": self.client_secret(),
+                "audience": self.audience(),
+                "grant_type": "client_credentials",
+            }
+            self.logger().debug(f"request token data {data}")
+            headers = CaseInsensitiveDict()
+            headers["Content-Type"] = "application/json"
+            r = requests.post(url, json=data, headers=headers)
+            if r.status_code < 200 or r.status_code > 299:
+                err_msg = f"failed to request code due to {r.text}"
+                self._logger.error(err_msg)
+                raise TimeplusAPIError("post", r.status_code, err_msg)
             else:
                 return r.json()
         except Exception as e:
