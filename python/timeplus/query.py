@@ -55,7 +55,7 @@ class Query(ResourceBase):
             else:
                 return r.json()
         except Exception as e:
-            env.logger.error(f"failed to run sql {e}")
+            env.logger().error(f"failed to run sql {e}")
             raise e
 
     @classmethod

@@ -12,7 +12,7 @@ from timeplus import (
 )
 
 
-def test_kafka_source(local_environment, test_broker):
+def test_kafka_source(staging_environment, test_broker):
     stream_name = "covid19"
     source_topic = "covid19"
 

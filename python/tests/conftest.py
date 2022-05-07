@@ -35,7 +35,8 @@ def playground_environment():
 
 @pytest.fixture
 def local_environment():
-    env = Env()
+    token = os.environ.get("TIMEPLUS_API_TOKEN")
+    env = Env().token(token)
     Env.setCurrent(env)
     return env
 

@@ -16,7 +16,7 @@ from timeplus import (
 )
 
 
-def test_kafka_sink(local_environment, test_broker):
+def test_kafka_sink(staging_environment, test_broker):
     stream_name = "covid19"
     source_topic = "covid19"
     sink_topic = "covid19_sink"

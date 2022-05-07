@@ -41,7 +41,8 @@ class Env(Base):
         self.host("localhost")
         self.port("8000")
         self.schema("http")
-        self.prop("token", "")
+        self.api_version("api/v1beta1")
+        self.token("")
 
         self._headers = CaseInsensitiveDict()
         self._headers["Accept"] = "application/json"
@@ -83,8 +84,20 @@ class Env(Base):
     def schema(self, *args):
         return self.prop("schema", *args)
 
+    def audience(self, *args):
+        return self.prop("audience", *args)
+
+    def client_id(self, *args):
+        return self.prop("client_id", *args)
+
+    def client_secret(self, *args):
+        return self.prop("client_id", *args)
+
+    def api_version(self, *args):
+        return self.prop("api_version", *args)
+
     def base_url(self):
-        return f"{self.schema()}://{self.host()}:{self.port()}/api/v1beta1"
+        return f"{self.schema()}://{self.host()}:{self.port()}/{self.api_version()}"
 
     def headers(self):
         self._headers["Authorization"] = f"Bearer {self.token()}"

@@ -12,7 +12,7 @@ from timeplus import (
 )
 
 
-def test_generator_source(local_environment):
+def test_generator_source(staging_environment):
     stream_name = "clicks"
 
     try:
