@@ -1,4 +1,5 @@
 import os
+import pytest
 from timeplus import Env
 
 
@@ -18,6 +19,7 @@ def test_stage_env(staging_environment):
     assert staging_environment.ping() is not None
 
 
+@pytest.mark.skip(reason="skip to avoid to generate too many tokens")
 def test_request_token():
     env = Env()
     env.audience(os.environ.get("TIMEPLUS_AUDIENCE"))
