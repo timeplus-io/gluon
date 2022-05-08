@@ -10,7 +10,7 @@ from timeplus import (
 )
 
 
-def test_csv_source(local_environment):
+def test_csv_source(staging_environment):
     stream_name = "csv"
 
     try:
@@ -29,6 +29,9 @@ def test_csv_source(local_environment):
     )
     sourceConnection = SourceConnection().stream(stream_name).auto_create(True)
     source.connection(sourceConnection)
+
+    previewResult = source.preview()
+    assert previewResult is not None
 
     source.create().start()
     sourceIds = [s.id() for s in Source.list()]

@@ -1,6 +1,7 @@
 import time
 import os
 from datetime import datetime
+import pytest
 
 from kafka import KafkaConsumer
 
@@ -16,7 +17,8 @@ from timeplus import (
 )
 
 
-def test_kafka_sink(local_environment, test_broker):
+@pytest.mark.skip(reason="skip")
+def test_kafka_sink(staging_environment, test_broker):
     stream_name = "covid19"
     source_topic = "covid19"
     sink_topic = "covid19_sink"
