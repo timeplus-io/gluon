@@ -87,6 +87,15 @@ The `Env` has following properties:
 - `port` timeplus port
 - `token` access token, the user can find the token from the help page of timeplus console
 
+due to the current token will expire, in case to support auto refresh token, set `audience`, `client_id` and `client_secret` to enable auto token refresh. The maximum refresh is set to `24`
+
+```
+env = Env()
+env.audience(os.environ.get("TIMEPLUS_AUDIENCE"))
+env.client_id(os.environ.get("TIMEPLUS_API_CLIENT_ID"))
+env.client_secret(os.environ.get("TIMEPLUS_API_CLIENT_SECRET"))
+```
+
 ## Stream
 
 Similar as traditional database table, a [stream](https://docs.timeplus.com/docs/working-with-streams) is where the stream data stored in Timeplus. 

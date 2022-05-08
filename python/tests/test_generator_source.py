@@ -1,5 +1,6 @@
 import time
 from rx import operators as ops
+import pytest
 
 from timeplus import (
     GeneratorConfiguration,
@@ -76,6 +77,7 @@ def test_generator_source(staging_environment):
     query.delete()
 
 
+@pytest.mark.skip(reason="skip")
 def test_dataset_source(local_environment):
     stream_name = "dataset"
 

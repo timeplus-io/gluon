@@ -111,20 +111,11 @@ class Stream(ResourceBase):
     def delete(self):
         url = f"{self._base_url}/{self._resource_name}/{self.name()}"
         self._logger.debug("delete {}", url)
+
         try:
-            r = requests.delete(
-                url,
-                headers=self._headers,
-                timeout=self._env.http_timeout(),
-            )
-            if r.status_code < 200 or r.status_code > 299:
-                err_msg = f"failed to delete {self._resource_name} due to {r.text}"
-                raise TimeplusAPIError("delete", r.status_code, err_msg)
-            else:
-                self._logger.debug(f"delete {self._resource_name} success")
-                return self
+            self._env.http_delete(url)
+            return self
         except Exception as e:
-            self._logger.error(f"failed to delete {e}")
             raise e
 
     def insert(self, data, headers=None):
@@ -142,23 +133,12 @@ class Stream(ResourceBase):
         self._logger.debug(f"insert {insertRequest}")
 
         try:
-            self._logger.debug(
-                f"insert {json.dumps(insertRequest, cls=DateTimeEncoder)}"
+            self._env.http_post_data(
+                url, json.dumps(insertRequest, cls=DateTimeEncoder)
             )
-            r = requests.post(
-                url,
-                data=json.dumps(insertRequest, cls=DateTimeEncoder),
-                headers=self._headers,
-                timeout=self._env.http_timeout(),
-            )
-            if r.status_code < 200 or r.status_code > 299:
-                err_msg = f"failed to insert into {self._resource_name} due to {r.text}"
-                raise TimeplusAPIError("post", r.status_code, err_msg)
-            else:
-                self._logger.debug("insert success")
-                return self
+            return self
         except Exception as e:
-            self._logger.error(f"failed to insert {e}")
+            self._logger.error(f"action failed {e}")
             raise e
 
     def name(self, *args):

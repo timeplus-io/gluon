@@ -2,6 +2,8 @@ import time
 import os
 from rx import operators as ops
 
+import pytest
+
 from timeplus import (
     KafkaProperties,
     KafkaSource,
@@ -12,6 +14,7 @@ from timeplus import (
 )
 
 
+@pytest.mark.skip(reason="skip")
 def test_kafka_source(staging_environment, test_broker):
     stream_name = "covid19"
     source_topic = "covid19"
