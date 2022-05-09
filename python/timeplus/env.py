@@ -104,7 +104,6 @@ class Env(Base):
 
     def headers(self):
         self._headers["Authorization"] = f"Bearer {self.token()}"
-        self._logger.info(f"using headers with token {self.token()}")
         return self._headers
 
     def token(self, *args):
