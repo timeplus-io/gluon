@@ -2,6 +2,8 @@
 
 Timeplus Python SDK
 
+to install the sdk, run `pip install timeplus`
+
 ```python
 from rx import operators as ops
 from timeplus import Stream, StreamColumn, Query, Env
