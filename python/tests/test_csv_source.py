@@ -10,7 +10,7 @@ from timeplus import (
 )
 
 
-def test_csv_source(staging_environment):
+def test_csv_source(test_environment):
     stream_name = "csv"
 
     try:

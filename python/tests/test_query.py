@@ -12,7 +12,7 @@ from timeplus import (
 )
 
 
-def test_query(staging_environment):
+def test_query(test_environment):
     query = (
         Query()
         .name("ad hoc query")
@@ -33,6 +33,6 @@ def test_query(staging_environment):
     query.delete()
 
 
-def test_sync_query(staging_environment):
+def test_sync_query(test_environment):
     result = Query.execSQL("select * from table(car_live_data) limit 2")
     assert result is not None
