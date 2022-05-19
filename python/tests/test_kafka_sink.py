@@ -18,7 +18,7 @@ from timeplus import (
 
 
 @pytest.mark.skip(reason="skip")
-def test_kafka_sink(staging_environment, test_broker):
+def test_kafka_sink(test_environment, test_broker):
     stream_name = "covid19"
     source_topic = "covid19"
     sink_topic = "covid19_sink"

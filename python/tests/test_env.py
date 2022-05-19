@@ -14,9 +14,9 @@ def test_env():
     assert env2.token() == ""
 
 
-def test_stage_env(staging_environment):
-    assert staging_environment.info() is not None
-    assert staging_environment.ping() is not None
+def test_stage_env(test_environment):
+    assert test_environment.info() is not None
+    assert test_environment.ping() is not None
 
 
 @pytest.mark.skip(reason="skip to avoid to generate too many tokens")

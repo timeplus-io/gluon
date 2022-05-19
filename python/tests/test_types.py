@@ -6,7 +6,7 @@ from timeplus import Stream, StreamColumn, Query, Type
 from timeplus.utils import toDate
 
 
-def test_stream(staging_environment):
+def test_stream(test_environment):
     s = (
         Stream()
         .name("datagen")
@@ -86,11 +86,11 @@ def test_stream(staging_environment):
 
     assert len(result) == 2
 
-    staging_environment.logger().info("result header is {}", query.header())
-    staging_environment.logger().info("result data is {}", result)
+    test_environment.logger().info("result header is {}", query.header())
+    test_environment.logger().info("result data is {}", result)
 
     for r in result:
-        staging_environment._logger.info("record data is {}", r)
+        test_environment._logger.info("record data is {}", r)
 
     s.delete()
 
