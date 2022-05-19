@@ -60,5 +60,10 @@ def test_environment():
 
 
 @pytest.fixture
-def test_broker():
+def confluent_broker():
     return "pkc-ld537.ca-central-1.aws.confluent.cloud:9092"
+
+
+@pytest.fixture
+def demo_broker():
+    return "54.241.124.151:9092"

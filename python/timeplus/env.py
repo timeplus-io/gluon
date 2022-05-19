@@ -177,7 +177,7 @@ class Env(Base):
         return self._http_timeout
 
     def http_post(self, url, data):
-        self.logger().debug("post {}", url)
+        self.logger().debug("post url {} with data {}", url, data)
         try:
             r = requests.post(
                 url,
@@ -199,7 +199,7 @@ class Env(Base):
             raise e
 
     def http_post_data(self, url, data):
-        self.logger().debug("post {}", url)
+        self.logger().debug("post {} with data {}", url, data)
         try:
             r = requests.post(
                 url,
