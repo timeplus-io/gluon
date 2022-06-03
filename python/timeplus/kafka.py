@@ -53,6 +53,9 @@ class KafkaProperties(Base):
     def replication_factor(self, *args):
         return self.prop("replication_factor", *args)
 
+    def disable_tls(self):
+        return self.prop("tls", {"disable": True, "skip_verify_server": True})
+
 
 class KafkaSource(Source):
     """

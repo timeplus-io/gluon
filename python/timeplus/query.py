@@ -6,7 +6,6 @@ This module defines query class
 :license: Apache2, see LICENSE for more details.  
 """
 
-import requests
 import json
 from websocket import create_connection
 import rx
@@ -15,7 +14,7 @@ import dateutil.parser
 from timeplus.resource import ResourceBase
 from timeplus.env import Env
 from timeplus.type import Type
-from timeplus.error import TimeplusAPIError
+from timeplus.error import TimeplusAPIError, TimeplusQueryError
 
 
 class Query(ResourceBase):
@@ -39,31 +38,22 @@ class Query(ResourceBase):
     def execSQL(cls, sql, timeout=1000, env=None):
         if env is None:
             env = Env.current()
-        url = f"{env.base_url()}/sql"
-        sqlRequest = {"sql": sql, "timeout": timeout}
+        query = Query().name("unamed").sql(sql)
+        query.create()
 
-        try:
-            result = env.http_post(url, sqlRequest)
-            return result.json()
-        except Exception as e:
-            raise e
+        if query.status() == "failed":
+            raise TimeplusQueryError(query.message())
 
-    @classmethod
-    def exec(cls, sql, env=None):
-        if env is None:
-            env = Env.current()
-        base_url = env.base_url()
+        result = {}
+        result["header"] = query.header()
+        result["data"] = []
+        query.get_result_stream().subscribe(
+            on_next=lambda i: result["data"].append(i),
+            on_error=lambda e: print(f"error {e}"),  # todo better handling this error
+            on_completed=lambda: query.stop(),
+        )
 
-        url = f"{base_url}/exec"
-        sqlRequest = {
-            "sql": sql,
-        }
-
-        try:
-            result = env.http_post(url, sqlRequest)
-            return result.json()
-        except Exception as e:
-            raise e
+        return result
 
     def name(self, *args):
         return self.prop("name", *args)
@@ -87,6 +77,10 @@ class Query(ResourceBase):
     def status(self):
         self.get()
         return self.prop("status")
+
+    def message(self):
+        self.get()
+        return self.prop("message")
 
     def header(self):
         self.get()

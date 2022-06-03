@@ -1,15 +1,6 @@
-import time
+import pytest
 from rx import operators as ops
-
-from timeplus import (
-    GeneratorConfiguration,
-    GeneratorField,
-    GeneratorSource,
-    SourceConnection,
-    Query,
-    Source,
-    Stream,
-)
+from timeplus import Query
 
 
 def test_query(test_environment):
@@ -23,16 +14,25 @@ def test_query(test_environment):
     query.create()
 
     result = []
-    query.get_result_stream().pipe(ops.take(5)).subscribe(
+    query.get_result_stream().pipe(ops.take(3)).subscribe(
         on_next=lambda i: result.append(i),
         on_error=lambda e: print(f"error {e}"),
         on_completed=lambda: query.stop(),
     )
 
-    assert len(result) == 5
+    assert len(result) == 3
     query.delete()
 
 
-def test_sync_query(test_environment):
-    result = Query.execSQL("select * from table(car_live_data) limit 2")
-    assert result is not None
+def test_query_to_sync(test_environment):
+    sql = "select * from table(car_live_data) where cid='c00004' limit 2"
+    result = Query.execSQL(sql)
+
+    assert len(result["data"]) == 2
+    assert result["header"] is not None
+
+
+def test_invalid_query_to_sync(test_environment):
+    sql = "select xyz "
+    with pytest.raises(Exception) as e:
+        Query.execSQL(sql)

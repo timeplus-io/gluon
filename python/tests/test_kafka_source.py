@@ -89,8 +89,10 @@ def test_no_auth_kafka_source(test_environment, demo_broker):
             KafkaProperties()
             .topic(source_topic)
             .brokers(demo_broker)
+            .sasl("none")
             .offset("earliest")
             .group("testgroup" + str(time.time()))
+            .disable_tls()
         )
     )
 
