@@ -5,7 +5,7 @@ from rx import operators as ops
 from timeplus import Stream, StreamColumn, Query
 
 
-def test_stream(staging_environment):
+def test_stream(test_environment):
     s = (
         Stream()
         .name("abc")

@@ -13,7 +13,7 @@ from timeplus import (
 )
 
 
-def test_generator_source(staging_environment):
+def test_generator_source(test_environment):
     stream_name = "clicks"
 
     try:
@@ -78,7 +78,7 @@ def test_generator_source(staging_environment):
 
 
 @pytest.mark.skip(reason="skip")
-def test_dataset_source(local_environment):
+def test_dataset_source(test_environment):
     stream_name = "dataset"
 
     try:

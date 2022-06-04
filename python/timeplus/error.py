@@ -19,3 +19,15 @@ class TimeplusAPIError(Exception):
         self.code = code
         self.message = f"http method {method}, response code {code}, {message}"
         super().__init__(self.message)
+
+
+class TimeplusQueryError(Exception):
+    """Exception raised for errors doing query.
+
+    Attributes:
+        message -- explanation of the error
+    """
+
+    def __init__(self, message="failed to run query"):
+        self.message = message
+        super().__init__(self.message)
