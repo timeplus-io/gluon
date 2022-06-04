@@ -7,6 +7,7 @@ This module defines query class
 """
 
 import json
+import time
 from websocket import create_connection
 import rx
 import dateutil.parser
@@ -35,7 +36,7 @@ class Query(ResourceBase):
         return obj
 
     @classmethod
-    def execSQL(cls, sql, timeout=1000, env=None):
+    def execSQL(cls, sql, timeout=0, env=None):
         if env is None:
             env = Env.current()
         query = Query().name("unamed").sql(sql)
@@ -47,7 +48,7 @@ class Query(ResourceBase):
         result = {}
         result["header"] = query.header()
         result["data"] = []
-        query.get_result_stream().subscribe(
+        query.get_result_stream(timeout=timeout).subscribe(
             on_next=lambda i: result["data"].append(i),
             on_error=lambda e: print(f"error {e}"),  # todo better handling this error
             on_completed=lambda: query.stop(),
@@ -116,7 +117,7 @@ class Query(ResourceBase):
             self._logger.info(result)
 
     # TODO: refactor this complex method
-    def _query_op(self):  # noqa: C901
+    def _query_op(self, timeout=0):  # noqa: C901
         def __query_op(observer, scheduler):
             # TODO : use WebSocketApp
             ws_schema = "ws"
@@ -125,8 +126,14 @@ class Query(ResourceBase):
             ws = create_connection(
                 f"{ws_schema}://{self._env.host()}:{self._env.port()}/ws/queries/{self.id()}"
             )
+            start_time = time.time()
             try:
                 while True:
+                    now = time.time()
+                    if timeout != 0 and now - start_time > timeout:
+                        self._logger.debug("query timeout")
+                        break
+
                     if self.stopped:
                         break
                     result = ws.recv()
@@ -150,6 +157,6 @@ class Query(ResourceBase):
 
         return __query_op
 
-    def get_result_stream(self):
-        strem_query_ob = rx.create(self._query_op())
+    def get_result_stream(self, timeout=0):
+        strem_query_ob = rx.create(self._query_op(timeout=timeout))
         return strem_query_ob

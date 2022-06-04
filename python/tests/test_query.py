@@ -36,3 +36,11 @@ def test_invalid_query_to_sync(test_environment):
     sql = "select xyz "
     with pytest.raises(Exception) as e:
         Query.execSQL(sql)
+
+
+def test_query_timeout(test_environment):
+    sql = "select * from car_live_data"
+    result = Query.execSQL(sql, timeout=1)
+
+    assert result["header"] is not None
+    assert len(result["data"]) > 0
