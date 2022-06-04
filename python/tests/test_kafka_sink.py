@@ -1,4 +1,3 @@
-import time
 import os
 from datetime import datetime
 import pytest
@@ -8,12 +7,8 @@ from kafka import KafkaConsumer
 from timeplus import (
     KafkaProperties,
     KafkaSink,
-    KafkaSource,
-    SourceConnection,
     Query,
-    Source,
     Sink,
-    Stream,
 )
 
 
@@ -21,7 +16,7 @@ from timeplus import (
 def test_confluent_kafka_sink(test_environment, confluent_broker):
     sink_topic = "timeplus_test_sink"
 
-    query = Query().sql(f"select * from car_live_data")
+    query = Query().sql("select * from car_live_data")
     query.create()
 
     sink = (
@@ -71,14 +66,19 @@ def test_confluent_kafka_sink(test_environment, confluent_broker):
 def test_no_auth_kafka_sink(test_environment, demo_broker):
     sink_topic = "timeplus_test_sink"
 
-    query = Query().sql(f"select * from car_live_data")
+    query = Query().sql("select * from car_live_data")
     query.create()
 
     sink = (
         KafkaSink()
         .name("kafka")
         .properties(
-            KafkaProperties().topic(sink_topic).brokers(demo_broker).sasl("none")
+            KafkaProperties()
+            .topic(sink_topic)
+            .brokers(demo_broker)
+            .sasl("none")
+            .replication_factor(1)
+            .partition_number(1)
         )
     )
     sink.create()

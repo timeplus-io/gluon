@@ -6,8 +6,8 @@ This module defines query class
 :license: Apache2, see LICENSE for more details.  
 """
 
-import requests
 import json
+import time
 from websocket import create_connection
 import rx
 import dateutil.parser
@@ -15,7 +15,7 @@ import dateutil.parser
 from timeplus.resource import ResourceBase
 from timeplus.env import Env
 from timeplus.type import Type
-from timeplus.error import TimeplusAPIError
+from timeplus.error import TimeplusAPIError, TimeplusQueryError
 
 
 class Query(ResourceBase):
@@ -36,34 +36,25 @@ class Query(ResourceBase):
         return obj
 
     @classmethod
-    def execSQL(cls, sql, timeout=1000, env=None):
+    def execSQL(cls, sql, timeout=0, env=None):
         if env is None:
             env = Env.current()
-        url = f"{env.base_url()}/sql"
-        sqlRequest = {"sql": sql, "timeout": timeout}
+        query = Query().name("unamed").sql(sql)
+        query.create()
 
-        try:
-            result = env.http_post(url, sqlRequest)
-            return result.json()
-        except Exception as e:
-            raise e
+        if query.status() == "failed":
+            raise TimeplusQueryError(query.message())
 
-    @classmethod
-    def exec(cls, sql, env=None):
-        if env is None:
-            env = Env.current()
-        base_url = env.base_url()
+        result = {}
+        result["header"] = query.header()
+        result["data"] = []
+        query.get_result_stream(timeout=timeout).subscribe(
+            on_next=lambda i: result["data"].append(i),
+            on_error=lambda e: print(f"error {e}"),  # todo better handling this error
+            on_completed=lambda: query.stop(),
+        )
 
-        url = f"{base_url}/exec"
-        sqlRequest = {
-            "sql": sql,
-        }
-
-        try:
-            result = env.http_post(url, sqlRequest)
-            return result.json()
-        except Exception as e:
-            raise e
+        return result
 
     def name(self, *args):
         return self.prop("name", *args)
@@ -87,6 +78,10 @@ class Query(ResourceBase):
     def status(self):
         self.get()
         return self.prop("status")
+
+    def message(self):
+        self.get()
+        return self.prop("message")
 
     def header(self):
         self.get()
@@ -122,7 +117,7 @@ class Query(ResourceBase):
             self._logger.info(result)
 
     # TODO: refactor this complex method
-    def _query_op(self):  # noqa: C901
+    def _query_op(self, timeout=0):  # noqa: C901
         def __query_op(observer, scheduler):
             # TODO : use WebSocketApp
             ws_schema = "ws"
@@ -131,8 +126,14 @@ class Query(ResourceBase):
             ws = create_connection(
                 f"{ws_schema}://{self._env.host()}:{self._env.port()}/ws/queries/{self.id()}"
             )
+            start_time = time.time()
             try:
                 while True:
+                    now = time.time()
+                    if timeout != 0 and now - start_time > timeout:
+                        self._logger.debug("query timeout")
+                        break
+
                     if self.stopped:
                         break
                     result = ws.recv()
@@ -156,6 +157,6 @@ class Query(ResourceBase):
 
         return __query_op
 
-    def get_result_stream(self):
-        strem_query_ob = rx.create(self._query_op())
+    def get_result_stream(self, timeout=0):
+        strem_query_ob = rx.create(self._query_op(timeout=timeout))
         return strem_query_ob
