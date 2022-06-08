@@ -51,6 +51,8 @@ class Env(Base):
         self._headers["Accept"] = "application/json"
         self._headers["Content-Type"] = "application/json"
         self._headers["Timeplus-Request-From"] = "gluon"
+        self._headers["Connection"] = "close"
+
         self._http_timeout = 10
 
         Env.add(self)
@@ -179,21 +181,22 @@ class Env(Base):
     def http_post(self, url, data):
         self.logger().debug("post url {} with data {}", url, data)
         try:
-            r = requests.post(
-                url,
-                json=data,
-                headers=self.headers(),
-                timeout=self.http_timeout(),
-            )
-            if r.status_code < 200 or r.status_code > 299:
-                err_msg = f"failed to send http post due to {r.text}"
-                if r.status_code == 401:
-                    self.refresh_token()
-                    return self.http_post(url, data)
+            with requests.Session() as session:
+                r = session.post(
+                    url,
+                    json=data,
+                    headers=self.headers(),
+                    timeout=self.http_timeout(),
+                )
+                if r.status_code < 200 or r.status_code > 299:
+                    err_msg = f"failed to send http post due to {r.text}"
+                    if r.status_code == 401:
+                        self.refresh_token()
+                        return self.http_post(url, data)
+                    else:
+                        raise TimeplusAPIError("post", r.status_code, err_msg)
                 else:
-                    raise TimeplusAPIError("post", r.status_code, err_msg)
-            else:
-                return r
+                    return r
         except Exception as e:
             self._logger.error(f"http post failed {e}")
             raise e
@@ -201,21 +204,22 @@ class Env(Base):
     def http_post_data(self, url, data):
         self.logger().debug("post {} with data {}", url, data)
         try:
-            r = requests.post(
-                url,
-                data=data,
-                headers=self.headers(),
-                timeout=self.http_timeout(),
-            )
-            if r.status_code < 200 or r.status_code > 299:
-                err_msg = f"failed to send http post due to {r.text}"
-                if r.status_code == 401:
-                    self.refresh_token()
-                    return self.http_post_data(url, data)
+            with requests.Session() as session:
+                r = session.post(
+                    url,
+                    data=data,
+                    headers=self.headers(),
+                    timeout=self.http_timeout(),
+                )
+                if r.status_code < 200 or r.status_code > 299:
+                    err_msg = f"failed to send http post due to {r.text}"
+                    if r.status_code == 401:
+                        self.refresh_token()
+                        return self.http_post_data(url, data)
+                    else:
+                        raise TimeplusAPIError("post", r.status_code, err_msg)
                 else:
-                    raise TimeplusAPIError("post", r.status_code, err_msg)
-            else:
-                return r
+                    return r
         except Exception as e:
             self._logger.error(f"http post failed {e}")
             raise e
@@ -223,20 +227,21 @@ class Env(Base):
     def http_get(self, url):
         self.logger().debug("get {}", url)
         try:
-            r = requests.get(
-                url,
-                headers=self.headers(),
-                timeout=self.http_timeout(),
-            )
-            if r.status_code < 200 or r.status_code > 299:
-                err_msg = f"failed to send http get due to {r.text}"
-                if r.status_code == 401:
-                    self.refresh_token()
-                    return self.http_get(url)
+            with requests.Session() as session:
+                r = session.get(
+                    url,
+                    headers=self.headers(),
+                    timeout=self.http_timeout(),
+                )
+                if r.status_code < 200 or r.status_code > 299:
+                    err_msg = f"failed to send http get due to {r.text}"
+                    if r.status_code == 401:
+                        self.refresh_token()
+                        return self.http_get(url)
+                    else:
+                        raise TimeplusAPIError("get", r.status_code, err_msg)
                 else:
-                    raise TimeplusAPIError("get", r.status_code, err_msg)
-            else:
-                return r.json()
+                    return r.json()
         except Exception as e:
             self.logger().error(f"http get failed {e}")
             raise e
@@ -244,22 +249,23 @@ class Env(Base):
     def http_delete(self, url):
         self.logger().debug("delete {}", url)
         try:
-            r = requests.delete(
-                url,
-                headers=self.headers(),
-                timeout=self.http_timeout(),
-            )
-            if r.status_code < 200 or r.status_code > 299:
-                err_msg = f"failed to send httpdelete due to {r.text}"
-                self._logger.error(err_msg)
+            with requests.Session() as session:
+                r = session.delete(
+                    url,
+                    headers=self.headers(),
+                    timeout=self.http_timeout(),
+                )
+                if r.status_code < 200 or r.status_code > 299:
+                    err_msg = f"failed to send httpdelete due to {r.text}"
+                    self._logger.error(err_msg)
 
-                if r.status_code == 401:
-                    self.refresh_token()
-                    return self.http_delete(url)
+                    if r.status_code == 401:
+                        self.refresh_token()
+                        return self.http_delete(url)
+                    else:
+                        raise TimeplusAPIError("delete", r.status_code, err_msg)
                 else:
-                    raise TimeplusAPIError("delete", r.status_code, err_msg)
-            else:
-                return
+                    return
         except Exception as e:
             self._logger.error(f"delete failed {e}")
             raise e
