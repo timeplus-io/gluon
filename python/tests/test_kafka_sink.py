@@ -63,6 +63,7 @@ def test_confluent_kafka_sink(test_environment, confluent_broker):
     query.delete()
 
 
+@pytest.mark.skip(reason="skip")
 def test_no_auth_kafka_sink(test_environment, demo_broker):
     sink_topic = "timeplus_test_sink"
 

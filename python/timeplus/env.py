@@ -106,10 +106,18 @@ class Env(Base):
 
     def headers(self):
         self._headers["Authorization"] = f"Bearer {self.token()}"
+        self._headers["X-Api-Key-Id"] = self.api_key_id()
+        self._headers["X-Api-Key"] = self.api_key()
         return self._headers
 
     def token(self, *args):
         return self.prop("token", *args)
+
+    def api_key_id(self, *args):
+        return self.prop("api_key_id", *args)
+
+    def api_key(self, *args):
+        return self.prop("api_key", *args)
 
     def info(self):
         url = f"{self.schema()}://{self.host()}:{self.port()}/info"
