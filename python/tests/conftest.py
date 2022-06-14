@@ -25,8 +25,16 @@ def demo_environment():
 
 
 def latest_environment():
-    token = os.environ.get("TIMEPLUS_API_TOKEN")
-    env = Env().schema("https").host("latest.timeplus.io").port("443").token(token)
+    api_key = os.environ.get("TIMEPLUS_API_KEY")
+    api_key_id = os.environ.get("TIMEPLUS_API_KEY_ID")
+    env = (
+        Env()
+        .schema("https")
+        .host("latest.timeplus.io")
+        .port("443")
+        .api_key(api_key)
+        .api_key_id(api_key_id)
+    )
     Env.setCurrent(env)
     return env
 
@@ -38,8 +46,9 @@ def playground_environment():
 
 
 def local_environment():
-    token = os.environ.get("TIMEPLUS_API_TOKEN")
-    env = Env().token(token)
+    api_key = os.environ.get("TIMEPLUS_API_KEY")
+    api_key_id = os.environ.get("TIMEPLUS_API_KEY_ID")
+    env = Env().api_key(api_key).api_key_id(api_key_id)
     Env.setCurrent(env)
     return env
 

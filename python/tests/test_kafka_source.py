@@ -73,6 +73,7 @@ def test_kafka_source(test_environment, confluent_broker):
     query.delete()
 
 
+@pytest.mark.skip(reason="skip")
 def test_no_auth_kafka_source(test_environment, demo_broker):
     stream_name = "test_orders"
     source_topic = "orders"
