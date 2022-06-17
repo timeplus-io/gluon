@@ -30,6 +30,12 @@ def test_generator_source(test_environment):
         .field(GeneratorField().name("number").type("int").limit([0, 10]))
         .field(
             GeneratorField()
+            .name("device")
+            .type("string")
+            .range(["device_0", "device_1", "device_2"])
+        )
+        .field(
+            GeneratorField()
             .name("time")
             .type("timestamp")
             .timestamp_format("2006-01-02 15:04:05.000")

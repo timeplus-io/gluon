@@ -81,5 +81,8 @@ class GeneratorField(Base):
     def limit(self, *args):
         return self.prop("limit", *args)
 
+    def range(self, *args):
+        return self.prop("range", *args)
+
     def timestamp_format(self, *args):
         return self.prop("timestamp_format", *args)
