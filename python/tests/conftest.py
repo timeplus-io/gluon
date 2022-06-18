@@ -8,9 +8,13 @@ from timeplus import Env
 
 
 def staging_environment():
-    token = os.environ.get("TIMEPLUS_API_TOKEN")
+    api_key = os.environ.get("TIMEPLUS_API_KEY")
     env = (
-        Env().schema("https").host("staging.demo.timeplus.io").port("443").token(token)
+        Env()
+        .schema("https")
+        .host("staging.demo.timeplus.io")
+        .port("443")
+        .api_key(api_key)
     )
     # set current environment when you have more than 1 environment
     Env.setCurrent(env)
@@ -18,23 +22,15 @@ def staging_environment():
 
 
 def demo_environment():
-    token = os.environ.get("TIMEPLUS_API_TOKEN")
-    env = Env().schema("https").host("demo.timeplus.com").port("443").token(token)
+    api_key = os.environ.get("TIMEPLUS_API_KEY")
+    env = Env().schema("https").host("demo.timeplus.com").port("443").api_key(api_key)
     Env.setCurrent(env)
     return env
 
 
 def latest_environment():
     api_key = os.environ.get("TIMEPLUS_API_KEY")
-    api_key_id = os.environ.get("TIMEPLUS_API_KEY_ID")
-    env = (
-        Env()
-        .schema("https")
-        .host("latest.timeplus.io")
-        .port("443")
-        .api_key(api_key)
-        .api_key_id(api_key_id)
-    )
+    env = Env().schema("https").host("latest.timeplus.io").port("443").api_key(api_key)
     Env.setCurrent(env)
     return env
 
@@ -47,8 +43,7 @@ def playground_environment():
 
 def local_environment():
     api_key = os.environ.get("TIMEPLUS_API_KEY")
-    api_key_id = os.environ.get("TIMEPLUS_API_KEY_ID")
-    env = Env().api_key(api_key).api_key_id(api_key_id)
+    env = Env().api_key(api_key)
     Env.setCurrent(env)
     return env
 

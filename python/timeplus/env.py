@@ -43,7 +43,6 @@ class Env(Base):
         self.schema("http")
         self.api_version("api/v1beta1")
         self.token("")
-        self.api_key_id("")
         self.api_key("")
         self.domain = "timeplus.us.auth0.com"
         self._max_token_refresh = 24
@@ -107,8 +106,7 @@ class Env(Base):
         return f"{self.schema()}://{self.host()}:{self.port()}/{self.api_version()}"
 
     def headers(self):
-        if self.api_key_id() and self.api_key():  # check if key and id are not empty
-            self._headers["X-Api-Key-Id"] = self.api_key_id()
+        if self.api_key():  # check if key and id are not empty
             self._headers["X-Api-Key"] = self.api_key()
         else:
             self._headers["Authorization"] = f"Bearer {self.token()}"
@@ -116,9 +114,6 @@ class Env(Base):
 
     def token(self, *args):
         return self.prop("token", *args)
-
-    def api_key_id(self, *args):
-        return self.prop("api_key_id", *args)
 
     def api_key(self, *args):
         return self.prop("api_key", *args)
