@@ -9,9 +9,9 @@ from rx import operators as ops
 from timeplus import Stream, StreamColumn, Query, Env
 
 # initialize timeplus environment
-token = os.environ.get("AUTH0_API_TOKEN")
+api_key = os.environ.get("TIMEPLUS_API_KEY")
 env = (
-    Env().schema("https").host("hostname").port("443").token(token)
+    Env().schema("https").host("hostname").port("443").api_key(api_key)
 )
 Env.setCurrent(env)
 
