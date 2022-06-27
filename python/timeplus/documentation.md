@@ -33,9 +33,9 @@ from rx import operators as ops
 from timeplus import Stream, StreamColumn, Query, Env
 
 # initialize timeplus environment
-token = os.environ.get("TIMEPLUS_API_TOKEN")
+api_key = os.environ.get("TIMEPLUS_API_KEY")
 env = (
-    Env().schema("https").host("hostname").port("443").token(token)
+    Env().schema("https").host("hostname").port("443").api_key(api_key)
 )
 Env.setCurrent(env)
 
@@ -85,16 +85,8 @@ The `Env` has following properties:
 - `schema` http or https
 - `host` timeplus host 
 - `port` timeplus port
-- `token` access token, the user can find the token from the help page of timeplus console
+- `api_key` api key
 
-due to the current token will expire, in case to support auto refresh token, set `audience`, `client_id` and `client_secret` to enable auto token refresh. The maximum refresh is set to `24`
-
-```
-env = Env()
-env.audience(os.environ.get("TIMEPLUS_AUDIENCE"))
-env.client_id(os.environ.get("TIMEPLUS_API_CLIENT_ID"))
-env.client_secret(os.environ.get("TIMEPLUS_API_CLIENT_SECRET"))
-```
 
 ## Stream
 

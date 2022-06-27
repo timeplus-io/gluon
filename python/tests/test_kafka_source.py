@@ -65,9 +65,9 @@ def test_kafka_source(test_environment, confluent_broker):
     )
 
     assert len(result) == 5
-    # source.delete()
-    # sourceIds = [s.id() for s in Source.list()]
-    # assert source.id() not in sourceIds
+    source.delete()
+    sourceIds = [s.id() for s in Source.list()]
+    assert source.id() not in sourceIds
 
     query.delete()
 
