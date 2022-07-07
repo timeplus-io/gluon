@@ -1,9 +1,9 @@
 """
 query
 
-This module defines query class  
-:copyright: (c) 2022 by Timeplus  
-:license: Apache2, see LICENSE for more details.  
+This module defines query class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
 """
 
 import json
@@ -15,7 +15,7 @@ import dateutil.parser
 from timeplus.resource import ResourceBase
 from timeplus.env import Env
 from timeplus.type import Type
-from timeplus.error import TimeplusAPIError, TimeplusQueryError
+from timeplus.error import TimeplusQueryError
 
 
 class Query(ResourceBase):
