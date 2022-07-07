@@ -35,12 +35,9 @@ def test_generator_source_to_email(test_environment):
             .timestamp_format("2006-01-02 15:04:05.000")
         )
     )
-    sourceConnection = (
-        SourceConnection()
-        .stream(stream_name)
-        .auto_create(True)
-        .event_time_column("time")
-    )
+
+    stream = Stream().name(stream_name).event_time_column("time")
+    sourceConnection = SourceConnection().auto_create(True).stream_definition(stream)
 
     source = (
         GeneratorSource()
@@ -49,7 +46,7 @@ def test_generator_source_to_email(test_environment):
         .config(config)
     )
 
-    source.create().start()
+    source.create()
     sourceIds = [s.id() for s in Source.list()]
     assert source.id() in sourceIds
 

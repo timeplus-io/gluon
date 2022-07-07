@@ -5,9 +5,6 @@ This module defines base source class
 :copyright: (c) 2022 by Timeplus  
 :license: Apache2, see LICENSE for more details.  
 """
-
-import requests
-
 from timeplus.base import Base
 from timeplus.resource import ResourceBase
 
@@ -21,14 +18,11 @@ class SourceConnection(Base):
         Base.__init__(self)
         self._set("auto_create", True)
 
-    def stream(self, *args):
-        return self.prop("stream_name", *args)
+    def stream_definition(self, stream):
+        return self.prop("stream_definition", stream.data())
 
     def auto_create(self, *args):
         return self.prop("auto_create", *args)
-
-    def event_time_column(self, *args):
-        return self.prop("event_time_column", *args)
 
 
 class Source(ResourceBase):
