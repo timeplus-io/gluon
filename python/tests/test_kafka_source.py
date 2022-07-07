@@ -14,6 +14,7 @@ from timeplus import (
 )
 
 
+@pytest.mark.skip(reason="skip")
 def test_kafka_source(test_environment, confluent_broker):
     stream_name = "github_events"
     source_topic = "github_events"
@@ -38,7 +39,8 @@ def test_kafka_source(test_environment, confluent_broker):
         )
     )
 
-    sourceConnection = SourceConnection().stream(stream_name).auto_create(True)
+    stream = Stream().name(stream_name)
+    sourceConnection = SourceConnection().auto_create(True).stream_definition(stream)
     source.connection(sourceConnection)
 
     source.create().start()
@@ -96,12 +98,15 @@ def test_no_auth_kafka_source(test_environment, demo_broker):
         )
     )
 
-    sourceConnection = SourceConnection().stream(stream_name).auto_create(True)
+    stream = Stream().name(stream_name)
+
+    sourceConnection = SourceConnection().auto_create(True).stream_definition(stream)
     source.connection(sourceConnection)
 
-    source.create().start()
+    source.create()
     sourceIds = [s.id() for s in Source.list()]
     assert source.id() in sourceIds
+    assert source.stat()["status"] == "running"
 
     # still need to wait the stream to be created by source
     time.sleep(5)

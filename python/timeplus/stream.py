@@ -1,18 +1,16 @@
 """
 stream
 
-This module defines stream class  
-:copyright: (c) 2022 by Timeplus  
-:license: Apache2, see LICENSE for more details.  
+This module defines stream class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
 """
 
-import requests
 import json
 from datetime import datetime
 
 from timeplus.base import Base
 from timeplus.resource import ResourceBase
-from timeplus.error import TimeplusAPIError
 
 from timeplus.type import Type
 
@@ -94,6 +92,7 @@ class Stream(ResourceBase):
     def __init__(self, env=None):
         ResourceBase.__init__(self, env)
         self.prop("columns", [])
+        self.set_retention()
 
     @classmethod
     def build(cls, val, env=None):
@@ -164,6 +163,17 @@ class Stream(ResourceBase):
 
     def ttl_expression(self, *args):
         return self.prop("ttl_expression", *args)
+
+    def logstore_retention_bytes(self, *args):
+        return self.prop("logstore_retention_bytes", *args)
+
+    def logstore_retention_ms(self, *args):
+        return self.prop("logstore_retention_ms", *args)
+
+    def set_retention(self, log_store_size=10, log_store_time=7, hist_store_time=30):
+        self.logstore_retention_ms(134217728 * log_store_size)
+        self.logstore_retention_bytes(86400000 * log_store_time)
+        self.ttl_expression(f"to_datetime(_tp_time) + INTERVAL {hist_store_time} DAY")
 
     # note, no way to remove/rename col for now
     def column(self, col):

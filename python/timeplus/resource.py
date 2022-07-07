@@ -1,16 +1,13 @@
 """
 resource
 
-This module defines base class for REST resource class  
-:copyright: (c) 2022 by Timeplus  
-:license: Apache2, see LICENSE for more details.  
+This module defines base class for REST resource class
+:copyright: (c) 2022 by Timeplus
+:license: Apache2, see LICENSE for more details.
 """
-
-import requests
 
 from timeplus.base import Base
 from timeplus.env import Env
-from timeplus.error import TimeplusAPIError
 
 
 class ResourceBase(Base):

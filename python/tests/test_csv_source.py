@@ -27,15 +27,22 @@ def test_csv_source(test_environment):
             "https://gist.githubusercontent.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv"
         )
     )
-    sourceConnection = SourceConnection().stream(stream_name).auto_create(True)
+
+    sourceConnection = (
+        SourceConnection()
+        .stream_definition(Stream().name(stream_name))
+        .auto_create(True)
+    )
     source.connection(sourceConnection)
 
     previewResult = source.preview()
     assert previewResult is not None
 
-    source.create().start()
+    source.create()
+
     sourceIds = [s.id() for s in Source.list()]
     assert source.id() in sourceIds
+    assert source.stat()["status"] == "running"
 
     # still need to wait the stream to be created by source
     # read csv make take more time here

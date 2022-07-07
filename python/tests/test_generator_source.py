@@ -41,13 +41,9 @@ def test_generator_source(test_environment):
             .timestamp_format("2006-01-02 15:04:05.000")
         )
     )
-    sourceConnection = (
-        SourceConnection()
-        .stream(stream_name)
-        .auto_create(True)
-        .event_time_column("time")
-    )
 
+    stream = Stream().name(stream_name).event_time_column("time")
+    sourceConnection = SourceConnection().auto_create(True).stream_definition(stream)
     source = (
         GeneratorSource()
         .name("click stream")
@@ -55,9 +51,10 @@ def test_generator_source(test_environment):
         .config(config)
     )
 
-    source.create().start()
+    source.create()
     sourceIds = [s.id() for s in Source.list()]
     assert source.id() in sourceIds
+    assert source.stat()["status"] == "running"
 
     # still need to wait the stream to be created by source
     time.sleep(3)
@@ -95,7 +92,9 @@ def test_dataset_source(test_environment):
     time.sleep(1)
 
     config = GeneratorConfiguration().batch(1).interval(200).datasets("creditcardfraud")
-    sourceConnection = SourceConnection().stream(stream_name).auto_create(True)
+
+    stream = Stream().name(stream_name)
+    sourceConnection = SourceConnection().auto_create(True).stream_definition(stream)
 
     source = (
         GeneratorSource()
