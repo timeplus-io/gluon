@@ -38,6 +38,12 @@ docker: Dockerfile
 run:
 	docker run -p 8888:8888 -e TIMEPLUS_API_TOKEN=$(TIMEPLUS_API_TOKEN) -e KAFKA_USER=$(KAFKA_USER) -e KAFKA_PASS=$(KAFKA_PASS) $(IMAGE_NAME)
 
+push:
+	docker tag $(IMAGE_NAME) $(FULLNAME)
+	docker tag $(IMAGE_NAME) $(DOCKER_ID_USER)/${BIN_NAME}:latest
+	docker push $(FULLNAME)
+	docker push $(DOCKER_ID_USER)/${BIN_NAME}:latest
+	
 upload:
 	twine upload  --config-file ./.pypirc  dist/*
 

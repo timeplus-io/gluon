@@ -42,7 +42,7 @@ def test_csv_source(test_environment):
 
     sourceIds = [s.id() for s in Source.list()]
     assert source.id() in sourceIds
-    assert source.stat()["status"] == "running"
+    assert source.stat()["status"] in ["running", "finished"]
 
     # still need to wait the stream to be created by source
     # read csv make take more time here
