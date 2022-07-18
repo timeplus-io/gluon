@@ -125,7 +125,6 @@ class Query(ResourceBase):
             if self._env.schema() == "https":
                 ws_schema = "wss"
 
-            self._logger.info(f"using API key, {self._env.api_key()}")
             ws = create_connection(
                 f"{ws_schema}://{self._env.host()}:{self._env.port()}/ws/queries/{self.id()}",
                 header=[f"X-Api-Key: {self._env.api_key()}"],
