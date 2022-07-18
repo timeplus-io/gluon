@@ -105,7 +105,9 @@ class Stream(ResourceBase):
         streams = Stream.list()
         for s in streams:
             if s.name() == self.name():
+                self._data = s._data
                 return s
+        return None
 
     def delete(self):
         url = f"{self._base_url}/{self._resource_name}/{self.name()}"
