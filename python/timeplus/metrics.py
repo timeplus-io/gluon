@@ -1,4 +1,8 @@
 import time
+import threading
+
+from collections import deque
+
 from timeplus import Stream, StreamColumn, Env
 
 
@@ -27,6 +31,11 @@ class Metrics:
         self._create_new_metrics = create_new_metrics
         self._value_column_names = value_column_names
         self._tag_column_names = tag_column_names
+        self._logger = Env._current_env._logger
+        self._stop = None
+        self._lock = threading.Lock()
+
+        self._event_queue = deque([])
 
         if self._create_new_metrics:
             self._create()
@@ -59,6 +68,7 @@ class Metrics:
         s.get()
         self._stream = s
         self._headers = [col["name"] for col in self._stream.data()["columns"]]
+        self._ingest_headers = self._headers[:-2]
 
         self._fix_tag_columns = [
             col["name"]
@@ -74,13 +84,16 @@ class Metrics:
         ]
 
     def delete(self):
+        if self._stop is not None and not self._stop:
+            self.stop()
+
         s = Stream().name(self._stream_name)
         s.delete()
 
     def observe(self, namespace, subsystem, values, tags, extra_tages):
-        Env._current_env._logger.debug("header is {}", self._headers)
+        self._logger.debug("header is {}", self._headers)
 
-        data = [time.time_ns(), namespace, subsystem]
+        data = [str(time.time_ns()), namespace, subsystem]
         data.append(extra_tages)
 
         if tags is not None:
@@ -95,6 +108,31 @@ class Metrics:
             for v in values:
                 data.append(v)
 
-        Env._current_env._logger.debug("data is {}", data)
-        Env._current_env._logger.debug("fix tags is {}", self._fix_tag_columns)
-        Env._current_env._logger.debug("value column is {}", self._value_coloumns)
+        self._lock.acquire()
+        self._event_queue.append(data)
+        self._lock.release()
+
+    def start(self):
+        self._job = threading.Thread(target=self._run)
+        self._job.start()
+
+    def _run(self):
+        self._stop = False
+        while True:
+            self.flush()
+            time.sleep(1)
+            if self._stop:
+                break
+
+    def flush(self):
+        if len(self._event_queue) > 0:
+            self._lock.acquire()
+            ingestData = list(self._event_queue)
+            self._event_queue.clear()
+            self._lock.release()
+
+            self._stream.insert(ingestData, headers=self._ingest_headers)
+
+    def stop(self):
+        self._stop = True
+        self._job.join()
