@@ -26,3 +26,5 @@ from timeplus.smtp import SMTPSink, SMTPSinkProperty  # noqa: F401
 from timeplus.stream import Stream, StreamColumn  # noqa: F401
 from timeplus.type import Type  # noqa: F401
 from timeplus.view import View  # noqa: F401
+
+from timeplus.metrics import Metrics  # noqa: F401
