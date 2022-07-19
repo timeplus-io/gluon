@@ -30,7 +30,7 @@ The following sample code show how to create a timeplus environment, create a st
 
 ```python
 from rx import operators as ops
-from timeplus import Stream, StreamColumn, Query, Env
+from timeplus import Stream, StreamColumn, Query, Env, Type
 
 # initialize timeplus environment
 api_key = os.environ.get("TIMEPLUS_API_KEY")
@@ -43,8 +43,8 @@ Env.setCurrent(env)
 s = (
     Stream()
     .name("stream_name")
-    .column(StreamColumn().name("field_name_a").type("string"))
-    .column(StreamColumn().name("field_name_b").type("float64"))
+    .column(StreamColumn().name("field_name_a").type(Type.String))
+    .column(StreamColumn().name("field_name_b").type(Type.Float))
 )
 
 s.create()

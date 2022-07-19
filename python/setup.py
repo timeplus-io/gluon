@@ -14,6 +14,7 @@ requirements = [
     "websocket-client>=1.3.1",
     "rx>=3.2.0",
     "loguru>=0.6.0",
+    "python-dateutil",
 ]
 
 setup(
@@ -24,15 +25,11 @@ setup(
     description="Timeplus python SDK",
     long_description=readme,
     long_description_content_type="text/markdown",
-    url="https://github.com/timeplus-io/gluon/python",
+    url="https://github.com/timeplus-io/gluon/tree/develop/python",
     packages=find_packages(where="timeplus", exclude=("tests",)),
     install_requires=requirements,
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
     ],
 )
