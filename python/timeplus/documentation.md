@@ -29,6 +29,8 @@ run `pip install timeplus`
 The following sample code show how to create a timeplus environment, create a stream, insert event into stream, delete the stream and query an existing stream from timeplus.
 
 ```python
+import os
+
 from rx import operators as ops
 from timeplus import Stream, StreamColumn, Query, Env, Type
 
