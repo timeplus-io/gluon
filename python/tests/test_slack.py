@@ -78,3 +78,4 @@ def test_generator_source_to_email(test_environment):
     assert source.id() not in sourceIds
 
     query.delete()
+    sink.delete()
