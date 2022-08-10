@@ -11,6 +11,6 @@ def test_env():
     assert Env.current() is env2
 
 
-def test_stage_env(test_environment):
+def test_env_health(test_environment):
     assert test_environment.info() is not None
     assert test_environment.ping() is not None

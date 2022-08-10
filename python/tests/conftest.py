@@ -48,6 +48,21 @@ def local_environment():
     return env
 
 
+def latest_dev_environment():
+    api_key = os.environ.get("TIMEPLUS_API_KEY")
+    env = (
+        Env()
+        .schema("https")
+        .host("dev.timeplus.cloud")
+        .port("443")
+        .tenant("dev-test")
+        .api_key(api_key)
+        .http_timeout(60)
+    )
+    Env.setCurrent(env)
+    return env
+
+
 @pytest.fixture
 def test_environment():
     env_name = os.environ.get("TIMEPLUS_ENVIRONMENT")
@@ -59,6 +74,9 @@ def test_environment():
 
     if env_name == "latest":
         return latest_environment()
+
+    if env_name == "latest_dev":
+        return latest_dev_environment()
 
     return local_environment()
 

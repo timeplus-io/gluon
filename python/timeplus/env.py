@@ -41,6 +41,7 @@ class Env(Base):
         self.host("localhost")
         self.port("8000")
         self.schema("http")
+        self.tenant("")
         self.api_version("api/v1beta1")
         self.api_key("")
 
@@ -50,7 +51,7 @@ class Env(Base):
         self._headers["Timeplus-Request-From"] = "gluon"
         self._headers["Connection"] = "close"
 
-        self._http_timeout = 10
+        self.http_timeout(10)
 
         Env.add(self)
         self._logger = logger
@@ -86,11 +87,17 @@ class Env(Base):
     def schema(self, *args):
         return self.prop("schema", *args)
 
+    def tenant(self, *args):
+        return self.prop("tenant", *args)
+
     def api_version(self, *args):
         return self.prop("api_version", *args)
 
     def base_url(self):
-        return f"{self.schema()}://{self.host()}:{self.port()}/{self.api_version()}"
+        if len(self.tenant()) > 0:
+            return f"{self.schema()}://{self.host()}:{self.port()}/{self.tenant()}/{self.api_version()}"
+        else:
+            return f"{self.schema()}://{self.host()}:{self.port()}/{self.api_version()}"
 
     def headers(self):
         if self.api_key():  # check if key and id are not empty
@@ -101,8 +108,15 @@ class Env(Base):
     def api_key(self, *args):
         return self.prop("api_key", *args)
 
+    def tenantUrl(self):
+        if self.tenant():
+            return self.tenant() + "/"
+        else:
+            return ""
+
     def info(self):
-        url = f"{self.schema()}://{self.host()}:{self.port()}/info"
+        url = f"{self.schema()}://{self.host()}:{self.port()}/{self.tenantUrl()}info"
+
         try:
             r = requests.get(url, timeout=self.http_timeout())
             if r.status_code < 200 or r.status_code > 299:
@@ -130,8 +144,8 @@ class Env(Base):
     def logger(self):
         return self._logger
 
-    def http_timeout(self):
-        return self._http_timeout
+    def http_timeout(self, *args):
+        return self.prop("http_timeout", *args)
 
     def http_post(self, url, data):
         self.logger().debug("post url {} with data {}", url, data)
