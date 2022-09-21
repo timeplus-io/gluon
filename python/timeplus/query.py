@@ -155,8 +155,9 @@ class Query(ResourceBase):
 
                     observer.on_next(record)
                 observer.on_complete()
-            except Exception:
-                pass
+            except Exception as e:
+                self._logger.error("failed to recieve data from websocket")
+                observer.on_error(e)
 
         return __query_op
 
