@@ -47,6 +47,7 @@ class ResourceBase(Base):
 
     def delete(self):
         url = f"{self._base_url}/{self._resource_name}/{self.id()}"
+        self._logger.info(f"delete request {url}")
         try:
             self._env.http_delete(url)
             return self

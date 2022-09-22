@@ -68,8 +68,11 @@ class Query(ResourceBase):
     def tags(self, *args):
         return self.prop("tags", *args)
 
-    def id(self):
-        return self.prop("id")
+    # def id(self):
+    #     return self.prop("id")
+
+    def id(self, *args):
+        return self.prop("id", *args)
 
     def stat(self):
         self.get()
