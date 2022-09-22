@@ -142,7 +142,11 @@ class Query(ResourceBase):
                     result = ws.recv()
                     # convert string object to json(array)
                     # todo convert by header type
-                    record = json.loads(result)
+                    try:
+                        record = json.loads(result)
+                    except Exception as e:
+                        self._logger.warning(f"cannot load result from ws {result} {e}")
+                        continue
 
                     for index, col in enumerate(self.header()):
                         if col["type"].startswith(Type.Tuple.value):
@@ -156,7 +160,7 @@ class Query(ResourceBase):
                     observer.on_next(record)
                 observer.on_complete()
             except Exception as e:
-                self._logger.error("failed to recieve data from websocket")
+                self._logger.error("failed to recieve data from websocket", e)
                 observer.on_error(e)
 
         return __query_op
