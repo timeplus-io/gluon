@@ -91,9 +91,10 @@ class Query(ResourceBase):
         self.action("cancel")
         return self
 
-    def stop(self):
+    def stop(self, delete=True):
         self.stopped = True
-        self.delete()
+        if delete:
+            self.delete()
 
     def sink_to(self, sink):
         url = f"{self._base_url}/{self._resource_name}/{self.id()}/sinks"
