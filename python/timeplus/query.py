@@ -93,6 +93,7 @@ class Query(ResourceBase):
 
     def stop(self):
         self.stopped = True
+        self.delete()
 
     def sink_to(self, sink):
         url = f"{self._base_url}/{self._resource_name}/{self.id()}/sinks"
