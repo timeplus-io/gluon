@@ -50,10 +50,9 @@ class Query(ResourceBase):
         result["data"] = []
         query.get_result_stream(timeout=timeout).subscribe(
             on_next=lambda i: result["data"].append(i),
-            on_error=lambda e: print(f"error {e}"),  # todo better handling this error
+            on_error=lambda e: query.stop(),  # todo better handling this error
             on_completed=lambda: query.stop(),
         )
-
         return result
 
     def name(self, *args):
