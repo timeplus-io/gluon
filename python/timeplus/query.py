@@ -150,7 +150,7 @@ class Query(ResourceBase):
                     try:
                         record = json.loads(result)
                     except Exception as e:
-                        self._logger.warning(f"cannot load result from ws {result} {e}")
+                        self._logger.debug(f"cannot load result from ws {result} {e}")
                         continue
 
                     for index, col in enumerate(self.header()):
@@ -165,7 +165,7 @@ class Query(ResourceBase):
                     observer.on_next(record)
                 observer.on_complete()
             except Exception as e:
-                self._logger.error("failed to recieve data from websocket", e)
+                self._logger.debug("failed to recieve data from websocket", e)
                 observer.on_error(e)
 
         return __query_op
