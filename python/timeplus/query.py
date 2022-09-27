@@ -114,7 +114,7 @@ class Query(ResourceBase):
         if self._env.schema() == "https":
             ws_schema = "wss"
         ws = create_connection(
-            f"{ws_schema}://{self._env.host()}:{self._env.port()}/{self._env.tenantUrl()}ws/queries/{self.id()}",
+            f"{ws_schema}://{self._env.host()}:{self._env.port()}/{self._env.workspaceUrl()}ws/queries/{self.id()}",
             header=[f"X-Api-Key: {self._env.api_key()}"],
         )
         for i in range(count):
@@ -130,7 +130,7 @@ class Query(ResourceBase):
                 ws_schema = "wss"
 
             ws = create_connection(
-                f"{ws_schema}://{self._env.host()}:{self._env.port()}/{self._env.tenantUrl()}ws/queries/{self.id()}",
+                f"{ws_schema}://{self._env.host()}:{self._env.port()}/{self._env.workspaceUrl()}ws/queries/{self.id()}",
                 header=[f"X-Api-Key: {self._env.api_key()}"],
             )
             start_time = time.time()

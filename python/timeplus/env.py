@@ -41,7 +41,7 @@ class Env(Base):
         self.host("localhost")
         self.port("8000")
         self.schema("http")
-        self.tenant("")
+        self.workspace("")
         self.api_version("api/v1beta1")
         self.api_key("")
 
@@ -87,15 +87,15 @@ class Env(Base):
     def schema(self, *args):
         return self.prop("schema", *args)
 
-    def tenant(self, *args):
-        return self.prop("tenant", *args)
+    def workspace(self, *args):
+        return self.prop("workspace", *args)
 
     def api_version(self, *args):
         return self.prop("api_version", *args)
 
     def base_url(self):
-        if len(self.tenant()) > 0:
-            return f"{self.schema()}://{self.host()}:{self.port()}/{self.tenant()}/{self.api_version()}"
+        if len(self.workspace()) > 0:
+            return f"{self.schema()}://{self.host()}:{self.port()}/{self.workspace()}/{self.api_version()}"
         else:
             return f"{self.schema()}://{self.host()}:{self.port()}/{self.api_version()}"
 
@@ -108,14 +108,14 @@ class Env(Base):
     def api_key(self, *args):
         return self.prop("api_key", *args)
 
-    def tenantUrl(self):
-        if self.tenant():
-            return self.tenant() + "/"
+    def workspaceUrl(self):
+        if self.workspace():
+            return self.workspace() + "/"
         else:
             return ""
 
     def info(self):
-        url = f"{self.schema()}://{self.host()}:{self.port()}/{self.tenantUrl()}info"
+        url = f"{self.schema()}://{self.host()}:{self.port()}/{self.workspaceUrl()}info"
 
         try:
             r = requests.get(url, timeout=self.http_timeout())

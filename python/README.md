@@ -13,7 +13,7 @@ from timeplus import Stream, StreamColumn, Query, Env, Type
 # initialize timeplus environment
 api_key = os.environ.get("TIMEPLUS_API_KEY")
 env = (
-    Env().schema("https").host("hostname").port("443").tenant("tenant").api_key(api_key)
+    Env().schema("https").host("hostname").port("443").workspace("my-workspace-id").api_key(api_key)
 )
 Env.setCurrent(env)
 
