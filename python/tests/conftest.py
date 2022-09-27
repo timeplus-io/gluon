@@ -55,7 +55,7 @@ def latest_dev_environment():
         .schema("https")
         .host("dev.timeplus.cloud")
         .port("443")
-        .tenant("latest")
+        .workspace("latest")
         .api_key(api_key)
         .http_timeout(60)
     )
