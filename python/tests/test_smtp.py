@@ -1,4 +1,5 @@
 import time
+import pytest
 
 from timeplus import (
     GeneratorConfiguration,
@@ -13,6 +14,7 @@ from timeplus import (
 )
 
 
+@pytest.mark.skip(reason="skip")
 def test_generator_source_to_email(test_environment):
     stream_name = "clicks"
 

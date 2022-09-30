@@ -57,13 +57,12 @@ def test_csv_source(test_environment):
     result = []
     query.get_result_stream().pipe(ops.take(5)).subscribe(
         on_next=lambda i: result.append(i),
-        on_error=lambda e: print(f"error {e}"),
+        on_error=lambda e: query.stop(),
         on_completed=lambda: query.stop(),
     )
 
-    assert len(result) == 5
     source.delete()
+
+    assert len(result) == 5
     sourceIds = [s.id() for s in Source.list()]
     assert source.id() not in sourceIds
-
-    query.delete()

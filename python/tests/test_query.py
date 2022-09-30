@@ -7,21 +7,21 @@ def test_query(test_environment):
     query = (
         Query()
         .name("ad hoc query")
-        .sql(
-            "select time, gas_percent, speed_kmh from car_live_data where cid='c00004'"
-        )
+        .sql("select time, gas_percent, speed_kmh from car_live_data")
     )
     query.create()
 
     result = []
     query.get_result_stream().pipe(ops.take(3)).subscribe(
         on_next=lambda i: result.append(i),
-        on_error=lambda e: print(f"error {e}"),
+        on_error=lambda e: query.stop(),
         on_completed=lambda: query.stop(),
     )
 
     assert len(result) == 3
-    query.delete()
+
+    # query.stop() will delete the the query by default
+    # query.delete()
 
 
 def test_query_to_sync(test_environment):

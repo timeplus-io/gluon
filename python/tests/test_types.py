@@ -77,16 +77,16 @@ def test_stream(test_environment):
         Query().name("ad hoc query").sql(f"select * from table({s.name()})").create()
     )
 
+    test_environment.logger().info("result header is {}", query.header())
+
     result = []
     query.get_result_stream().pipe(ops.take(2)).subscribe(
         on_next=lambda i: result.append(i),
-        on_error=lambda e: print(f"error {e}"),
+        on_error=lambda e: query.stop(),
         on_completed=lambda: query.stop(),
     )
 
     assert len(result) == 2
-
-    test_environment.logger().info("result header is {}", query.header())
     test_environment.logger().info("result data is {}", result)
 
     for r in result:

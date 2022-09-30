@@ -58,7 +58,7 @@ def test_stream(test_environment):
     result = []
     query.get_result_stream().pipe(ops.take(2)).subscribe(
         on_next=lambda i: result.append(i),
-        on_error=lambda e: print(f"error {e}"),
+        on_error=lambda e: query.stop(),
         on_completed=lambda: query.stop(),
     )
 
