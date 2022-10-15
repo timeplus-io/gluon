@@ -107,10 +107,10 @@ st.write(env.info())
 
 #### kafka
 # topic = "datagen"
-# brokers = "pkc-ld537.ca-central-1.aws.confluent.cloud:9092"
+# brokers = "pkc-xxxx.ca-central-1.aws.confluent.cloud:9092"
 # sasl = "plain"
-# username = "E2YTK4EBCA6UP7NX"
-# password = "0oIxM8juTDxGZ14IFpXbIM6kTsSejOSFtlVm9sOzRVvknTFh8Ohwl5xHW3WuL4ai"
+# username = "xxxx"
+# password = "xxx"
 
 # source = (
 #     KafkaSource()
@@ -145,10 +145,10 @@ st.write(env.info())
 # query = Query().name("ad hoc query").sql(f"select * from confluent_datagen").create()
 
 # topic = "datagen_sink"
-# brokers = "pkc-ld537.ca-central-1.aws.confluent.cloud:9092"
+# brokers = "pkc-xxx.ca-central-1.aws.confluent.cloud:9092"
 # sasl = "plain"
-# username = "E2YTK4EBCA6UP7NX"
-# password = "0oIxM8juTDxGZ14IFpXbIM6kTsSejOSFtlVm9sOzRVvknTFh8Ohwl5xHW3WuL4ai"
+# username = "xxx"
+# password = "xxx"
 
 # sink = (
 #     KafkaSink()
@@ -221,7 +221,7 @@ st.write(env.info())
 #     .properties(
 #         SlackSinkProperty()
 #         .url(
-#             "https://hooks.slack.com/services/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"
+#             "https://hooks.slack.com/services/xx/xx/xxx"
 #         )
 #         .message(
 #             "You have a new alert click count {{.number}}:\n*<fakeLink.timeplus.com|Gang Tao - New Alert>*"
@@ -235,10 +235,10 @@ st.write(env.info())
 #     .name("email sink")
 #     .properties(
 #         SMTPSinkProperty()
-#         .f("eng@timeplus.io")
-#         .to("gang.tao@outlook.com")
-#         .username("AKIA264B774K6MEAKUOY")
-#         .password("BJTl500n0eOd+e94BNuHiut2DuDXo3y34PnGChre19Zq")
+#         .f("xxx")
+#         .to("xxx")
+#         .username("xxx")
+#         .password("xxx")
 #         .host("email-smtp.us-west-1.amazonaws.com")
 #         .port(587)
 #         .message("You have a new alert at {{.time}} with click count {{.number}}")
