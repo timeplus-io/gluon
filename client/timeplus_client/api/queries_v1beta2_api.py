@@ -111,15 +111,15 @@ class QueriesV1beta2Api(object):
             body_params = params["body"]
         # HTTP header `Accept`
         header_params["Accept"] = self.api_client.select_header_accept(
-            ["application/json"]
+            ["text/event-stream"]
         )  # noqa: E501
 
-        # HTTP header `Content-Type`
-        header_params[
-            "Content-Type"
-        ] = self.api_client.select_header_content_type(  # noqa: E501
-            ["application/json"]
-        )  # noqa: E501
+        # # HTTP header `Content-Type`
+        # header_params[
+        #     "Content-Type"
+        # ] = self.api_client.select_header_content_type(  # noqa: E501
+        #     ["application/json"]
+        # )  # noqa: E501
 
         # Authentication setting
         auth_settings = ["ApiKeyAuth"]  # noqa: E501
@@ -137,7 +137,7 @@ class QueriesV1beta2Api(object):
             auth_settings=auth_settings,
             async_req=params.get("async_req"),
             _return_http_data_only=params.get("_return_http_data_only"),
-            _preload_content=params.get("_preload_content", True),
+            _preload_content=params.get("_preload_content", False),
             _request_timeout=params.get("_request_timeout"),
             collection_formats=collection_formats,
         )
