@@ -1,0 +1,2971 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: support@timeplus.com
+    name: API Support
+    url: https://timeplus.com
+  description: |-
+    Welcome to the Timeplus HTTP REST API specification.
+
+    # Authentication
+
+    <!-- ReDoc-Inject: <security-definitions> -->
+  title: Timeplus
+  version: 1.0.0-oas3
+paths:
+  /v1beta1/auth/api_keys:
+    get:
+      description: list all API keys created by current user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/APIKey"
+                type: array
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: List API keys
+      tags:
+        - API keys v1beta1
+    post:
+      description: >-
+        create a new API key with optional expiration,
+
+        the created API key represents the owner thus has the same permissions
+        as the owner
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAPIKeyRequest"
+        description: API Key parameters
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateAPIKeyResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: Create an API key
+      tags:
+        - API keys v1beta1
+  /v1beta1/auth/api_keys/{id}:
+    delete:
+      description: delete the API key with the specified ID
+      parameters:
+        - description: API key ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: invalid ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: Delete an API key
+      tags:
+        - API keys v1beta1
+  /v1beta1/format:
+    post:
+      description: Format the given query and make it easy to read.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FormatQueryRequest"
+        description: the query SQL to be formatted
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FormatQueryResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - create:query
+      summary: format a query.
+      tags:
+        - Queries v1beta1
+  /v1beta1/queries:
+    get:
+      description: Get all queries.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/QueryWithMetrics"
+                type: array
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - read:query
+      summary: list queries.
+      tags:
+        - Queries v1beta1
+    post:
+      description: execute a query.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateQueryRequestV1Beta1"
+        description: query request parameters
+        required: true
+      responses:
+        "201":
+          description: >-
+            `status` will be set to either `running` or `failed` depends on the
+            result. If this is a non-streaming and it finishes really fast,
+            there is a rare chance the status will be `finished`
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateQueryResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - create:query
+      summary: execute a query.
+      tags:
+        - Queries v1beta1
+  /v1beta1/queries/{id}:
+    delete:
+      description: Delete the query with the given ID.
+      parameters:
+        - description: query ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - write:query
+      summary: delete a query.
+      tags:
+        - Queries v1beta1
+    get:
+      description: Get the query with the given ID.
+      parameters:
+        - description: query ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryWithMetrics"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - read:query
+      summary: get a query.
+      tags:
+        - Queries v1beta1
+  /v1beta1/queries/{id}/cancel:
+    post:
+      description: >-
+        Cancel the query with the given ID. If given query is not running, the
+        request will do nothing. Otherwise, the query will be canceled and the
+        `status` will be set to `canceled`
+      parameters:
+        - description: query ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - write:query
+      summary: cancel a query.
+      tags:
+        - Queries v1beta1
+  /v1beta1/queries/{id}/pipeline:
+    get:
+      description: get the pipeline for a query
+      parameters:
+        - description: query ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryPipeline"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - read:query
+      summary: get the pipeline for a query
+      tags:
+        - Queries v1beta1
+  /v1beta1/sinks:
+    get:
+      description: Get all sinks
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/SinkWithMetrics"
+                type: array
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: list sinks
+      tags:
+        - Sinks v1beta1
+    post:
+      description: Create a sink.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSinkRequest"
+        description: create sink request parameters
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sink"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: create a sink.
+      tags:
+        - Sinks v1beta1
+  /v1beta1/sinks/{id}:
+    delete:
+      description: Delete a sink with the given ID.
+      parameters:
+        - description: sink ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: delete a sink.
+      tags:
+        - Sinks v1beta1
+    get:
+      description: Get a sink with the given ID.
+      parameters:
+        - description: sink ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SinkWithMetrics"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: get a sink.
+      tags:
+        - Sinks v1beta1
+  /v1beta1/source/infer:
+    post:
+      description: infer schema from an existing event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventInferRequest"
+        description: events used to infer schema
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/EventInferResponse"
+                type: array
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: infer schema from an existing event
+      tags:
+        - Sources v1beta1
+  /v1beta1/source/match:
+    post:
+      description: return streams match provided events
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StreamMatchRequest"
+        description: events to match
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  type: string
+                type: array
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: return streams match provided events
+      tags:
+        - Sources v1beta1
+  /v1beta1/source/preview:
+    post:
+      description: Get sample events from the source with the given ID.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SourcePreviewRequest"
+        description: source propeties for preview
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Event"
+                type: array
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: preview a source.
+      tags:
+        - Sources v1beta1
+  /v1beta1/source/upload:
+    post:
+      description: Upload a file to the system.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: file to be uploaded
+                  type: string
+                  format: binary
+              required:
+                - file
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FileUploadResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: upload a file
+      tags:
+        - Sources v1beta1
+  /v1beta1/sources:
+    get:
+      description: Get all sources.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Source"
+                type: array
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: list sources.
+      tags:
+        - Sources v1beta1
+    post:
+      description: Create a source.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSourceRequest"
+        description: create source request parameters
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Source"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: create a source.
+      tags:
+        - Sources v1beta1
+  /v1beta1/sources/{id}:
+    delete:
+      description: Delete the source with the given ID.
+      parameters:
+        - description: source ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: delete a source.
+      tags:
+        - Sources v1beta1
+    get:
+      description: Get a source with the given ID.
+      parameters:
+        - description: source ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SourceWithMetrics"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: get a source.
+      tags:
+        - Sources v1beta1
+    put:
+      description: >-
+        Update the specific source with the given ID. Only stopped sources can
+        be updated.
+      parameters:
+        - description: source ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSourceRequest"
+        description: update source request parameters
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: Update a source.
+      tags:
+        - Sources v1beta1
+  /v1beta1/sources/{id}/start:
+    post:
+      description: Start the source with the given ID.
+      parameters:
+        - description: source ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: start a source.
+      tags:
+        - Sources v1beta1
+  /v1beta1/sources/{id}/stop:
+    post:
+      description: Stop the source with the given ID.
+      parameters:
+        - description: source ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: stop a source.
+      tags:
+        - Sources v1beta1
+  /v1beta1/sqlanalyze:
+    post:
+      description: analyze sql
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnalyzeSQLRequest"
+        description: sql request parameters
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SQLAnalyzeResult"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - create:query
+      summary: analyze sql
+      tags:
+        - Queries v1beta1
+  /v1beta1/streams:
+    get:
+      description: Get all streams.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Stream"
+                type: array
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: list streams.
+      tags:
+        - Streams v1beta1
+    post:
+      description: Create a stream.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StreamDef"
+        description: create stream request parameters
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StreamDef"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: create a stream.
+      tags:
+        - Streams v1beta1
+  /v1beta1/streams/{name}:
+    delete:
+      description: Delete the stream with the given name.
+      parameters:
+        - description: stream name
+          in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: delete a stream.
+      tags:
+        - Streams v1beta1
+    put:
+      description: >-
+        Update the specific stream with the given name. Currently only retention
+        policy and TTL are supported.
+      parameters:
+        - description: name of the stream
+          in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StreamDef"
+        description: update stream request parameters
+        required: true
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "501":
+          description: Not Implemented
+      security:
+        - ApiKeyAuth: []
+      summary: Update a stream.
+      tags:
+        - Streams v1beta1
+  /v1beta1/streams/{name}/ingest:
+    post:
+      description: Ingest data to a stream with the given name.
+      parameters:
+        - description: stream name
+          in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IngestData"
+        description: ingest data
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: ingest data.
+      tags:
+        - Streams v1beta1
+  /v1beta1/streams/external:
+    post:
+      description: Create an external stream.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExternalStreamDef"
+        description: create external stream request parameters
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExternalStreamDef"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: create an external stream.
+      tags:
+        - Streams v1beta1
+  /v1beta1/udfs:
+    get:
+      description: Get all udf.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/UDF"
+                type: array
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: list udf.
+      tags:
+        - UDFs v1beta1
+    post:
+      description: Create a udf.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UDF"
+        description: create udf request parameters
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UDF"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: create a udf.
+      tags:
+        - UDFs v1beta1
+  /v1beta1/udfs/{name}:
+    delete:
+      description: Delete the udf with the given name.
+      parameters:
+        - description: udf name
+          in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: delete a udf.
+      tags:
+        - UDFs v1beta1
+    get:
+      description: get the udf with the given name.
+      parameters:
+        - description: udf name
+          in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UDF"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: get a udf.
+      tags:
+        - UDFs v1beta1
+  /v1beta1/views:
+    get:
+      description: Get all views.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/View"
+                type: array
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: list views.
+      tags:
+        - Views v1beta1
+    post:
+      description: Create a view.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/View"
+        description: create view request parameters
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/View"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: create a view.
+      tags:
+        - Views v1beta1
+  /v1beta1/views/{name}:
+    delete:
+      description: Delete the view with the given name.
+      parameters:
+        - description: view name
+          in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth: []
+      summary: delete a view.
+      tags:
+        - Views v1beta1
+  /v1beta2/dashboards:
+    get:
+      description: Get all dashboards.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/dashboard.Dashboard"
+                type: array
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - read:dashboard
+      summary: list dashboards.
+      tags:
+        - Dashboards v1beta2
+    post:
+      description: create a dashboard.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDashboardRequest"
+        description: dashboard request parameters
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/dashboard.Dashboard"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - create:dashboard
+      summary: create a dashboard.
+      tags:
+        - Dashboards v1beta2
+  /v1beta2/dashboards/{id}:
+    delete:
+      description: Delete the dashboard with the given ID.
+      parameters:
+        - description: dashboard ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - write:dashboard
+      summary: delete a dashboard.
+      tags:
+        - Dashboards v1beta2
+    get:
+      description: get a dashboard.
+      parameters:
+        - description: dashboard ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/dashboard.Dashboard"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - read:dashboard
+      summary: get a dashboard.
+      tags:
+        - Dashboards v1beta2
+    put:
+      description: Update the specific dashboard with the given ID.
+      parameters:
+        - description: dashboard ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDashboardRequest"
+        description: update dashboard request parameters
+        required: true
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - write:dashboard
+      summary: Update a dashboard.
+      tags:
+        - Dashboards v1beta2
+  /v1beta2/persistent-queries:
+    get:
+      description: Get all persistent-queries.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/QueryWithMetrics"
+                type: array
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - read:query
+      summary: list persistent-queries.
+      tags:
+        - Persistent queries v1beta2
+    post:
+      description: execute a persistent query.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePersistentQueryRequest"
+        description: persistent query request parameters
+        required: true
+      responses:
+        "201":
+          description: >-
+            `status` will be set to either `running` or `failed` depends on the
+            result. If this is a non-streaming and it finishes really fast,
+            there is a rare chance the status will be `finished`
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - create:query
+      summary: execute a persistent query.
+      tags:
+        - Persistent queries v1beta2
+  /v1beta2/persistent-queries/{id}:
+    delete:
+      description: Delete the persistent query with the given ID.
+      parameters:
+        - description: persistent query ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - write:query
+      summary: delete a persistent query.
+      tags:
+        - Persistent queries v1beta2
+    get:
+      description: Get the persistent query with the given ID.
+      parameters:
+        - description: persistent query ID
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryWithMetrics"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - read:query
+      summary: get a persistent query.
+      tags:
+        - Persistent queries v1beta2
+  /v1beta2/persistent-queries/{id}/data:
+    get:
+      description: stream persistent query result via websocket
+      parameters:
+        - description: persistent query id
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: stream persistent query result via websocket
+      tags:
+        - Persistent queries v1beta2
+  /v1beta2/queries:
+    post:
+      description: execute a query.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateQueryRequestV1Beta2"
+        description: query request parameters
+        required: true
+      responses:
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - create:query
+      summary: execute a query.
+      tags:
+        - Queries v1beta2
+  /v1beta2/topology:
+    get:
+      description: get topology graph.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Graph"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      security:
+        - ApiKeyAuth:
+            - read:topology
+      summary: get topology graph.
+      tags:
+        - Topology v1beta2
+  /ws/queries/{id}:
+    get:
+      description: stream query result via websocket
+      parameters:
+        - description: query id
+          in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      summary: >-
+        stream query result via websocket [THIS API DOESN'T HAVE `v1beta1` IN
+        PATH]
+      tags:
+        - Queries v1beta1
+servers:
+  - url: https//beta.timeplus.cloud/{workspace-id}/api
+    variables:
+      workspace-id:
+        default: unknown
+  - url: https://dev.timeplus.cloud/{workspace-id}/api
+    variables:
+      workspace-id:
+        default: latest
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: use API keys created via the CreateAPIKey API to authorize API access.
+      in: header
+      name: X-Api-Key
+      type: apiKey
+  schemas:
+    APIKey:
+      properties:
+        created_at:
+          description: >-
+            creation time represented as the number of seconds elapsed since
+            January 1, 1970 UTC
+          example: 1257894000
+          type: integer
+        expire_at:
+          description: >-
+            expiration time represented as the number of seconds elapsed since
+            January 1, 1970 UTC
+          example: 1257894000
+          type: integer
+        id:
+          description: a string that identifies an API key, readonly.
+          type: string
+        name:
+          description: the name of the API key
+          type: string
+        permissions:
+          description: list of permissions associated with the API key
+          example:
+            - read:query
+            - write:query
+          items:
+            type: string
+          type: array
+      type: object
+    AnalyzeSQLRequest:
+      properties:
+        sql:
+          type: string
+      type: object
+    Column:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    ColumnDef:
+      properties:
+        compression_codec:
+          type: string
+        default:
+          type: string
+        name:
+          type: string
+        skipping_index_expression:
+          type: string
+        ttl_expression:
+          type: string
+        type:
+          type: string
+      required:
+        - name
+        - type
+      type: object
+    ColumnsResp:
+      properties:
+        alias:
+          type: string
+        comment:
+          type: string
+        default:
+          type: string
+        name:
+          type: string
+        nullable:
+          type: boolean
+        type:
+          type: string
+      type: object
+    Connection:
+      properties:
+        config:
+          $ref: "#/components/schemas/ConnectionConfig"
+        stat:
+          $ref: "#/components/schemas/ConnectionStat"
+      required:
+        - stat
+      type: object
+    ConnectionConfig:
+      properties:
+        auto_create:
+          type: boolean
+        stream_definition:
+          $ref: "#/components/schemas/StreamDef"
+      type: object
+    ConnectionStat:
+      properties:
+        message:
+          type: string
+        status:
+          type: string
+      required:
+        - message
+        - status
+      type: object
+    CreateAPIKeyRequest:
+      properties:
+        expire_at:
+          description: >-
+            define the expiration time of the API key by specifying the exact
+            date time,
+
+            cannot use with expire_in
+          example: 2022-06-07T12:00:00Z08:00
+          format: RFC3339
+          type: string
+        expire_in:
+          description: >-
+            define the expiration time of the API key by specifying the amount
+            of time to count from now,
+
+            cannot use with expire_at
+          example: 24h
+          type: string
+        name:
+          description: the name of the API key
+          maxLength: 64
+          minLength: 3
+          type: string
+      required:
+        - name
+      type: object
+    CreateAPIKeyResponse:
+      properties:
+        api_key:
+          description: >-
+            generated API key. API keys are treated as secrets and are not
+            stored in the system.
+
+            It is the users' responsibility to safely store the API key for
+            future use.
+          example: vthm5o5ENm4TaX5RcixG+DB8q9ALQtrU3VlfQBVFv1lQauWeDXR87MI5kOjXG
+          type: string
+        created_at:
+          description: >-
+            creation time represented as the number of seconds elapsed since
+            January 1, 1970 UTC
+          example: 1257894000
+          type: integer
+        expire_at:
+          description: >-
+            expiration time represented as the number of seconds elapsed since
+            January 1, 1970 UTC
+          example: 1257894000
+          type: integer
+        id:
+          description: a string that identifies an API key, readonly.
+          type: string
+        name:
+          description: the name of the API key
+          type: string
+        permissions:
+          description: list of permissions associated with the API key
+          example:
+            - read:query
+            - write:query
+          items:
+            type: string
+          type: array
+      type: object
+    CreateDashboardRequest:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        panels:
+          items:
+            $ref: "#/components/schemas/dashboard.Panel"
+          type: array
+      required:
+        - name
+      type: object
+    CreatePersistentQueryRequest:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        sinks:
+          items:
+            type: string
+          type: array
+        sql:
+          type: string
+      required:
+        - sinks
+        - sql
+      type: object
+    CreateQueryRequestV1Beta1:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        sql:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+    CreateQueryRequestV1Beta2:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        sql:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+      type: object
+    CreateQueryResponse:
+      properties:
+        analysis:
+          $ref: "#/components/schemas/QueryAnalysis"
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        description:
+          type: string
+        duration:
+          type: integer
+        end_time:
+          type: integer
+        id:
+          type: string
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        message:
+          type: string
+        name:
+          type: string
+        response_time:
+          type: integer
+        result:
+          $ref: "#/components/schemas/QueryResult"
+        sinks:
+          additionalProperties:
+            $ref: "#/components/schemas/SinkStat"
+          type: object
+        sql:
+          type: string
+        start_time:
+          type: integer
+        status:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        timeColumns:
+          $ref: "#/components/schemas/TimeColumns"
+      required:
+        - analysis
+        - duration
+        - end_time
+        - id
+        - message
+        - response_time
+        - result
+        - sinks
+        - sql
+        - start_time
+        - status
+        - timeColumns
+      type: object
+    CreateSinkRequest:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        properties:
+          additionalProperties: {}
+          type: object
+        type:
+          type: string
+      required:
+        - name
+        - type
+      type: object
+    CreateSourceRequest:
+      properties:
+        connection_config:
+          $ref: "#/components/schemas/ConnectionConfig"
+        description:
+          type: string
+        name:
+          type: string
+        properties:
+          additionalProperties: {}
+          type: object
+        type:
+          type: string
+      required:
+        - name
+        - type
+      type: object
+    Edge:
+      properties:
+        source:
+          type: string
+        target:
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+      type: object
+    Event:
+      additionalProperties: {}
+      type: object
+    EventInferRequest:
+      properties:
+        event:
+          $ref: "#/components/schemas/Event"
+      type: object
+    EventInferResponse:
+      properties:
+        inferred_columns:
+          items:
+            $ref: "#/components/schemas/ColumnDef"
+          type: array
+        recommeneded_columns:
+          items:
+            $ref: "#/components/schemas/ColumnDef"
+          type: array
+      type: object
+    ExternalStreamDef:
+      properties:
+        column:
+          $ref: "#/components/schemas/ColumnDef"
+        name:
+          type: string
+        settings:
+          items:
+            $ref: "#/components/schemas/StreamSetting"
+          type: array
+      type: object
+    FileUploadResponse:
+      properties:
+        path:
+          type: string
+      type: object
+    FormatQueryRequest:
+      properties:
+        sql:
+          type: string
+      type: object
+    FormatQueryResponse:
+      properties:
+        sql:
+          type: string
+      type: object
+    Graph:
+      properties:
+        edges:
+          items:
+            $ref: "#/components/schemas/Edge"
+          type: array
+        nodes:
+          items:
+            $ref: "#/components/schemas/Node"
+          type: array
+      type: object
+    IngestData:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+        data:
+          items:
+            items: {}
+            type: array
+          type: array
+      type: object
+    Latency:
+      properties:
+        avg:
+          type: number
+        latest:
+          items:
+            type: number
+          type: array
+        max:
+          type: number
+        min:
+          type: number
+        sum:
+          type: number
+      type: object
+    Node:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        ownership:
+          $ref: "#/components/schemas/Owner"
+        properties:
+          additionalProperties: {}
+          type: object
+        type:
+          type: string
+      type: object
+    Owner:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      type: object
+    Query:
+      properties:
+        analysis:
+          $ref: "#/components/schemas/QueryAnalysis"
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        description:
+          type: string
+        duration:
+          type: integer
+        end_time:
+          type: integer
+        id:
+          type: string
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        message:
+          type: string
+        name:
+          type: string
+        response_time:
+          type: integer
+        result:
+          $ref: "#/components/schemas/QueryResult"
+        sinks:
+          additionalProperties:
+            $ref: "#/components/schemas/SinkStat"
+          type: object
+        sql:
+          type: string
+        start_time:
+          type: integer
+        status:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        timeColumns:
+          $ref: "#/components/schemas/TimeColumns"
+      required:
+        - analysis
+        - duration
+        - end_time
+        - id
+        - message
+        - response_time
+        - result
+        - sinks
+        - sql
+        - start_time
+        - status
+        - timeColumns
+      type: object
+    QueryAnalysis:
+      properties:
+        has_aggr:
+          type: boolean
+        has_subquery:
+          type: boolean
+        has_table_join:
+          type: boolean
+        has_union:
+          type: boolean
+        is_streaming:
+          type: boolean
+      required:
+        - has_aggr
+        - has_subquery
+        - has_table_join
+        - has_union
+        - is_streaming
+      type: object
+    QueryMetrics:
+      properties:
+        count:
+          type: integer
+        latency:
+          $ref: "#/components/schemas/Latency"
+        throughput:
+          $ref: "#/components/schemas/Throughput"
+      type: object
+    QueryPipeline:
+      properties:
+        edges:
+          items:
+            $ref: "#/components/schemas/QueryPipelineEdge"
+          type: array
+        nodes:
+          items:
+            $ref: "#/components/schemas/QueryPipelineNode"
+          type: array
+      type: object
+    QueryPipelineEdge:
+      properties:
+        from:
+          type: integer
+        to:
+          type: integer
+      type: object
+    QueryPipelineNode:
+      properties:
+        id:
+          type: integer
+        metric:
+          $ref: "#/components/schemas/QueryPipelineNodeMetric"
+        name:
+          type: string
+        status:
+          type: string
+      type: object
+    QueryPipelineNodeMetric:
+      properties:
+        processed_bytes:
+          type: integer
+        processing_time_ns:
+          type: integer
+      type: object
+    QueryResult:
+      properties:
+        data:
+          items:
+            items: {}
+            type: array
+          type: array
+        header:
+          items:
+            $ref: "#/components/schemas/Column"
+          type: array
+      required:
+        - header
+      type: object
+    QueryWithMetrics:
+      properties:
+        analysis:
+          $ref: "#/components/schemas/QueryAnalysis"
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        description:
+          type: string
+        duration:
+          type: integer
+        end_time:
+          type: integer
+        id:
+          type: string
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        message:
+          type: string
+        metrics:
+          $ref: "#/components/schemas/QueryMetrics"
+        name:
+          type: string
+        response_time:
+          type: integer
+        result:
+          $ref: "#/components/schemas/QueryResult"
+        sinks:
+          additionalProperties:
+            $ref: "#/components/schemas/SinkStat"
+          type: object
+        sql:
+          type: string
+        start_time:
+          type: integer
+        status:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        timeColumns:
+          $ref: "#/components/schemas/TimeColumns"
+      required:
+        - analysis
+        - duration
+        - end_time
+        - id
+        - message
+        - metrics
+        - response_time
+        - result
+        - sinks
+        - sql
+        - start_time
+        - status
+        - timeColumns
+      type: object
+    SQLAnalyzeColumn:
+      properties:
+        column:
+          type: string
+        column_type:
+          type: string
+        database:
+          type: string
+        is_view:
+          type: boolean
+        table:
+          type: string
+      type: object
+    SQLAnalyzeResult:
+      properties:
+        has_aggr:
+          type: boolean
+        has_subquery:
+          type: boolean
+        has_table_join:
+          type: boolean
+        has_union:
+          type: boolean
+        is_streaming:
+          type: boolean
+        original_query:
+          type: string
+        query_type:
+          type: string
+        required_columns:
+          items:
+            $ref: "#/components/schemas/SQLAnalyzeColumn"
+          type: array
+        result_columns:
+          items:
+            $ref: "#/components/schemas/SQLAnalyzeColumn"
+          type: array
+        rewritten_query:
+          type: string
+      type: object
+    Sink:
+      properties:
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        description:
+          type: string
+        id:
+          type: string
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        name:
+          type: string
+        properties:
+          additionalProperties: {}
+          type: object
+        queries:
+          items:
+            type: string
+          type: array
+        type:
+          type: string
+      required:
+        - description
+        - id
+        - name
+        - properties
+        - queries
+        - type
+      type: object
+    SinkMetrics:
+      properties:
+        write_failure:
+          type: integer
+        write_success:
+          type: integer
+      type: object
+    SinkStat:
+      properties:
+        failure_count:
+          type: integer
+        success_count:
+          type: integer
+      type: object
+    SinkWithMetrics:
+      properties:
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        description:
+          type: string
+        id:
+          type: string
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        metrics:
+          $ref: "#/components/schemas/SinkMetrics"
+        name:
+          type: string
+        properties:
+          additionalProperties: {}
+          type: object
+        queries:
+          items:
+            type: string
+          type: array
+        type:
+          type: string
+      required:
+        - description
+        - id
+        - metrics
+        - name
+        - properties
+        - queries
+        - type
+      type: object
+    Source:
+      properties:
+        connection:
+          $ref: "#/components/schemas/Connection"
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        description:
+          type: string
+        id:
+          type: string
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        name:
+          type: string
+        properties:
+          additionalProperties: {}
+          type: object
+        start_time:
+          type: integer
+        type:
+          type: string
+      required:
+        - connection
+        - description
+        - id
+        - name
+        - properties
+        - start_time
+        - type
+      type: object
+    SourceMetrics:
+      properties:
+        failed_write_count:
+          type: integer
+        read_count:
+          type: integer
+        success_write_bytes:
+          type: integer
+        success_write_count:
+          type: integer
+      type: object
+    SourcePreviewRequest:
+      properties:
+        properties:
+          additionalProperties: {}
+          type: object
+        size:
+          type: integer
+        type:
+          type: string
+      type: object
+    SourceWithMetrics:
+      properties:
+        connection:
+          $ref: "#/components/schemas/Connection"
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        description:
+          type: string
+        id:
+          type: string
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        metrics:
+          $ref: "#/components/schemas/SourceMetrics"
+        name:
+          type: string
+        properties:
+          additionalProperties: {}
+          type: object
+        start_time:
+          type: integer
+        type:
+          type: string
+      required:
+        - connection
+        - description
+        - id
+        - metrics
+        - name
+        - properties
+        - start_time
+        - type
+      type: object
+    Stream:
+      properties:
+        columns:
+          items:
+            $ref: "#/components/schemas/ColumnsResp"
+          type: array
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        engine:
+          type: string
+        is_external:
+          type: boolean
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        logstore_retention_bytes:
+          type: integer
+        logstore_retention_ms:
+          type: integer
+        name:
+          type: string
+        stats:
+          $ref: "#/components/schemas/StreamStats"
+        ttl:
+          description: |-
+            ORDER_BY     string        `json:"order_by_expression"`
+            PATTITION_BY string        `json:"partition_by_expression"`
+          type: string
+      required:
+        - columns
+        - engine
+        - is_external
+        - logstore_retention_bytes
+        - logstore_retention_ms
+        - name
+        - ttl
+      type: object
+    StreamDef:
+      properties:
+        columns:
+          items:
+            $ref: "#/components/schemas/ColumnDef"
+          type: array
+        event_time_column:
+          type: string
+        event_time_timezone:
+          type: string
+        logstore_retention_bytes:
+          type: integer
+        logstore_retention_ms:
+          type: integer
+        name:
+          type: string
+        order_by_expression:
+          type: string
+        order_by_granularity:
+          type: string
+        partition_by_granularity:
+          type: string
+        replication_factor:
+          type: integer
+        shards:
+          type: integer
+        ttl_expression:
+          type: string
+      required:
+        - name
+      type: object
+    StreamMatchRequest:
+      properties:
+        events:
+          items:
+            $ref: "#/components/schemas/Event"
+          type: array
+      type: object
+    StreamSetting:
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      type: object
+    StreamStats:
+      properties:
+        historical_data_bytes:
+          type: integer
+        row_count:
+          type: integer
+        streaming_data_bytes:
+          type: integer
+      type: object
+    Throughput:
+      properties:
+        count:
+          description: EPS
+          type: number
+        value:
+          description: Throughput
+          type: number
+      type: object
+    TimeColumns:
+      properties:
+        eventTime:
+          type: integer
+        indexTime:
+          type: integer
+        windowEnd:
+          type: integer
+        windowStart:
+          type: integer
+      required:
+        - eventTime
+        - indexTime
+        - windowEnd
+        - windowStart
+      type: object
+    UDF:
+      properties:
+        arguments:
+          items:
+            $ref: "#/components/schemas/UDFArgument"
+          type: array
+        auth_context:
+          $ref: "#/components/schemas/UDFAuthContext"
+        auth_method:
+          type: string
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        name:
+          type: string
+        return_type:
+          type: string
+        type:
+          type: string
+        url:
+          type: string
+      type: object
+    UDFArgument:
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+      type: object
+    UDFAuthContext:
+      properties:
+        key_name:
+          type: string
+        key_value:
+          type: string
+      type: object
+    UpdateDashboardRequest:
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        panels:
+          items:
+            $ref: "#/components/schemas/dashboard.Panel"
+          type: array
+      required:
+        - name
+      type: object
+    UpdateSourceRequest:
+      properties:
+        connection_config:
+          $ref: "#/components/schemas/ConnectionConfig"
+        description:
+          type: string
+        name:
+          type: string
+        properties:
+          additionalProperties: {}
+          type: object
+      type: object
+    View:
+      properties:
+        columns:
+          items:
+            $ref: "#/components/schemas/ColumnsResp"
+          type: array
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        materialized:
+          type: boolean
+        name:
+          type: string
+        query:
+          type: string
+      required:
+        - columns
+      type: object
+    dashboard.Dashboard:
+      properties:
+        created_at:
+          type: string
+        created_by:
+          $ref: "#/components/schemas/Owner"
+        description:
+          type: string
+        id:
+          type: string
+        last_updated_at:
+          type: string
+        last_updated_by:
+          $ref: "#/components/schemas/Owner"
+        name:
+          type: string
+        panels:
+          items:
+            $ref: "#/components/schemas/dashboard.Panel"
+          type: array
+      required:
+        - description
+        - id
+        - name
+        - panels
+      type: object
+    dashboard.Panel:
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        position:
+          additionalProperties: {}
+          description: e.g. {"x":0,"y":0,"w":6,"h":2,"nextX":6,"nextY":2}
+          type: object
+        title:
+          type: string
+        viz_config:
+          additionalProperties: {}
+          description: |-
+            The JSON configuration of the viz
+            For chart, it is `{ "chart_type": "line", ...  }`
+            For markdown, it is `{ "favour": "github", ...  }`
+          type: object
+        viz_content:
+          description: |-
+            For chart, the viz_content is the SQL
+            For markdown, the viz_content is the markdown itself
+          type: string
+        viz_type:
+          description: e.g. `chart`, `markdown`
+          type: string
+      type: object
