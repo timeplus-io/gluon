@@ -26,6 +26,7 @@ requirements = [
     "six >= 1.10",
     "certifi",
     "websocket-client>=1.3.1",
+    "sseclient-py>=1.7.2",
     "rx>=3.2.0",
     "loguru>=0.6.0",
     "python-dateutil",

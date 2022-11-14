@@ -1,9 +1,9 @@
 import os
-import sseclient
 import json
 
 import timeplus_client
 from timeplus_client.rest import ApiException
+from timeplus.stream import QueryStreamV2
 from pprint import pprint
 
 api_key = os.environ.get("TIMEPLUS_API_KEY")
@@ -20,13 +20,14 @@ api_instance = timeplus_client.QueriesV1beta2Api(
     timeplus_client.ApiClient(configuration)
 )
 
-body = timeplus_client.CreateQueryRequestV1Beta2(sql="select 1")
+body = timeplus_client.CreateQueryRequestV1Beta2(sql="select * from iot")
 
 try:
     # create query
     api_response = api_instance.v1beta2_queries_post(body)
-    client = sseclient.SSEClient(api_response)
-    for event in client.events():
+    stream = QueryStreamV2(api_response)
+    for event in stream.events():
+        pprint(f"event : {event.event} ")
         pprint(json.loads(event.data))
 except ApiException as e:
     print(
