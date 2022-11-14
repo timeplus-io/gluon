@@ -28,10 +28,10 @@ try:
     api_response = api_instance.v1beta1_queries_post(body=body)
     pprint(api_response)
     stream = QueryStreamV1(configuration, api_response)
-    # stream.show_query_result()
+    # stream.show_result()
     pprint(stream.header())
 
-    stream.get_result_stream().pipe(ops.take(30)).subscribe(
+    stream.result().pipe(ops.take(10)).subscribe(
         on_next=lambda i: pprint(f"query result {i}"),
         on_error=lambda e: stream.stop(),
         on_completed=lambda: stream.stop(),

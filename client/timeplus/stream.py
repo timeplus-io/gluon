@@ -1,16 +1,14 @@
 from pprint import pprint
 import time
+import rx
+import json
 import dateutil.parser
 
 import sseclient
 from websocket import create_connection, WebSocketConnectionClosedException
 
+import timeplus_client
 from .type import Type
-
-import rx
-import json
-
-import traceback
 
 
 class QueryStreamV1:
@@ -28,16 +26,18 @@ class QueryStreamV1:
     def header(self):
         return self._response.result.header
 
-    # TODO : implement auto delete function
     def _delete(self):
-        pass
+        api_instance = timeplus_client.QueriesV1beta1Api(
+            timeplus_client.ApiClient(self._configuration)
+        )
+        api_instance.v1beta1_queries_id_delete(self._response.id)
 
     def stop(self, delete=True):
         self.stopped = True
         if delete:
             self._delete()
 
-    def show_query_result(self, count=10):
+    def show_result(self, count=10):
         ws = create_connection(
             self._ws_url,
             header=[f'X-Api-Key: {self._configuration.api_key["X-Api-Key"]}'],
@@ -95,7 +95,7 @@ class QueryStreamV1:
 
         return __query_op
 
-    def get_result_stream(self, timeout=0):
+    def result(self, timeout=0):
         strem_query_ob = rx.create(self._query_op(timeout=timeout))
         return strem_query_ob
 
