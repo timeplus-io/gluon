@@ -1,3 +1,5 @@
+## Note : following sample are for 0.3 and before which is obsolete, refer to [here](https://github.com/timeplus-io/gluon/tree/feature/57-using-swagger-codegen-to-build-sdk/client) for 1.0+ version doc
+
 ## Timeplus API Python SDK
 
 Timeplus Python SDK
