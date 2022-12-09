@@ -64,6 +64,8 @@ worksapce = os.environ.get("TIMEPLUS_WORKSAPCE")
 
 # Configure API key and address
 configuration = timeplus_client.Configuration()
+
+# Address of timeplus for example, https://beta.timeplus.com
 configuration.address(api_address)
 configuration.apikey(api_key)
 configuration.workspace(worksapce)
