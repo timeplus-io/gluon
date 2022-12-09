@@ -1,17 +1,18 @@
-# swagger_client.StreamsV1beta1Api
+# timeplus_client.StreamsV1beta1Api
 
-All URIs are relative to *https//beta.timeplus.cloud/{workspace-id}/api*
+All URIs are relative to _https//beta.timeplus.cloud/{workspace-id}/api_
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**v1beta1_streams_external_post**](StreamsV1beta1Api.md#v1beta1_streams_external_post) | **POST** /v1beta1/streams/external | create an external stream.
-[**v1beta1_streams_get**](StreamsV1beta1Api.md#v1beta1_streams_get) | **GET** /v1beta1/streams | list streams.
-[**v1beta1_streams_name_delete**](StreamsV1beta1Api.md#v1beta1_streams_name_delete) | **DELETE** /v1beta1/streams/{name} | delete a stream.
-[**v1beta1_streams_name_ingest_post**](StreamsV1beta1Api.md#v1beta1_streams_name_ingest_post) | **POST** /v1beta1/streams/{name}/ingest | ingest data.
-[**v1beta1_streams_name_put**](StreamsV1beta1Api.md#v1beta1_streams_name_put) | **PUT** /v1beta1/streams/{name} | Update a stream.
-[**v1beta1_streams_post**](StreamsV1beta1Api.md#v1beta1_streams_post) | **POST** /v1beta1/streams | create a stream.
+| Method                                                                                        | HTTP request                            | Description                |
+| --------------------------------------------------------------------------------------------- | --------------------------------------- | -------------------------- |
+| [**v1beta1_streams_external_post**](StreamsV1beta1Api.md#v1beta1_streams_external_post)       | **POST** /v1beta1/streams/external      | create an external stream. |
+| [**v1beta1_streams_get**](StreamsV1beta1Api.md#v1beta1_streams_get)                           | **GET** /v1beta1/streams                | list streams.              |
+| [**v1beta1_streams_name_delete**](StreamsV1beta1Api.md#v1beta1_streams_name_delete)           | **DELETE** /v1beta1/streams/{name}      | delete a stream.           |
+| [**v1beta1_streams_name_ingest_post**](StreamsV1beta1Api.md#v1beta1_streams_name_ingest_post) | **POST** /v1beta1/streams/{name}/ingest | ingest data.               |
+| [**v1beta1_streams_name_put**](StreamsV1beta1Api.md#v1beta1_streams_name_put)                 | **PUT** /v1beta1/streams/{name}         | Update a stream.           |
+| [**v1beta1_streams_post**](StreamsV1beta1Api.md#v1beta1_streams_post)                         | **POST** /v1beta1/streams               | create a stream.           |
 
 # **v1beta1_streams_external_post**
+
 > ExternalStreamDef v1beta1_streams_external_post(body)
 
 create an external stream.
@@ -19,22 +20,23 @@ create an external stream.
 Create an external stream.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.StreamsV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.ExternalStreamDef() # ExternalStreamDef | create external stream request parameters
+api_instance = timeplus_client.StreamsV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.ExternalStreamDef() # ExternalStreamDef | create external stream request parameters
 
 try:
     # create an external stream.
@@ -46,9 +48,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**ExternalStreamDef**](ExternalStreamDef.md)| create external stream request parameters | 
+| Name     | Type                                          | Description                               | Notes |
+| -------- | --------------------------------------------- | ----------------------------------------- | ----- |
+| **body** | [**ExternalStreamDef**](ExternalStreamDef.md) | create external stream request parameters |
 
 ### Return type
 
@@ -60,12 +62,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_streams_get**
+
 > list[Stream] v1beta1_streams_get()
 
 list streams.
@@ -73,21 +76,22 @@ list streams.
 Get all streams.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.StreamsV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.StreamsV1beta1Api(timeplus_client.ApiClient(configuration))
 
 try:
     # list streams.
@@ -98,6 +102,7 @@ except ApiException as e:
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -110,12 +115,13 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_streams_name_delete**
+
 > v1beta1_streams_name_delete(name)
 
 delete a stream.
@@ -123,21 +129,22 @@ delete a stream.
 Delete the stream with the given name.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.StreamsV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.StreamsV1beta1Api(timeplus_client.ApiClient(configuration))
 name = 'name_example' # str | stream name
 
 try:
@@ -149,9 +156,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **name** | **str**| stream name | 
+| Name     | Type    | Description | Notes |
+| -------- | ------- | ----------- | ----- |
+| **name** | **str** | stream name |
 
 ### Return type
 
@@ -163,12 +170,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_streams_name_ingest_post**
+
 > v1beta1_streams_name_ingest_post(body, name)
 
 ingest data.
@@ -176,22 +184,23 @@ ingest data.
 Ingest data to a stream with the given name.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.StreamsV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.IngestData() # IngestData | ingest data
+api_instance = timeplus_client.StreamsV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.IngestData() # IngestData | ingest data
 name = 'name_example' # str | stream name
 
 try:
@@ -203,10 +212,10 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**IngestData**](IngestData.md)| ingest data | 
- **name** | **str**| stream name | 
+| Name     | Type                            | Description | Notes |
+| -------- | ------------------------------- | ----------- | ----- |
+| **body** | [**IngestData**](IngestData.md) | ingest data |
+| **name** | **str**                         | stream name |
 
 ### Return type
 
@@ -218,12 +227,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_streams_name_put**
+
 > v1beta1_streams_name_put(body, name)
 
 Update a stream.
@@ -231,22 +241,23 @@ Update a stream.
 Update the specific stream with the given name. Currently only retention policy and TTL are supported.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.StreamsV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.StreamDef() # StreamDef | update stream request parameters
+api_instance = timeplus_client.StreamsV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.StreamDef() # StreamDef | update stream request parameters
 name = 'name_example' # str | name of the stream
 
 try:
@@ -258,10 +269,10 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**StreamDef**](StreamDef.md)| update stream request parameters | 
- **name** | **str**| name of the stream | 
+| Name     | Type                          | Description                      | Notes |
+| -------- | ----------------------------- | -------------------------------- | ----- |
+| **body** | [**StreamDef**](StreamDef.md) | update stream request parameters |
+| **name** | **str**                       | name of the stream               |
 
 ### Return type
 
@@ -273,12 +284,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_streams_post**
+
 > StreamDef v1beta1_streams_post(body)
 
 create a stream.
@@ -286,22 +298,23 @@ create a stream.
 Create a stream.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.StreamsV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.StreamDef() # StreamDef | create stream request parameters
+api_instance = timeplus_client.StreamsV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.StreamDef() # StreamDef | create stream request parameters
 
 try:
     # create a stream.
@@ -313,9 +326,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**StreamDef**](StreamDef.md)| create stream request parameters | 
+| Name     | Type                          | Description                      | Notes |
+| -------- | ----------------------------- | -------------------------------- | ----- |
+| **body** | [**StreamDef**](StreamDef.md) | create stream request parameters |
 
 ### Return type
 
@@ -327,8 +340,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

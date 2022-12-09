@@ -1,20 +1,21 @@
-# swagger_client.QueriesV1beta1Api
+# timeplus_client.QueriesV1beta1Api
 
-All URIs are relative to *https//beta.timeplus.cloud/{workspace-id}/api*
+All URIs are relative to _https//beta.timeplus.cloud/{workspace-id}/api_
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**v1beta1_format_post**](QueriesV1beta1Api.md#v1beta1_format_post) | **POST** /v1beta1/format | format a query.
-[**v1beta1_queries_get**](QueriesV1beta1Api.md#v1beta1_queries_get) | **GET** /v1beta1/queries | list queries.
-[**v1beta1_queries_id_cancel_post**](QueriesV1beta1Api.md#v1beta1_queries_id_cancel_post) | **POST** /v1beta1/queries/{id}/cancel | cancel a query.
-[**v1beta1_queries_id_delete**](QueriesV1beta1Api.md#v1beta1_queries_id_delete) | **DELETE** /v1beta1/queries/{id} | delete a query.
-[**v1beta1_queries_id_get**](QueriesV1beta1Api.md#v1beta1_queries_id_get) | **GET** /v1beta1/queries/{id} | get a query.
-[**v1beta1_queries_id_pipeline_get**](QueriesV1beta1Api.md#v1beta1_queries_id_pipeline_get) | **GET** /v1beta1/queries/{id}/pipeline | get the pipeline for a query
-[**v1beta1_queries_post**](QueriesV1beta1Api.md#v1beta1_queries_post) | **POST** /v1beta1/queries | execute a query.
-[**v1beta1_sqlanalyze_post**](QueriesV1beta1Api.md#v1beta1_sqlanalyze_post) | **POST** /v1beta1/sqlanalyze | analyze sql
-[**ws_queries_id_get**](QueriesV1beta1Api.md#ws_queries_id_get) | **GET** /ws/queries/{id} | stream query result via websocket [THIS API DOESN&#x27;T HAVE &#x60;v1beta1&#x60; IN PATH]
+| Method                                                                                      | HTTP request                           | Description                                                                                |
+| ------------------------------------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [**v1beta1_format_post**](QueriesV1beta1Api.md#v1beta1_format_post)                         | **POST** /v1beta1/format               | format a query.                                                                            |
+| [**v1beta1_queries_get**](QueriesV1beta1Api.md#v1beta1_queries_get)                         | **GET** /v1beta1/queries               | list queries.                                                                              |
+| [**v1beta1_queries_id_cancel_post**](QueriesV1beta1Api.md#v1beta1_queries_id_cancel_post)   | **POST** /v1beta1/queries/{id}/cancel  | cancel a query.                                                                            |
+| [**v1beta1_queries_id_delete**](QueriesV1beta1Api.md#v1beta1_queries_id_delete)             | **DELETE** /v1beta1/queries/{id}       | delete a query.                                                                            |
+| [**v1beta1_queries_id_get**](QueriesV1beta1Api.md#v1beta1_queries_id_get)                   | **GET** /v1beta1/queries/{id}          | get a query.                                                                               |
+| [**v1beta1_queries_id_pipeline_get**](QueriesV1beta1Api.md#v1beta1_queries_id_pipeline_get) | **GET** /v1beta1/queries/{id}/pipeline | get the pipeline for a query                                                               |
+| [**v1beta1_queries_post**](QueriesV1beta1Api.md#v1beta1_queries_post)                       | **POST** /v1beta1/queries              | execute a query.                                                                           |
+| [**v1beta1_sqlanalyze_post**](QueriesV1beta1Api.md#v1beta1_sqlanalyze_post)                 | **POST** /v1beta1/sqlanalyze           | analyze sql                                                                                |
+| [**ws_queries_id_get**](QueriesV1beta1Api.md#ws_queries_id_get)                             | **GET** /ws/queries/{id}               | stream query result via websocket [THIS API DOESN&#x27;T HAVE &#x60;v1beta1&#x60; IN PATH] |
 
 # **v1beta1_format_post**
+
 > FormatQueryResponse v1beta1_format_post(body)
 
 format a query.
@@ -22,22 +23,23 @@ format a query.
 Format the given query and make it easy to read.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.FormatQueryRequest() # FormatQueryRequest | the query SQL to be formatted
+api_instance = timeplus_client.QueriesV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.FormatQueryRequest() # FormatQueryRequest | the query SQL to be formatted
 
 try:
     # format a query.
@@ -49,9 +51,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**FormatQueryRequest**](FormatQueryRequest.md)| the query SQL to be formatted | 
+| Name     | Type                                            | Description                   | Notes |
+| -------- | ----------------------------------------------- | ----------------------------- | ----- |
+| **body** | [**FormatQueryRequest**](FormatQueryRequest.md) | the query SQL to be formatted |
 
 ### Return type
 
@@ -63,12 +65,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_queries_get**
+
 > list[QueryWithMetrics] v1beta1_queries_get()
 
 list queries.
@@ -76,21 +79,22 @@ list queries.
 Get all queries.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.QueriesV1beta1Api(timeplus_client.ApiClient(configuration))
 
 try:
     # list queries.
@@ -101,6 +105,7 @@ except ApiException as e:
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -113,12 +118,13 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_queries_id_cancel_post**
+
 > v1beta1_queries_id_cancel_post(id)
 
 cancel a query.
@@ -126,21 +132,22 @@ cancel a query.
 Cancel the query with the given ID. If given query is not running, the request will do nothing. Otherwise, the query will be canceled and the `status` will be set to `canceled`
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.QueriesV1beta1Api(timeplus_client.ApiClient(configuration))
 id = 'id_example' # str | query ID
 
 try:
@@ -152,9 +159,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| query ID | 
+| Name   | Type    | Description | Notes |
+| ------ | ------- | ----------- | ----- |
+| **id** | **str** | query ID    |
 
 ### Return type
 
@@ -166,12 +173,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_queries_id_delete**
+
 > v1beta1_queries_id_delete(id)
 
 delete a query.
@@ -179,21 +187,22 @@ delete a query.
 Delete the query with the given ID.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.QueriesV1beta1Api(timeplus_client.ApiClient(configuration))
 id = 'id_example' # str | query ID
 
 try:
@@ -205,9 +214,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| query ID | 
+| Name   | Type    | Description | Notes |
+| ------ | ------- | ----------- | ----- |
+| **id** | **str** | query ID    |
 
 ### Return type
 
@@ -219,12 +228,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_queries_id_get**
+
 > QueryWithMetrics v1beta1_queries_id_get(id)
 
 get a query.
@@ -232,21 +242,22 @@ get a query.
 Get the query with the given ID.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.QueriesV1beta1Api(timeplus_client.ApiClient(configuration))
 id = 'id_example' # str | query ID
 
 try:
@@ -259,9 +270,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| query ID | 
+| Name   | Type    | Description | Notes |
+| ------ | ------- | ----------- | ----- |
+| **id** | **str** | query ID    |
 
 ### Return type
 
@@ -273,12 +284,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_queries_id_pipeline_get**
+
 > QueryPipeline v1beta1_queries_id_pipeline_get(id)
 
 get the pipeline for a query
@@ -286,21 +298,22 @@ get the pipeline for a query
 get the pipeline for a query
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.QueriesV1beta1Api(timeplus_client.ApiClient(configuration))
 id = 'id_example' # str | query ID
 
 try:
@@ -313,9 +326,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| query ID | 
+| Name   | Type    | Description | Notes |
+| ------ | ------- | ----------- | ----- |
+| **id** | **str** | query ID    |
 
 ### Return type
 
@@ -327,12 +340,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_queries_post**
+
 > CreateQueryResponse v1beta1_queries_post(body)
 
 execute a query.
@@ -340,22 +354,23 @@ execute a query.
 execute a query.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.CreateQueryRequestV1Beta1() # CreateQueryRequestV1Beta1 | query request parameters
+api_instance = timeplus_client.QueriesV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.CreateQueryRequestV1Beta1() # CreateQueryRequestV1Beta1 | query request parameters
 
 try:
     # execute a query.
@@ -367,9 +382,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**CreateQueryRequestV1Beta1**](CreateQueryRequestV1Beta1.md)| query request parameters | 
+| Name     | Type                                                          | Description              | Notes |
+| -------- | ------------------------------------------------------------- | ------------------------ | ----- |
+| **body** | [**CreateQueryRequestV1Beta1**](CreateQueryRequestV1Beta1.md) | query request parameters |
 
 ### Return type
 
@@ -381,12 +396,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_sqlanalyze_post**
+
 > SQLAnalyzeResult v1beta1_sqlanalyze_post(body)
 
 analyze sql
@@ -394,22 +410,23 @@ analyze sql
 analyze sql
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.AnalyzeSQLRequest() # AnalyzeSQLRequest | sql request parameters
+api_instance = timeplus_client.QueriesV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.AnalyzeSQLRequest() # AnalyzeSQLRequest | sql request parameters
 
 try:
     # analyze sql
@@ -421,9 +438,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**AnalyzeSQLRequest**](AnalyzeSQLRequest.md)| sql request parameters | 
+| Name     | Type                                          | Description            | Notes |
+| -------- | --------------------------------------------- | ---------------------- | ----- |
+| **body** | [**AnalyzeSQLRequest**](AnalyzeSQLRequest.md) | sql request parameters |
 
 ### Return type
 
@@ -435,12 +452,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **ws_queries_id_get**
+
 > ws_queries_id_get(id)
 
 stream query result via websocket [THIS API DOESN'T HAVE `v1beta1` IN PATH]
@@ -448,15 +466,16 @@ stream query result via websocket [THIS API DOESN'T HAVE `v1beta1` IN PATH]
 stream query result via websocket
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta1Api()
+api_instance = timeplus_client.QueriesV1beta1Api()
 id = 'id_example' # str | query id
 
 try:
@@ -468,9 +487,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| query id | 
+| Name   | Type    | Description | Notes |
+| ------ | ------- | ----------- | ----- |
+| **id** | **str** | query id    |
 
 ### Return type
 
@@ -482,8 +501,7 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: text/plain
+- **Content-Type**: Not defined
+- **Accept**: text/plain
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

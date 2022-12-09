@@ -1,1 +1,1 @@
-__version__ = "0.3.0"   # noqa: F401
+__version__ = "1.0.0"   # noqa: F401
