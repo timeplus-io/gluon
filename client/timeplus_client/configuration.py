@@ -249,3 +249,20 @@ class Configuration(six.with_metaclass(TypeWithDefault, object)):
             "Version of the API: 1.0.0-oas3\n"
             "SDK Package Version: 1.0.0".format(env=sys.platform, pyversion=sys.version)
         )
+
+    def apikey(self, key):
+        self.api_key["X-Api-Key"] = key
+
+    def workspace(self, name):
+        self.workspace = name
+        if not self.address:
+            self.host = f"https//beta.timeplus.cloud/{self.workspace}/api"
+        else:
+            self.host = f"{self.address}/{self.workspace}/api"
+
+    def address(self, url):
+        self.address = url
+        if self.workspace:
+            self.host = f"{self.address}/{self.workspace}/api"
+        else:
+            self.host = f"{self.address}/default/api"

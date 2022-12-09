@@ -1,12 +1,13 @@
-# swagger_client.QueriesV1beta2Api
+# timeplus_client.QueriesV1beta2Api
 
-All URIs are relative to *https//beta.timeplus.cloud/{workspace-id}/api*
+All URIs are relative to _https//beta.timeplus.cloud/{workspace-id}/api_
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**v1beta2_queries_post**](QueriesV1beta2Api.md#v1beta2_queries_post) | **POST** /v1beta2/queries | execute a query.
+| Method                                                                | HTTP request              | Description      |
+| --------------------------------------------------------------------- | ------------------------- | ---------------- |
+| [**v1beta2_queries_post**](QueriesV1beta2Api.md#v1beta2_queries_post) | **POST** /v1beta2/queries | execute a query. |
 
 # **v1beta2_queries_post**
+
 > v1beta2_queries_post(body)
 
 execute a query.
@@ -14,22 +15,23 @@ execute a query.
 execute a query.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.QueriesV1beta2Api(swagger_client.ApiClient(configuration))
-body = swagger_client.CreateQueryRequestV1Beta2() # CreateQueryRequestV1Beta2 | query request parameters
+api_instance = timeplus_client.QueriesV1beta2Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.CreateQueryRequestV1Beta2() # CreateQueryRequestV1Beta2 | query request parameters
 
 try:
     # execute a query.
@@ -40,9 +42,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**CreateQueryRequestV1Beta2**](CreateQueryRequestV1Beta2.md)| query request parameters | 
+| Name     | Type                                                          | Description              | Notes |
+| -------- | ------------------------------------------------------------- | ------------------------ | ----- |
+| **body** | [**CreateQueryRequestV1Beta2**](CreateQueryRequestV1Beta2.md) | query request parameters |
 
 ### Return type
 
@@ -54,8 +56,7 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

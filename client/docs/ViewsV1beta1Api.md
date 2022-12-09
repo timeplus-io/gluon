@@ -1,14 +1,15 @@
-# swagger_client.ViewsV1beta1Api
+# timeplus_client.ViewsV1beta1Api
 
-All URIs are relative to *https//beta.timeplus.cloud/{workspace-id}/api*
+All URIs are relative to _https//beta.timeplus.cloud/{workspace-id}/api_
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**v1beta1_views_get**](ViewsV1beta1Api.md#v1beta1_views_get) | **GET** /v1beta1/views | list views.
-[**v1beta1_views_name_delete**](ViewsV1beta1Api.md#v1beta1_views_name_delete) | **DELETE** /v1beta1/views/{name} | delete a view.
-[**v1beta1_views_post**](ViewsV1beta1Api.md#v1beta1_views_post) | **POST** /v1beta1/views | create a view.
+| Method                                                                        | HTTP request                     | Description    |
+| ----------------------------------------------------------------------------- | -------------------------------- | -------------- |
+| [**v1beta1_views_get**](ViewsV1beta1Api.md#v1beta1_views_get)                 | **GET** /v1beta1/views           | list views.    |
+| [**v1beta1_views_name_delete**](ViewsV1beta1Api.md#v1beta1_views_name_delete) | **DELETE** /v1beta1/views/{name} | delete a view. |
+| [**v1beta1_views_post**](ViewsV1beta1Api.md#v1beta1_views_post)               | **POST** /v1beta1/views          | create a view. |
 
 # **v1beta1_views_get**
+
 > list[View] v1beta1_views_get()
 
 list views.
@@ -16,21 +17,22 @@ list views.
 Get all views.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.ViewsV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.ViewsV1beta1Api(timeplus_client.ApiClient(configuration))
 
 try:
     # list views.
@@ -41,6 +43,7 @@ except ApiException as e:
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -53,12 +56,13 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_views_name_delete**
+
 > v1beta1_views_name_delete(name)
 
 delete a view.
@@ -66,21 +70,22 @@ delete a view.
 Delete the view with the given name.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.ViewsV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.ViewsV1beta1Api(timeplus_client.ApiClient(configuration))
 name = 'name_example' # str | view name
 
 try:
@@ -92,9 +97,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **name** | **str**| view name | 
+| Name     | Type    | Description | Notes |
+| -------- | ------- | ----------- | ----- |
+| **name** | **str** | view name   |
 
 ### Return type
 
@@ -106,12 +111,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_views_post**
+
 > View v1beta1_views_post(body)
 
 create a view.
@@ -119,22 +125,23 @@ create a view.
 Create a view.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.ViewsV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.View() # View | create view request parameters
+api_instance = timeplus_client.ViewsV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.View() # View | create view request parameters
 
 try:
     # create a view.
@@ -146,9 +153,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**View**](View.md)| create view request parameters | 
+| Name     | Type                | Description                    | Notes |
+| -------- | ------------------- | ------------------------------ | ----- |
+| **body** | [**View**](View.md) | create view request parameters |
 
 ### Return type
 
@@ -160,8 +167,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

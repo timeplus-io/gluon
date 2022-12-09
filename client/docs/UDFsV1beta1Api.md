@@ -1,15 +1,16 @@
-# swagger_client.UDFsV1beta1Api
+# timeplus_client.UDFsV1beta1Api
 
-All URIs are relative to *https//beta.timeplus.cloud/{workspace-id}/api*
+All URIs are relative to _https//beta.timeplus.cloud/{workspace-id}/api_
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**v1beta1_udfs_get**](UDFsV1beta1Api.md#v1beta1_udfs_get) | **GET** /v1beta1/udfs | list udf.
-[**v1beta1_udfs_name_delete**](UDFsV1beta1Api.md#v1beta1_udfs_name_delete) | **DELETE** /v1beta1/udfs/{name} | delete a udf.
-[**v1beta1_udfs_name_get**](UDFsV1beta1Api.md#v1beta1_udfs_name_get) | **GET** /v1beta1/udfs/{name} | get a udf.
-[**v1beta1_udfs_post**](UDFsV1beta1Api.md#v1beta1_udfs_post) | **POST** /v1beta1/udfs | create a udf.
+| Method                                                                     | HTTP request                    | Description   |
+| -------------------------------------------------------------------------- | ------------------------------- | ------------- |
+| [**v1beta1_udfs_get**](UDFsV1beta1Api.md#v1beta1_udfs_get)                 | **GET** /v1beta1/udfs           | list udf.     |
+| [**v1beta1_udfs_name_delete**](UDFsV1beta1Api.md#v1beta1_udfs_name_delete) | **DELETE** /v1beta1/udfs/{name} | delete a udf. |
+| [**v1beta1_udfs_name_get**](UDFsV1beta1Api.md#v1beta1_udfs_name_get)       | **GET** /v1beta1/udfs/{name}    | get a udf.    |
+| [**v1beta1_udfs_post**](UDFsV1beta1Api.md#v1beta1_udfs_post)               | **POST** /v1beta1/udfs          | create a udf. |
 
 # **v1beta1_udfs_get**
+
 > list[UDF] v1beta1_udfs_get()
 
 list udf.
@@ -17,21 +18,22 @@ list udf.
 Get all udf.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.UDFsV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.UDFsV1beta1Api(timeplus_client.ApiClient(configuration))
 
 try:
     # list udf.
@@ -42,6 +44,7 @@ except ApiException as e:
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -54,12 +57,13 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_udfs_name_delete**
+
 > v1beta1_udfs_name_delete(name)
 
 delete a udf.
@@ -67,21 +71,22 @@ delete a udf.
 Delete the udf with the given name.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.UDFsV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.UDFsV1beta1Api(timeplus_client.ApiClient(configuration))
 name = 'name_example' # str | udf name
 
 try:
@@ -93,9 +98,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **name** | **str**| udf name | 
+| Name     | Type    | Description | Notes |
+| -------- | ------- | ----------- | ----- |
+| **name** | **str** | udf name    |
 
 ### Return type
 
@@ -107,12 +112,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_udfs_name_get**
+
 > UDF v1beta1_udfs_name_get(name)
 
 get a udf.
@@ -120,21 +126,22 @@ get a udf.
 get the udf with the given name.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.UDFsV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.UDFsV1beta1Api(timeplus_client.ApiClient(configuration))
 name = 'name_example' # str | udf name
 
 try:
@@ -147,9 +154,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **name** | **str**| udf name | 
+| Name     | Type    | Description | Notes |
+| -------- | ------- | ----------- | ----- |
+| **name** | **str** | udf name    |
 
 ### Return type
 
@@ -161,12 +168,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_udfs_post**
+
 > UDF v1beta1_udfs_post(body)
 
 create a udf.
@@ -174,22 +182,23 @@ create a udf.
 Create a udf.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.UDFsV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.UDF() # UDF | create udf request parameters
+api_instance = timeplus_client.UDFsV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.UDF() # UDF | create udf request parameters
 
 try:
     # create a udf.
@@ -201,9 +210,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**UDF**](UDF.md)| create udf request parameters | 
+| Name     | Type              | Description                   | Notes |
+| -------- | ----------------- | ----------------------------- | ----- |
+| **body** | [**UDF**](UDF.md) | create udf request parameters |
 
 ### Return type
 
@@ -215,8 +224,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-

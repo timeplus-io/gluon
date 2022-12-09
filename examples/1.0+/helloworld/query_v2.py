@@ -7,13 +7,15 @@ from timeplus.stream import QueryStreamV2
 from pprint import pprint
 
 api_key = os.environ.get("TIMEPLUS_API_KEY")
-api_address = os.environ.get("TIMEPLUS_ADDRESS")
+api_address = os.environ.get("TIMEPLUS_HOST")
+worksapce = os.environ.get("TIMEPLUS_WORKSAPCE")
 
 
 # Configure API key and address
 configuration = timeplus_client.Configuration()
-configuration.api_key["X-Api-Key"] = api_key
-configuration.host = f"{api_address}/api"
+configuration.address(api_address)
+configuration.apikey(api_key)
+configuration.workspace(worksapce)
 
 # create an instance of the API class
 api_instance = timeplus_client.QueriesV1beta2Api(

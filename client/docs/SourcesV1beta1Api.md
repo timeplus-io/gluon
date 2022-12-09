@@ -1,22 +1,23 @@
-# swagger_client.SourcesV1beta1Api
+# timeplus_client.SourcesV1beta1Api
 
-All URIs are relative to *https//beta.timeplus.cloud/{workspace-id}/api*
+All URIs are relative to _https//beta.timeplus.cloud/{workspace-id}/api_
 
-Method | HTTP request | Description
-------------- | ------------- | -------------
-[**v1beta1_source_infer_post**](SourcesV1beta1Api.md#v1beta1_source_infer_post) | **POST** /v1beta1/source/infer | infer schema from an existing event
-[**v1beta1_source_match_post**](SourcesV1beta1Api.md#v1beta1_source_match_post) | **POST** /v1beta1/source/match | return streams match provided events
-[**v1beta1_source_preview_post**](SourcesV1beta1Api.md#v1beta1_source_preview_post) | **POST** /v1beta1/source/preview | preview a source.
-[**v1beta1_source_upload_post**](SourcesV1beta1Api.md#v1beta1_source_upload_post) | **POST** /v1beta1/source/upload | upload a file
-[**v1beta1_sources_get**](SourcesV1beta1Api.md#v1beta1_sources_get) | **GET** /v1beta1/sources | list sources.
-[**v1beta1_sources_id_delete**](SourcesV1beta1Api.md#v1beta1_sources_id_delete) | **DELETE** /v1beta1/sources/{id} | delete a source.
-[**v1beta1_sources_id_get**](SourcesV1beta1Api.md#v1beta1_sources_id_get) | **GET** /v1beta1/sources/{id} | get a source.
-[**v1beta1_sources_id_put**](SourcesV1beta1Api.md#v1beta1_sources_id_put) | **PUT** /v1beta1/sources/{id} | Update a source.
-[**v1beta1_sources_id_start_post**](SourcesV1beta1Api.md#v1beta1_sources_id_start_post) | **POST** /v1beta1/sources/{id}/start | start a source.
-[**v1beta1_sources_id_stop_post**](SourcesV1beta1Api.md#v1beta1_sources_id_stop_post) | **POST** /v1beta1/sources/{id}/stop | stop a source.
-[**v1beta1_sources_post**](SourcesV1beta1Api.md#v1beta1_sources_post) | **POST** /v1beta1/sources | create a source.
+| Method                                                                                  | HTTP request                         | Description                          |
+| --------------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------ |
+| [**v1beta1_source_infer_post**](SourcesV1beta1Api.md#v1beta1_source_infer_post)         | **POST** /v1beta1/source/infer       | infer schema from an existing event  |
+| [**v1beta1_source_match_post**](SourcesV1beta1Api.md#v1beta1_source_match_post)         | **POST** /v1beta1/source/match       | return streams match provided events |
+| [**v1beta1_source_preview_post**](SourcesV1beta1Api.md#v1beta1_source_preview_post)     | **POST** /v1beta1/source/preview     | preview a source.                    |
+| [**v1beta1_source_upload_post**](SourcesV1beta1Api.md#v1beta1_source_upload_post)       | **POST** /v1beta1/source/upload      | upload a file                        |
+| [**v1beta1_sources_get**](SourcesV1beta1Api.md#v1beta1_sources_get)                     | **GET** /v1beta1/sources             | list sources.                        |
+| [**v1beta1_sources_id_delete**](SourcesV1beta1Api.md#v1beta1_sources_id_delete)         | **DELETE** /v1beta1/sources/{id}     | delete a source.                     |
+| [**v1beta1_sources_id_get**](SourcesV1beta1Api.md#v1beta1_sources_id_get)               | **GET** /v1beta1/sources/{id}        | get a source.                        |
+| [**v1beta1_sources_id_put**](SourcesV1beta1Api.md#v1beta1_sources_id_put)               | **PUT** /v1beta1/sources/{id}        | Update a source.                     |
+| [**v1beta1_sources_id_start_post**](SourcesV1beta1Api.md#v1beta1_sources_id_start_post) | **POST** /v1beta1/sources/{id}/start | start a source.                      |
+| [**v1beta1_sources_id_stop_post**](SourcesV1beta1Api.md#v1beta1_sources_id_stop_post)   | **POST** /v1beta1/sources/{id}/stop  | stop a source.                       |
+| [**v1beta1_sources_post**](SourcesV1beta1Api.md#v1beta1_sources_post)                   | **POST** /v1beta1/sources            | create a source.                     |
 
 # **v1beta1_source_infer_post**
+
 > list[EventInferResponse] v1beta1_source_infer_post(body)
 
 infer schema from an existing event
@@ -24,22 +25,23 @@ infer schema from an existing event
 infer schema from an existing event
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.EventInferRequest() # EventInferRequest | events used to infer schema
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.EventInferRequest() # EventInferRequest | events used to infer schema
 
 try:
     # infer schema from an existing event
@@ -51,9 +53,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**EventInferRequest**](EventInferRequest.md)| events used to infer schema | 
+| Name     | Type                                          | Description                 | Notes |
+| -------- | --------------------------------------------- | --------------------------- | ----- |
+| **body** | [**EventInferRequest**](EventInferRequest.md) | events used to infer schema |
 
 ### Return type
 
@@ -65,12 +67,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_source_match_post**
+
 > list[str] v1beta1_source_match_post(body)
 
 return streams match provided events
@@ -78,22 +81,23 @@ return streams match provided events
 return streams match provided events
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.StreamMatchRequest() # StreamMatchRequest | events to match
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.StreamMatchRequest() # StreamMatchRequest | events to match
 
 try:
     # return streams match provided events
@@ -105,9 +109,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**StreamMatchRequest**](StreamMatchRequest.md)| events to match | 
+| Name     | Type                                            | Description     | Notes |
+| -------- | ----------------------------------------------- | --------------- | ----- |
+| **body** | [**StreamMatchRequest**](StreamMatchRequest.md) | events to match |
 
 ### Return type
 
@@ -119,12 +123,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_source_preview_post**
+
 > list[Event] v1beta1_source_preview_post(body)
 
 preview a source.
@@ -132,22 +137,23 @@ preview a source.
 Get sample events from the source with the given ID.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.SourcePreviewRequest() # SourcePreviewRequest | source propeties for preview
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.SourcePreviewRequest() # SourcePreviewRequest | source propeties for preview
 
 try:
     # preview a source.
@@ -159,9 +165,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**SourcePreviewRequest**](SourcePreviewRequest.md)| source propeties for preview | 
+| Name     | Type                                                | Description                  | Notes |
+| -------- | --------------------------------------------------- | ---------------------------- | ----- |
+| **body** | [**SourcePreviewRequest**](SourcePreviewRequest.md) | source propeties for preview |
 
 ### Return type
 
@@ -173,12 +179,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_source_upload_post**
+
 > FileUploadResponse v1beta1_source_upload_post(file)
 
 upload a file
@@ -186,22 +193,23 @@ upload a file
 Upload a file to the system.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
-file = 'file_example' # str | 
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
+file = 'file_example' # str |
 
 try:
     # upload a file
@@ -213,9 +221,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **file** | **str**|  | 
+| Name     | Type    | Description | Notes |
+| -------- | ------- | ----------- | ----- |
+| **file** | **str** |             |
 
 ### Return type
 
@@ -227,12 +235,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/x-www-form-urlencoded
- - **Accept**: application/json
+- **Content-Type**: application/x-www-form-urlencoded
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_sources_get**
+
 > list[Source] v1beta1_sources_get()
 
 list sources.
@@ -240,21 +249,22 @@ list sources.
 Get all sources.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
 
 try:
     # list sources.
@@ -265,6 +275,7 @@ except ApiException as e:
 ```
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -277,12 +288,13 @@ This endpoint does not need any parameter.
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_sources_id_delete**
+
 > v1beta1_sources_id_delete(id)
 
 delete a source.
@@ -290,21 +302,22 @@ delete a source.
 Delete the source with the given ID.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
 id = 'id_example' # str | source ID
 
 try:
@@ -316,9 +329,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| source ID | 
+| Name   | Type    | Description | Notes |
+| ------ | ------- | ----------- | ----- |
+| **id** | **str** | source ID   |
 
 ### Return type
 
@@ -330,12 +343,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_sources_id_get**
+
 > SourceWithMetrics v1beta1_sources_id_get(id)
 
 get a source.
@@ -343,21 +357,22 @@ get a source.
 Get a source with the given ID.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
 id = 'id_example' # str | source ID
 
 try:
@@ -370,9 +385,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| source ID | 
+| Name   | Type    | Description | Notes |
+| ------ | ------- | ----------- | ----- |
+| **id** | **str** | source ID   |
 
 ### Return type
 
@@ -384,12 +399,13 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_sources_id_put**
+
 > v1beta1_sources_id_put(body, id)
 
 Update a source.
@@ -397,22 +413,23 @@ Update a source.
 Update the specific source with the given ID. Only stopped sources can be updated.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.UpdateSourceRequest() # UpdateSourceRequest | update source request parameters
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.UpdateSourceRequest() # UpdateSourceRequest | update source request parameters
 id = 'id_example' # str | source ID
 
 try:
@@ -424,10 +441,10 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**UpdateSourceRequest**](UpdateSourceRequest.md)| update source request parameters | 
- **id** | **str**| source ID | 
+| Name     | Type                                              | Description                      | Notes |
+| -------- | ------------------------------------------------- | -------------------------------- | ----- |
+| **body** | [**UpdateSourceRequest**](UpdateSourceRequest.md) | update source request parameters |
+| **id**   | **str**                                           | source ID                        |
 
 ### Return type
 
@@ -439,12 +456,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_sources_id_start_post**
+
 > v1beta1_sources_id_start_post(id)
 
 start a source.
@@ -452,21 +470,22 @@ start a source.
 Start the source with the given ID.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
 id = 'id_example' # str | source ID
 
 try:
@@ -478,9 +497,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| source ID | 
+| Name   | Type    | Description | Notes |
+| ------ | ------- | ----------- | ----- |
+| **id** | **str** | source ID   |
 
 ### Return type
 
@@ -492,12 +511,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_sources_id_stop_post**
+
 > v1beta1_sources_id_stop_post(id)
 
 stop a source.
@@ -505,21 +525,22 @@ stop a source.
 Stop the source with the given ID.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
 id = 'id_example' # str | source ID
 
 try:
@@ -531,9 +552,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **str**| source ID | 
+| Name   | Type    | Description | Notes |
+| ------ | ------- | ----------- | ----- |
+| **id** | **str** | source ID   |
 
 ### Return type
 
@@ -545,12 +566,13 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta1_sources_post**
+
 > Source v1beta1_sources_post(body)
 
 create a source.
@@ -558,22 +580,23 @@ create a source.
 Create a source.
 
 ### Example
+
 ```python
 from __future__ import print_function
 import time
-import swagger_client
-from swagger_client.rest import ApiException
+import timeplus_client
+from timeplus_client.rest import ApiException
 from pprint import pprint
 
 # Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
+configuration = timeplus_client.Configuration()
 configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 # configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
 
 # create an instance of the API class
-api_instance = swagger_client.SourcesV1beta1Api(swagger_client.ApiClient(configuration))
-body = swagger_client.CreateSourceRequest() # CreateSourceRequest | create source request parameters
+api_instance = timeplus_client.SourcesV1beta1Api(timeplus_client.ApiClient(configuration))
+body = timeplus_client.CreateSourceRequest() # CreateSourceRequest | create source request parameters
 
 try:
     # create a source.
@@ -585,9 +608,9 @@ except ApiException as e:
 
 ### Parameters
 
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**CreateSourceRequest**](CreateSourceRequest.md)| create source request parameters | 
+| Name     | Type                                              | Description                      | Notes |
+| -------- | ------------------------------------------------- | -------------------------------- | ----- |
+| **body** | [**CreateSourceRequest**](CreateSourceRequest.md) | create source request parameters |
 
 ### Return type
 
@@ -599,8 +622,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
