@@ -1,174 +1,85 @@
-"""
-query
-
-This module defines query class
-:copyright: (c) 2022 by Timeplus
-:license: Apache2, see LICENSE for more details.
-"""
-
 import json
-import time
-from websocket import create_connection
-import rx
-import dateutil.parser
+import sseclient
 
-from timeplus.resource import ResourceBase
-from timeplus.env import Env
-from timeplus.type import Type
-from timeplus.error import TimeplusQueryError
+from pprint import pprint
+from websocket import create_connection, WebSocketConnectionClosedException
+
+import swagger_client
+from swagger_client.rest import ApiException
 
 
-class Query(ResourceBase):
-    """
-    Query class defines query object.
-    """
-
-    _resource_name = "queries"
-
-    def __init__(self, env=None):
-        ResourceBase.__init__(self, env)
-        self.stopped = False
-
-    @classmethod
-    def build(cls, query, env=None):
-        obj = cls(env=env)
-        obj._data = query
-        return obj
-
-    @classmethod
-    def execSQL(cls, sql, timeout=0, env=None):
-        if env is None:
-            env = Env.current()
-        query = Query().name("unamed").sql(sql)
-        query.create()
-
-        if query.status() == "failed":
-            raise TimeplusQueryError(query.message())
-
-        result = {}
-        result["header"] = query.header()
-        result["data"] = []
-        query.get_result_stream(timeout=timeout).subscribe(
-            on_next=lambda i: result["data"].append(i),
-            on_error=lambda e: query.stop(),  # todo better handling this error
-            on_completed=lambda: query.stop(),
+class Query:
+    def __init__(self, env):
+        self._env = env
+        self._configuration = self._env._conf()
+        self._api_instance_v1 = swagger_client.QueriesV1beta1Api(
+            swagger_client.ApiClient(self._configuration)
         )
-        return result
+        self._api_instance_v2 = swagger_client.QueriesV1beta2Api(
+            swagger_client.ApiClient(self._configuration)
+        )
+        self.stopped = False
+        self._create_response = None
+        self._id = None
 
-    def name(self, *args):
-        return self.prop("name", *args)
-
-    def description(self, *args):
-        return self.prop("description", *args)
-
-    def sql(self, *args):
-        return self.prop("sql", *args)
-
-    def tags(self, *args):
-        return self.prop("tags", *args)
-
-    # def id(self):
-    #     return self.prop("id")
-
-    def id(self, *args):
-        return self.prop("id", *args)
-
-    def stat(self):
-        self.get()
-        return self.prop("stat")
-
-    def status(self):
-        self.get()
-        return self.prop("status")
-
-    def message(self):
-        self.get()
-        return self.prop("message")
-
-    def header(self):
-        self.get()
-        return self.prop("result")["header"]
-
-    def cancel(self):
-        self.action("cancel")
+    def sql(self, query):
+        self._sql = query
         return self
 
-    def stop(self, delete=True):
-        self.stopped = True
-        if delete:
-            self.delete()
-
-    def sink_to(self, sink):
-        url = f"{self._base_url}/{self._resource_name}/{self.id()}/sinks"
-        self._logger.debug(f"post {url}")
-        sinkRequest = {"sink_id": sink.id()}
-
+    def create(self):
+        body = swagger_client.CreateQueryRequestV1Beta2(sql=self._sql)
         try:
-            self._env.http_post(url, sinkRequest)
+            self._create_response = self._api_instance_v2.v1beta2_queries_post(body)
+            # TODO: how to handle the id and the first result here
+            _sse_client = sseclient.SSEClient(self._create_response)
+            self._events = _sse_client.events()
+            self._query = next(self._events)
+            self._metadata = json.loads(self._query.data)
+            self._id = self._metadata["id"]
             return self
-        except Exception as e:
-            raise e
-
-    def show_query_result(self, count=10):
-        ws_schema = "ws"
-        if self._env.schema() == "https":
-            ws_schema = "wss"
-        ws = create_connection(
-            f"{ws_schema}://{self._env.host()}:{self._env.port()}/{self._env.workspaceUrl()}ws/queries/{self.id()}",
-            header=[f"X-Api-Key: {self._env.api_key()}"],
-        )
-        for i in range(count):
-            result = ws.recv()
-            self._logger.info(result)
-
-    # TODO: refactor this complex method
-    def _query_op(self, timeout=0):  # noqa: C901
-        def __query_op(observer, scheduler):
-            # TODO : use WebSocketApp
-            ws_schema = "ws"
-            if self._env.schema() == "https":
-                ws_schema = "wss"
-
-            ws = create_connection(
-                f"{ws_schema}://{self._env.host()}:{self._env.port()}/{self._env.workspaceUrl()}ws/queries/{self.id()}",
-                header=[f"X-Api-Key: {self._env.api_key()}"],
+        except ApiException as e:
+            pprint(
+                "Exception when calling QueriesV1beta2Api->v1beta2_queries_post: %s\n"
+                % e
             )
-            start_time = time.time()
-            try:
-                while True:
-                    now = time.time()
-                    if timeout != 0 and now - start_time > timeout:
-                        self._logger.debug("query timeout")
-                        break
+        except Exception as e:
+            pprint(e)
 
-                    if self.stopped:
-                        break
-                    result = ws.recv()
-                    # convert string object to json(array)
-                    # todo convert by header type
-                    try:
-                        record = json.loads(result)
-                    except Exception as e:
-                        self._logger.debug(f"cannot load result from ws {result} {e}")
-                        continue
+    def metadata(self):
+        return self._metadata
 
-                    for index, col in enumerate(self.header()):
-                        if col["type"].startswith(Type.Tuple.value):
-                            record[index] = tuple(record[index])
-                        elif col["type"].startswith(Type.Date.value):
-                            try:
-                                record[index] = dateutil.parser.isoparse(record[index])
-                            except Exception as e:
-                                self._logger.error("failed to parse datetime ", e)
+    def result(self):
+        return self._events
 
-                    observer.on_next(record)
-                observer.on_complete()
-            except Exception as e:
-                self._logger.debug("failed to recieve data from websocket", e)
-                observer.on_error(e)
+    def delete(self):
+        self._api_instance_v1.v1beta1_queries_id_delete(self._id)
 
-        return __query_op
+    def cancel(self):
+        try:
+            self._cancel_response = (
+                self._api_instance_v1.v1beta1_queries_id_cancel_post(id=self._id)
+            )
+        except ApiException as e:
+            pprint(
+                "Exception when calling QueriesV1beta1Api->v1beta1_queries_id_cancel_post: %s\n"
+                % e
+            )
+        except Exception as e:
+            pprint(e)
 
-    def get_result_stream(self, timeout=0):
-        strem_query_ob = rx.create(self._query_op(timeout=timeout))
-        return strem_query_ob
+    def get(self, id):
+        self._id = id
+        # send get request here
+        try:
+            self._get_response = self._api_instance_v1.v1beta1_queries_id_get(
+                id=self._id
+            )
+            self._metadata = json.loads(self._get_response)
+            return self
+        except ApiException as e:
+            pprint(
+                "Exception when calling QueriesV1beta1Api->v1beta1_queries_id_get: %s\n"
+                % e
+            )
+        except Exception as e:
+            pprint(e)

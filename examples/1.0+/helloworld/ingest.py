@@ -2,8 +2,6 @@ import os
 
 import timeplus_client
 from timeplus_client.rest import ApiException
-from timeplus.stream import QueryStreamV1
-from pprint import pprint
 
 
 api_key = os.environ.get("TIMEPLUS_API_KEY")

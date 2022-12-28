@@ -5,10 +5,14 @@ IMAGE_NAME ?= $(BIN_NAME):$(VERSION)
 FULLNAME=$(DOCKER_ID_USER)/${IMAGE_NAME}
 DOCKER_ID_USER ?= timeplus
 
-.PHONY: build 
+.PHONY: build test
+
+venv:
+	python3 -m venv .venv
 
 init:
-	pip install -r requirements_dev.txt
+	pip install -r requirements.txt
+	pip install -r test-requirements.txt
 
 build:
 	python3 -m pip install --upgrade build
@@ -24,13 +28,12 @@ lint:
 
 format:
 	black ./timeplus
-	black ./tests
 
 doc:
 	VERSION=$(VERSION) pdoc --template-dir ./template  -o ./docs ./timeplus/ --logo "https://s3.us-west-1.amazonaws.com/timeplus.io/Option3_W.png"
 
 test:
-	pytest tests/
+	pytest ./test
 
 docker: Dockerfile
 	docker build --build-arg VERSION="$(VERSION)" -t $(IMAGE_NAME) .
