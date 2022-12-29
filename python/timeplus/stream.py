@@ -16,6 +16,13 @@ class Stream:
         self._body = None
         self._columns = None
 
+        self._event_time_timezone = None
+        self._event_time_cloumn = None
+        self._logstore_retention_bytes = None
+        self._logstore_retention_ms = None
+        self._ttl_expression = None
+        self._description = None
+
     def name(self, stream_name):
         self._name = stream_name
         return self
@@ -28,8 +35,51 @@ class Stream:
         self._columns.append(column)
         return self
 
+    def event_time_timezone(self, timezone):
+        self._event_time_timezone = timezone
+        return self
+
+    def event_time_cloumn(self, column):
+        self._event_time_cloumn = column
+        return self
+
+    def logstore_retention_bytes(self, retention):
+        self._logstore_retention_bytes = retention
+        return self
+
+    def logstore_retention_ms(self, retention):
+        self._logstore_retention_ms = retention
+        return self
+
+    def ttl_expression(self, ttl):
+        self._ttl_expression = ttl
+        return self
+
+    def description(self, description):
+        self._description = description
+        return self
+
     def create(self):
         body = {"columns": self._columns, "name": self._name}
+
+        if self._event_time_cloumn:
+            body["event_time_column"] = self._event_time_cloumn
+
+        if self._event_time_timezone:
+            body["event_time_timezone"] = self._event_time_timezone
+
+        if self._logstore_retention_bytes:
+            body["logstore_retention_bytes"] = self._logstore_retention_bytes
+
+        if self._logstore_retention_ms:
+            body["logstore_retention_ms"] = self._logstore_retention_ms
+
+        if self._ttl_expression:
+            body["ttl_expression"] = self._ttl_expression
+
+        if self._description:
+            body["description"] = self._description
+
         try:
             self._metadata = self._api_instance.v1beta1_streams_post(body)
             return self
