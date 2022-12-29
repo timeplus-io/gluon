@@ -1,189 +1,99 @@
-"""
-stream
+from pprint import pprint
+import swagger_client
+from swagger_client.rest import ApiException
 
-This module defines stream class
-:copyright: (c) 2022 by Timeplus
-:license: Apache2, see LICENSE for more details.
-"""
-
-import json
-from datetime import datetime
-
-from timeplus.base import Base
-from timeplus.resource import ResourceBase
-
-from timeplus.type import Type
+from .error import TimeplusAPIError
 
 
-class DateTimeEncoder(json.JSONEncoder):
-    """
-    DateTimeEncoder class defines how to encode datetime object for json
-    """
+class Stream:
+    def __init__(self, env):
+        self._env = env
+        self._configuration = self._env._conf()
+        self._api_instance = swagger_client.StreamsV1beta1Api(
+            swagger_client.ApiClient(self._configuration)
+        )
+        self._id = None
+        self._body = None
+        self._columns = None
 
-    def default(self, o):
-        if isinstance(o, datetime):
-            return o.isoformat()
-        return json.JSONEncoder.default(self, o)
-
-
-class StreamColumn(Base):
-    """
-    StreamColumn class defines columne of a stream
-    """
-
-    def __init__(self):
-        Base.__init__(self)
-
-    def name(self, *args):
-        return self.prop("name", *args)
-
-    def type(self, *args):
-        if len(args) == 0:
-            return Type(self._get("type"))
-        elif len(args) >= 1:
-            if isinstance(args[0], Type):
-                if args[0] == Type.Decimal:
-                    # TODO : need validate the args
-                    decimal_type = f"{args[0].value}({args[1]}, {args[2]})"
-                    return self._set("type", decimal_type)
-                elif args[0] == Type.Array and isinstance(args[1], Type):
-                    array_type = f"{args[0].value}({args[1].value})"
-                    return self._set("type", array_type)
-                elif (
-                    args[0] == Type.Map
-                    and isinstance(args[1], Type)
-                    and isinstance(args[2], Type)
-                ):
-                    map_type = f"{args[0].value}({args[1].value}, {args[2].value})"
-                    return self._set("type", map_type)
-                elif args[0] == Type.Tuple:
-                    tuple_values = ",".join([a.value for a in args[1:]])
-                    map_type = f"{args[0].value}({tuple_values})"
-                    return self._set("type", map_type)
-                else:
-                    return self._set("type", args[0].value)
-
-            else:
-                return self._set("type", args[0])
-
-    def default(self, *args):
-        return self.prop("default", *args)
-
-    def compression_codec(self, *args):
-        return self.prop("compression_codec", *args)
-
-    def nullable(self, *args):
-        return self.prop("nullable", *args)
-
-    def skipping_index_expression(self, *args):
-        return self.prop("skipping_index_expression", *args)
-
-    def ttl_expression(self, *args):
-        return self.prop("ttl_expression", *args)
-
-
-class Stream(ResourceBase):
-    """
-    Stream class defines stream object
-    """
-
-    _resource_name = "streams"
-
-    def __init__(self, env=None):
-        ResourceBase.__init__(self, env)
-        self.prop("columns", [])
-        self.set_retention()
-
-    @classmethod
-    def build(cls, val, env=None):
-        obj = cls(env=env)
-        obj._data = val
-        return obj
-
-    # the list api is not implemented, has to manually implement it here
-    def get(self):
-        streams = Stream.list()
-        for s in streams:
-            if s.name() == self.name():
-                self._data = s._data
-                return s
-        return None
-
-    def delete(self):
-        url = f"{self._base_url}/{self._resource_name}/{self.name()}"
-        self._logger.debug("delete {}", url)
-
-        try:
-            self._env.http_delete(url)
-            return self
-        except Exception as e:
-            raise e
-
-    def insert(self, data, headers=None):
-        url = f"{self._base_url}/{self._resource_name}/{self.name()}/ingest"
-        self._logger.debug("post {}", url)
-
-        insert_headers = self.columnNames()
-        if headers is not None:
-            insert_headers = headers
-
-        insertRequest = {
-            "columns": insert_headers,
-            "data": data,
-        }
-        self._logger.debug(f"insert {insertRequest}")
-
-        try:
-            self._env.http_post_data(
-                url, json.dumps(insertRequest, cls=DateTimeEncoder)
-            )
-            return self
-        except Exception as e:
-            self._logger.error(f"action failed {e}")
-            raise e
-
-    def name(self, *args):
-        return self.prop("name", *args)
-
-    def event_time_column(self, *args):
-        return self.prop("event_time_column", *args)
-
-    def order_by_expression(self, *args):
-        return self.prop("order_by_expression", *args)
-
-    def order_by_granularity(self, *args):
-        return self.prop("order_by_granularity", *args)
-
-    def partition_by_granularity(self, *args):
-        return self.prop("partition_by_granularity", *args)
-
-    def replication_factor(self, *args):
-        return self.prop("replication_factor", *args)
-
-    def shards(self, *args):
-        return self.prop("shards", *args)
-
-    def ttl_expression(self, *args):
-        return self.prop("ttl_expression", *args)
-
-    def logstore_retention_bytes(self, *args):
-        return self.prop("logstore_retention_bytes", *args)
-
-    def logstore_retention_ms(self, *args):
-        return self.prop("logstore_retention_ms", *args)
-
-    def set_retention(self, log_store_size=10, log_store_time=7, hist_store_time=30):
-        self.logstore_retention_ms(134217728 * log_store_size)
-        self.logstore_retention_bytes(86400000 * log_store_time)
-        self.ttl_expression(f"to_datetime(_tp_time) + INTERVAL {hist_store_time} DAY")
-
-    # note, no way to remove/rename col for now
-    def column(self, col):
-        col_prop = self.prop("columns")
-        col_prop.append(col.data())
-        self.prop("columns", col_prop)
+    def name(self, stream_name):
+        self._name = stream_name
         return self
 
-    def columnNames(self):
-        col_prop = self.prop("columns")
-        return [x["name"] for x in col_prop if not x["name"].startswith("_tp")]
+    def column(self, column_name, column_type):
+        if self._columns is None:
+            self._columns = []
+
+        column = {"name": column_name, "type": column_type}
+        self._columns.append(column)
+        return self
+
+    def create(self):
+        body = {"columns": self._columns, "name": self._name}
+        try:
+            self._metadata = self._api_instance.v1beta1_streams_post(body)
+            return self
+        except ApiException as e:
+            pprint(
+                "Exception when calling StreamsV1beta1Api->v1beta1_streams_post: %s\n"
+                % e
+            )
+            raise e
+
+    def list(self):
+        try:
+            list_response = self._api_instance.v1beta1_streams_get()
+            return list_response
+        except ApiException as e:
+            pprint(
+                "Exception when calling StreamsV1beta1Api->v1beta1_streams_get: %s\n"
+                % e
+            )
+            raise e
+
+    def delete(self):
+        self._api_instance.v1beta1_streams_name_delete(self._name)
+
+    def get(self):
+        streams = self.list()
+        for s in streams:
+            if s.name == self._name:
+                self._metadata = s
+                return self
+        raise TimeplusAPIError(f"not such stream {self._name}")
+
+    def metadata(self):
+        return self._metadata
+
+    def ingest(self, colums=None, rows=None, payload=None, format="compact"):
+        if format == "compact":
+            body = swagger_client.IngestData(colums, rows)
+            try:
+                self._api_instance.v1beta1_streams_name_ingest_post(body, self._name)
+            except ApiException as e:
+                pprint(
+                    "Exception when calling StreamsV1beta1Api->v1beta1_streams_name_ingest_post: %s\n"
+                    % e
+                )
+                raise e
+        else:
+            try:
+                self._api_instance.v1beta1_streams_name_ingest_post(
+                    body=payload, name=self._name, format=format
+                )
+            except ApiException as e:
+                pprint(
+                    "Exception when calling StreamsV1beta1Api->v1beta1_streams_name_ingest_post: %s\n"
+                    % e
+                )
+                raise e
+
+    def ingest_raw(self, raw):
+        try:
+            self._api_instance.v1beta1_streams_name_ingest_post_with_http_info()
+        except ApiException as e:
+            pprint(
+                "Exception when calling StreamsV1beta1Api->v1beta1_streams_name_ingest_post: %s\n"
+                % e
+            )
+            raise e
