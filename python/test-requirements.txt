@@ -6,3 +6,4 @@ randomize>=0.13
 flake8==4.0.1
 black==22.1.0
 click==8.0.2
+pytest==7.0.1
