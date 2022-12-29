@@ -88,12 +88,9 @@ class Stream:
                 )
                 raise e
 
-    def ingest_raw(self, raw):
-        try:
-            self._api_instance.v1beta1_streams_name_ingest_post_with_http_info()
-        except ApiException as e:
-            pprint(
-                "Exception when calling StreamsV1beta1Api->v1beta1_streams_name_ingest_post: %s\n"
-                % e
-            )
-            raise e
+    def exist(self):
+        streams = self.list()
+        for s in streams:
+            if s.name == self._name:
+                return True
+        return False
