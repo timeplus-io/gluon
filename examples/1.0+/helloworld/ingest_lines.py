@@ -15,16 +15,12 @@ env = Environment().address(api_address).apikey(api_key).workspace(worksapce)
 
 try:
     # create a new stream
-    stream = (
-        Stream(env=env)
-        .name("test_ingest")
-        .column("time", "datetime64(3)")
-        .column("data", "string")
-        .create()
-    )
+    stream = Stream(env=env).name("test_ingest_lines").column("raw", "string").create()
 
-    stream.ingest(["time", "data"], [[datetime.datetime.now(), "abcd"]])
-    stream.delete()
+    payload = '{"a":1,"b":"world"}\n{"a":2,"b":"hello"}'
+
+    stream.ingest(payload=payload, format="lines")
+    # stream.delete()
 except Exception as e:
     pprint(e)
     traceback.print_exc()

@@ -18,13 +18,18 @@ try:
     stream = (
         Stream(env=env)
         .name("test_ingest")
-        .column("time", "datetime64(3)")
-        .column("data", "string")
-        .create()
+        .column("a", "integer")
+        .column("b", "string")
+        # .create()
     )
 
-    stream.ingest(["time", "data"], [[datetime.datetime.now(), "abcd"]])
-    stream.delete()
+    payload = """
+    {"a":2,"b":"hello"}
+    {"a":1,"b":"world"}
+    """
+
+    stream.ingest(payload=payload, format="streaming")
+    # stream.delete()
 except Exception as e:
     pprint(e)
     traceback.print_exc()

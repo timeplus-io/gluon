@@ -1,4 +1,7 @@
 import os
+import traceback
+import json
+from pprint import pprint
 
 from timeplus import Query, Environment
 
@@ -10,17 +13,26 @@ worksapce = os.environ.get("TIMEPLUS_WORKSAPCE")
 env = Environment().address(api_address).apikey(api_key).workspace(worksapce)
 
 try:
-    query = Query(env=env).sql(query="select * from iot").create()
+    # list all qeuries
+    query_list = Query(env=env).list()
+    pprint(f"there are {len(query_list)} queries ")
+
+    # create a new query
+    query = Query(env=env).sql(query="SELECT * FROM iot").create()
     query_id = query.metadata()["id"]
+    pprint(f"created a query with id {query_id}")
 
+    # get a query by id
     get_query = Query(env=env).get(id=query_id)
-    print(query.metadata())
+    metadata = query.metadata()
+    pprint(f"get a query with id {metadata['id']}")
 
-    limit = 10
+    # iterate query result
+    limit = 3
     count = 0
     for event in query.result():
         print(event.event)
-        print(event.data)
+        print(json.loads(event.data))
         count += 1
         if count >= limit:
             break
@@ -29,4 +41,5 @@ try:
     query.delete()
 
 except Exception as e:
-    print(e)
+    pprint(e)
+    traceback.print_exc()

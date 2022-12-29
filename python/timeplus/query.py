@@ -2,7 +2,6 @@ import json
 import sseclient
 
 from pprint import pprint
-from websocket import create_connection, WebSocketConnectionClosedException
 
 import swagger_client
 from swagger_client.rest import ApiException
@@ -18,7 +17,6 @@ class Query:
         self._api_instance_v2 = swagger_client.QueriesV1beta2Api(
             swagger_client.ApiClient(self._configuration)
         )
-        self.stopped = False
         self._create_response = None
         self._id = None
 
@@ -29,8 +27,9 @@ class Query:
     def create(self):
         body = swagger_client.CreateQueryRequestV1Beta2(sql=self._sql)
         try:
+            # as to support sse, the reponse is urllib3.response.HTTPResponse
+            # instead of swagger_client.models.query.Query
             self._create_response = self._api_instance_v2.v1beta2_queries_post(body)
-            # TODO: how to handle the id and the first result here
             _sse_client = sseclient.SSEClient(self._create_response)
             self._events = _sse_client.events()
             self._query = next(self._events)
@@ -42,8 +41,7 @@ class Query:
                 "Exception when calling QueriesV1beta2Api->v1beta2_queries_post: %s\n"
                 % e
             )
-        except Exception as e:
-            pprint(e)
+            raise e
 
     def metadata(self):
         return self._metadata
@@ -64,22 +62,30 @@ class Query:
                 "Exception when calling QueriesV1beta1Api->v1beta1_queries_id_cancel_post: %s\n"
                 % e
             )
-        except Exception as e:
-            pprint(e)
+            raise e
 
     def get(self, id):
         self._id = id
-        # send get request here
         try:
             self._get_response = self._api_instance_v1.v1beta1_queries_id_get(
                 id=self._id
             )
-            self._metadata = json.loads(self._get_response)
+            self._metadata = self._get_response
             return self
         except ApiException as e:
             pprint(
                 "Exception when calling QueriesV1beta1Api->v1beta1_queries_id_get: %s\n"
                 % e
             )
-        except Exception as e:
-            pprint(e)
+            raise e
+
+    def list(self):
+        try:
+            list_response = self._api_instance_v1.v1beta1_queries_get()
+            return list_response
+        except ApiException as e:
+            pprint(
+                "Exception when calling QueriesV1beta1Api->v1beta1_queries_id_get: %s\n"
+                % e
+            )
+            raise e

@@ -1,7 +1,6 @@
 import os
 import traceback
 import json
-import datetime
 from pprint import pprint
 
 from timeplus import Stream, Environment
@@ -14,17 +13,29 @@ worksapce = os.environ.get("TIMEPLUS_WORKSAPCE")
 env = Environment().address(api_address).apikey(api_key).workspace(worksapce)
 
 try:
+    # list all streams
+    stream_list = Stream(env=env).list()
+    pprint(f"there are {len(stream_list)} streams ")
+
     # create a new stream
     stream = (
         Stream(env=env)
-        .name("test_ingest")
+        .name("test")
         .column("time", "datetime64(3)")
         .column("data", "string")
         .create()
     )
 
-    stream.ingest(["time", "data"], [[datetime.datetime.now(), "abcd"]])
+    stream_list = Stream(env=env).list()
+    pprint(f"there are {len(stream_list)} streams after create")
+    pprint(f"created stream is {stream.metadata()}; type is {type(stream.metadata())}")
+
+    a_stream = Stream(env=env).name("test").get()
+    pprint(f"get stream is {a_stream.metadata()} ; type is {type(a_stream.metadata())}")
+
     stream.delete()
+    stream_list = Stream(env=env).list()
+    pprint(f"there are {len(stream_list)} streams after delete")
 except Exception as e:
     pprint(e)
     traceback.print_exc()
