@@ -136,7 +136,6 @@ class RESTClientObject(object):
         """
         method = method.upper()
         assert method in ["GET", "HEAD", "DELETE", "POST", "PUT", "PATCH", "OPTIONS"]
-
         if post_params and body:
             raise ValueError(
                 "body parameter cannot be used with post_params parameter."
