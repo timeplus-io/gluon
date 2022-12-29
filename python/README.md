@@ -124,7 +124,7 @@ stream = (
         .name("test_ingest")
         .column("a", "integer")
         .column("b", "string")
-        # .create()
+        .create()
     )
 
 payload = """
