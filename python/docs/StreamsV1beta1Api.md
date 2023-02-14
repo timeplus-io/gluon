@@ -1,6 +1,6 @@
 # swagger_client.StreamsV1beta1Api
 
-All URIs are relative to *//beta.timeplus.cloud/{workspace-id}/api*
+All URIs are relative to *//us.timeplus.cloud/{workspace-id}/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

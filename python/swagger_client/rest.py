@@ -136,6 +136,7 @@ class RESTClientObject(object):
         """
         method = method.upper()
         assert method in ["GET", "HEAD", "DELETE", "POST", "PUT", "PATCH", "OPTIONS"]
+
         if post_params and body:
             raise ValueError(
                 "body parameter cannot be used with post_params parameter."
@@ -169,6 +170,7 @@ class RESTClientObject(object):
                         request_body = json.dumps(body)
                     else:
                         request_body = body
+
                     r = self.pool_manager.request(
                         method,
                         url,

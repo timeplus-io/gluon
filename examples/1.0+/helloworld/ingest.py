@@ -1,6 +1,5 @@
 import os
 import traceback
-import json
 import datetime
 from pprint import pprint
 

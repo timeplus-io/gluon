@@ -49,6 +49,13 @@ class TestUDFsV1beta1Api(unittest.TestCase):
         """
         pass
 
+    def test_v1beta1_udfs_name_put(self):
+        """Test case for v1beta1_udfs_name_put
+
+        update a udf.  # noqa: E501
+        """
+        pass
+
     def test_v1beta1_udfs_post(self):
         """Test case for v1beta1_udfs_post
 

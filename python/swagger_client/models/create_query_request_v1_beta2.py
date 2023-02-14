@@ -28,6 +28,7 @@ class CreateQueryRequestV1Beta2(object):
                             and the value is json key in definition.
     """
     swagger_types = {
+        'batching_policy': 'BatchingPolicy',
         'description': 'str',
         'name': 'str',
         'sql': 'str',
@@ -35,27 +36,51 @@ class CreateQueryRequestV1Beta2(object):
     }
 
     attribute_map = {
+        'batching_policy': 'batching_policy',
         'description': 'description',
         'name': 'name',
         'sql': 'sql',
         'tags': 'tags'
     }
 
-    def __init__(self, description=None, name=None, sql=None, tags=None):  # noqa: E501
+    def __init__(self, batching_policy=None, description=None, name=None, sql=None, tags=None):  # noqa: E501
         """CreateQueryRequestV1Beta2 - a model defined in Swagger"""  # noqa: E501
+        self._batching_policy = None
         self._description = None
         self._name = None
         self._sql = None
         self._tags = None
         self.discriminator = None
+        if batching_policy is not None:
+            self.batching_policy = batching_policy
         if description is not None:
             self.description = description
         if name is not None:
             self.name = name
-        if sql is not None:
-            self.sql = sql
+        self.sql = sql
         if tags is not None:
             self.tags = tags
+
+    @property
+    def batching_policy(self):
+        """Gets the batching_policy of this CreateQueryRequestV1Beta2.  # noqa: E501
+
+
+        :return: The batching_policy of this CreateQueryRequestV1Beta2.  # noqa: E501
+        :rtype: BatchingPolicy
+        """
+        return self._batching_policy
+
+    @batching_policy.setter
+    def batching_policy(self, batching_policy):
+        """Sets the batching_policy of this CreateQueryRequestV1Beta2.
+
+
+        :param batching_policy: The batching_policy of this CreateQueryRequestV1Beta2.  # noqa: E501
+        :type: BatchingPolicy
+        """
+
+        self._batching_policy = batching_policy
 
     @property
     def description(self):
@@ -117,6 +142,8 @@ class CreateQueryRequestV1Beta2(object):
         :param sql: The sql of this CreateQueryRequestV1Beta2.  # noqa: E501
         :type: str
         """
+        if sql is None:
+            raise ValueError("Invalid value for `sql`, must not be `None`")  # noqa: E501
 
         self._sql = sql
 

@@ -32,6 +32,7 @@ from swagger_client.configuration import Configuration
 # import models into sdk package
 from swagger_client.models.api_key import APIKey
 from swagger_client.models.analyze_sql_request import AnalyzeSQLRequest
+from swagger_client.models.batching_policy import BatchingPolicy
 from swagger_client.models.column import Column
 from swagger_client.models.column_def import ColumnDef
 from swagger_client.models.columns_resp import ColumnsResp
@@ -60,7 +61,6 @@ from swagger_client.models.format_query_response import FormatQueryResponse
 from swagger_client.models.global_metrics_result import GlobalMetricsResult
 from swagger_client.models.graph import Graph
 from swagger_client.models.ingest_data import IngestData
-from swagger_client.models.internal_http_handler_v1beta2_global_metrics_request import InternalHttpHandlerV1beta2GlobalMetricsRequest
 from swagger_client.models.node import Node
 from swagger_client.models.owner import Owner
 from swagger_client.models.query import Query
@@ -69,6 +69,7 @@ from swagger_client.models.query_pipeline_edge import QueryPipelineEdge
 from swagger_client.models.query_pipeline_node import QueryPipelineNode
 from swagger_client.models.query_pipeline_node_metric import QueryPipelineNodeMetric
 from swagger_client.models.query_result import QueryResult
+from swagger_client.models.resource_metrics_request import ResourceMetricsRequest
 from swagger_client.models.resource_metrics_result import ResourceMetricsResult
 from swagger_client.models.sql_analyze_column import SQLAnalyzeColumn
 from swagger_client.models.sql_analyze_result import SQLAnalyzeResult

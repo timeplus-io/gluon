@@ -32,6 +32,15 @@ definitions:
       sql:
         type: string
     type: object
+  BatchingPolicy:
+    properties:
+      count:
+        description: The max result count per batch
+        type: integer
+      time_ms:
+        description: The max interval per batch in milliseconds
+        type: integer
+    type: object
   Column:
     properties:
       name:
@@ -182,6 +191,10 @@ definitions:
     type: object
   CreateQueryRequestV1Beta2:
     properties:
+      batching_policy:
+        $ref: '#/definitions/BatchingPolicy'
+        description: Controls how often a batch of results will be flushed via SSE
+          channel
       description:
         type: string
       name:
@@ -192,6 +205,8 @@ definitions:
         items:
           type: string
         type: array
+    required:
+    - sql
     type: object
   CreateQueryResponse:
     properties:
@@ -508,6 +523,23 @@ definitions:
     required:
     - header
     type: object
+  ResourceMetricsRequest:
+    properties:
+      metricsNames:
+        items:
+          type: string
+        type: array
+      metricsTypes:
+        items:
+          type: string
+        type: array
+      resourceIds:
+        items:
+          type: string
+        type: array
+      timeRange:
+        type: integer
+    type: object
   ResourceMetricsResult:
     properties:
       id:
@@ -716,13 +748,20 @@ definitions:
         type: integer
       logstore_retention_ms:
         type: integer
+      mode:
+        type: string
       name:
+        description: Stream name should only contain a maximum of 64 letters, numbers,
+          or _, and start with a letter
+        example: test_stream
         type: string
       order_by_expression:
         type: string
       order_by_granularity:
         type: string
       partition_by_granularity:
+        type: string
+      primary_key:
         type: string
       replication_factor:
         type: integer
@@ -760,21 +799,22 @@ definitions:
     properties:
       eventTime:
         type: integer
-      indexTime:
-        type: integer
       windowEnd:
         type: integer
       windowStart:
         type: integer
     required:
     - eventTime
-    - indexTime
     - windowEnd
     - windowStart
     type: object
   UDF:
     properties:
       arguments:
+        description: |-
+          The input argument of the UDF
+            * For UDA: the number and type of arguments should be consistent with the main function of UDA.
+              the type should be the data types of proton not javascript types. It only supports int8/16/32/64, uint8/16/32/64,
         items:
           $ref: '#/definitions/UDFArgument'
         type: array
@@ -788,6 +828,10 @@ definitions:
         $ref: '#/definitions/Owner'
       description:
         type: string
+      is_aggregation:
+        description: Whether it is an aggregation function. Only valid when type is
+          'javascript'
+        type: boolean
       last_updated_at:
         type: string
       last_updated_by:
@@ -795,8 +839,23 @@ definitions:
       name:
         type: string
       return_type:
+        description: |-
+          The erturn type of the UDF
+            * For UDA: if it returns a single value, the return type is the corresponding data type of Timeplus.
+              It supports the same types of input arguments, except for datetime, it only supports DateTime64(3).
+        type: string
+      source:
+        description: |-
+          The source code of the UDA. There are functions to be defined:
+           * main function: with the same name as UDA. Timeplus calls this function for each input row. The main function can return two types of result: object or simple data type
+             - If it returns an object, the object is like {“emit”: true, “result”: …}. ‘Emit’ (boolean) property tells Timeplus whether or not the result should emit. ‘result’ is the current aggregate result, if ‘emit’ is false, the result will be ignored by Timeplus. Timeplus will convert the ‘result’ property of v8 to the data types defined when creating UDA.
+             - If it returns a simple data type, Timeplus considers the return data as the result to be emitted immediately. It converts the return data to the corresponding data type and Timeplus emits the aggregating result.
+             - Once UDA tells Timeplus to emit the data, UDA takes the full responsibility to clear the internal state, prepare and restart a new aggregating window, et al.
+           * state function: which returns the serialized state of all internal states of UDA in string. The UDA takes the responsibility therefore Timeplus can choose to persist the internal state of UDA for query recovery.
+           * init function: the input of this function is the string of serialized state of the internal states UDA. Timeplus calls this function when it wants to recover the aggregation function with the persisted internal state.
         type: string
       type:
+        description: Either `javascript` or `remote`
         type: string
       url:
         type: string
@@ -955,12 +1014,7 @@ definitions:
         description: e.g. `chart`, `markdown`
         type: string
     type: object
-  internal_http_handler_v1beta2.GlobalMetricsRequest:
-    properties:
-      is_streaming:
-        type: boolean
-    type: object
-host: beta.timeplus.cloud
+host: us.timeplus.cloud
 info:
   contact:
     email: support@timeplus.com
@@ -2179,6 +2233,43 @@ paths:
       summary: get a udf.
       tags:
       - UDFs v1beta1
+    put:
+      consumes:
+      - application/json
+      description: Update a udf.
+      parameters:
+      - description: update udf request parameters
+        in: body
+        name: udf
+        required: true
+        schema:
+          $ref: '#/definitions/UDF'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/UDF'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: update a udf.
+      tags:
+      - UDFs v1beta1
   /v1beta1/views:
     get:
       consumes:
@@ -2472,18 +2563,11 @@ paths:
       summary: Update a dashboard.
       tags:
       - Dashboards v1beta2
-  /v1beta2/global_metrics:
-    post:
+  /v1beta2/global-metrics:
+    get:
       consumes:
       - application/json
       description: query global metrics..
-      parameters:
-      - description: metrics query request parameters
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/internal_http_handler_v1beta2.GlobalMetricsRequest'
       produces:
       - application/json
       responses:
@@ -2512,7 +2596,15 @@ paths:
     post:
       consumes:
       - application/json
-      description: execute a query.
+      description: |-
+        Execute a query and return the results.
+        * If the request fails, the response content type will be `application/json`. Please refer to the failure codes in Responses section below.
+        * If the query is executed successfully, the response content type will be `text/event-stream`.
+        **For SSE**
+        There are 3 types of data that will be sent to SSE channel
+        1. Query (type `query`): The first event of the result will ALWAYS be this type.
+        2. Metrics (type `metrics`): The query metrics in JSON. They will be sent every 1 seconds.
+        3. Data (the type is empty): The query result.
       parameters:
       - description: query request parameters
         in: body
@@ -2522,7 +2614,12 @@ paths:
           $ref: '#/definitions/CreateQueryRequestV1Beta2'
       produces:
       - application/json
+      - text/event-stream
       responses:
+        "200":
+          description: he query was successfully executed.
+          schema:
+            $ref: '#/definitions/Query'
         "400":
           description: Bad Request
           schema:
@@ -2537,11 +2634,11 @@ paths:
             $ref: '#/definitions/ErrorResponse'
       security:
       - ApiKeyAuth: []
-      summary: execute a query.
+      summary: execute a query and return the results.
       tags:
       - Queries v1beta2
-  /v1beta2/resource_metrics:
-    post:
+  /v1beta2/resource-metrics:
+    get:
       consumes:
       - application/json
       description: query resource metrics..
@@ -2551,7 +2648,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/internal_http_handler_v1beta2.GlobalMetricsRequest'
+          $ref: '#/definitions/ResourceMetricsRequest'
       produces:
       - application/json
       responses:

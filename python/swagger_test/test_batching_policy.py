@@ -15,24 +15,23 @@ from __future__ import absolute_import
 import unittest
 
 import swagger_client
-from swagger_client.timeplus.queries_v1beta2_api import QueriesV1beta2Api  # noqa: E501
+from swagger_client.models.batching_policy import BatchingPolicy  # noqa: E501
 from swagger_client.rest import ApiException
 
 
-class TestQueriesV1beta2Api(unittest.TestCase):
-    """QueriesV1beta2Api unit test stubs"""
+class TestBatchingPolicy(unittest.TestCase):
+    """BatchingPolicy unit test stubs"""
 
     def setUp(self):
-        self.api = QueriesV1beta2Api()  # noqa: E501
+        pass
 
     def tearDown(self):
         pass
 
-    def test_v1beta2_queries_post(self):
-        """Test case for v1beta2_queries_post
-
-        execute a query and return the results.  # noqa: E501
-        """
+    def testBatchingPolicy(self):
+        """Test BatchingPolicy"""
+        # FIXME: construct object with mandatory attributes with example values
+        # model = swagger_client.models.batching_policy.BatchingPolicy()  # noqa: E501
         pass
 
 

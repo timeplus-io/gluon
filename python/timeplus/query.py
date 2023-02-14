@@ -19,13 +19,22 @@ class Query:
         )
         self._create_response = None
         self._id = None
+        self._batching_pilicy = None
 
     def sql(self, query):
         self._sql = query
         return self
 
+    def batching_pilicy(self, count, time_ms):
+        self._batching_pilicy = swagger_client.models.BatchingPolicy(
+            count=count, time_ms=time_ms
+        )
+        return self
+
     def create(self):
-        body = swagger_client.CreateQueryRequestV1Beta2(sql=self._sql)
+        body = swagger_client.CreateQueryRequestV1Beta2(
+            sql=self._sql, batching_policy=self._batching_pilicy
+        )
         try:
             # as to support sse, the reponse is urllib3.response.HTTPResponse
             # instead of swagger_client.models.query.Query

@@ -1,6 +1,5 @@
 import os
 import traceback
-import json
 from pprint import pprint
 
 from timeplus import Stream, Environment

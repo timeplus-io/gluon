@@ -34,10 +34,12 @@ class StreamDef(object):
         'event_time_timezone': 'str',
         'logstore_retention_bytes': 'int',
         'logstore_retention_ms': 'int',
+        'mode': 'str',
         'name': 'str',
         'order_by_expression': 'str',
         'order_by_granularity': 'str',
         'partition_by_granularity': 'str',
+        'primary_key': 'str',
         'replication_factor': 'int',
         'shards': 'int',
         'ttl_expression': 'str'
@@ -50,16 +52,18 @@ class StreamDef(object):
         'event_time_timezone': 'event_time_timezone',
         'logstore_retention_bytes': 'logstore_retention_bytes',
         'logstore_retention_ms': 'logstore_retention_ms',
+        'mode': 'mode',
         'name': 'name',
         'order_by_expression': 'order_by_expression',
         'order_by_granularity': 'order_by_granularity',
         'partition_by_granularity': 'partition_by_granularity',
+        'primary_key': 'primary_key',
         'replication_factor': 'replication_factor',
         'shards': 'shards',
         'ttl_expression': 'ttl_expression'
     }
 
-    def __init__(self, columns=None, description=None, event_time_column=None, event_time_timezone=None, logstore_retention_bytes=None, logstore_retention_ms=None, name=None, order_by_expression=None, order_by_granularity=None, partition_by_granularity=None, replication_factor=None, shards=None, ttl_expression=None):  # noqa: E501
+    def __init__(self, columns=None, description=None, event_time_column=None, event_time_timezone=None, logstore_retention_bytes=None, logstore_retention_ms=None, mode=None, name=None, order_by_expression=None, order_by_granularity=None, partition_by_granularity=None, primary_key=None, replication_factor=None, shards=None, ttl_expression=None):  # noqa: E501
         """StreamDef - a model defined in Swagger"""  # noqa: E501
         self._columns = None
         self._description = None
@@ -67,10 +71,12 @@ class StreamDef(object):
         self._event_time_timezone = None
         self._logstore_retention_bytes = None
         self._logstore_retention_ms = None
+        self._mode = None
         self._name = None
         self._order_by_expression = None
         self._order_by_granularity = None
         self._partition_by_granularity = None
+        self._primary_key = None
         self._replication_factor = None
         self._shards = None
         self._ttl_expression = None
@@ -87,6 +93,8 @@ class StreamDef(object):
             self.logstore_retention_bytes = logstore_retention_bytes
         if logstore_retention_ms is not None:
             self.logstore_retention_ms = logstore_retention_ms
+        if mode is not None:
+            self.mode = mode
         self.name = name
         if order_by_expression is not None:
             self.order_by_expression = order_by_expression
@@ -94,6 +102,8 @@ class StreamDef(object):
             self.order_by_granularity = order_by_granularity
         if partition_by_granularity is not None:
             self.partition_by_granularity = partition_by_granularity
+        if primary_key is not None:
+            self.primary_key = primary_key
         if replication_factor is not None:
             self.replication_factor = replication_factor
         if shards is not None:
@@ -228,9 +238,31 @@ class StreamDef(object):
         self._logstore_retention_ms = logstore_retention_ms
 
     @property
+    def mode(self):
+        """Gets the mode of this StreamDef.  # noqa: E501
+
+
+        :return: The mode of this StreamDef.  # noqa: E501
+        :rtype: str
+        """
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        """Sets the mode of this StreamDef.
+
+
+        :param mode: The mode of this StreamDef.  # noqa: E501
+        :type: str
+        """
+
+        self._mode = mode
+
+    @property
     def name(self):
         """Gets the name of this StreamDef.  # noqa: E501
 
+        Stream name should only contain a maximum of 64 letters, numbers, or _, and start with a letter  # noqa: E501
 
         :return: The name of this StreamDef.  # noqa: E501
         :rtype: str
@@ -241,6 +273,7 @@ class StreamDef(object):
     def name(self, name):
         """Sets the name of this StreamDef.
 
+        Stream name should only contain a maximum of 64 letters, numbers, or _, and start with a letter  # noqa: E501
 
         :param name: The name of this StreamDef.  # noqa: E501
         :type: str
@@ -312,6 +345,27 @@ class StreamDef(object):
         """
 
         self._partition_by_granularity = partition_by_granularity
+
+    @property
+    def primary_key(self):
+        """Gets the primary_key of this StreamDef.  # noqa: E501
+
+
+        :return: The primary_key of this StreamDef.  # noqa: E501
+        :rtype: str
+        """
+        return self._primary_key
+
+    @primary_key.setter
+    def primary_key(self, primary_key):
+        """Sets the primary_key of this StreamDef.
+
+
+        :param primary_key: The primary_key of this StreamDef.  # noqa: E501
+        :type: str
+        """
+
+        self._primary_key = primary_key
 
     @property
     def replication_factor(self):

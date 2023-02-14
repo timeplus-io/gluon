@@ -17,7 +17,12 @@ try:
     pprint(f"there are {len(query_list)} queries ")
 
     # create a new query
-    query = Query(env=env).sql(query="SELECT * FROM iot").create()
+    query = (
+        Query(env=env)
+        .sql(query="SELECT * FROM iot")
+        .batching_pilicy(1000, 1000)
+        .create()
+    )
     query_id = query.metadata()["id"]
     pprint(f"created a query with id {query_id}")
 
