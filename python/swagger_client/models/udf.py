@@ -34,10 +34,12 @@ class UDF(object):
         'created_at': 'str',
         'created_by': 'Owner',
         'description': 'str',
+        'is_aggregation': 'bool',
         'last_updated_at': 'str',
         'last_updated_by': 'Owner',
         'name': 'str',
         'return_type': 'str',
+        'source': 'str',
         'type': 'str',
         'url': 'str'
     }
@@ -49,15 +51,17 @@ class UDF(object):
         'created_at': 'created_at',
         'created_by': 'created_by',
         'description': 'description',
+        'is_aggregation': 'is_aggregation',
         'last_updated_at': 'last_updated_at',
         'last_updated_by': 'last_updated_by',
         'name': 'name',
         'return_type': 'return_type',
+        'source': 'source',
         'type': 'type',
         'url': 'url'
     }
 
-    def __init__(self, arguments=None, auth_context=None, auth_method=None, created_at=None, created_by=None, description=None, last_updated_at=None, last_updated_by=None, name=None, return_type=None, type=None, url=None):  # noqa: E501
+    def __init__(self, arguments=None, auth_context=None, auth_method=None, created_at=None, created_by=None, description=None, is_aggregation=None, last_updated_at=None, last_updated_by=None, name=None, return_type=None, source=None, type=None, url=None):  # noqa: E501
         """UDF - a model defined in Swagger"""  # noqa: E501
         self._arguments = None
         self._auth_context = None
@@ -65,10 +69,12 @@ class UDF(object):
         self._created_at = None
         self._created_by = None
         self._description = None
+        self._is_aggregation = None
         self._last_updated_at = None
         self._last_updated_by = None
         self._name = None
         self._return_type = None
+        self._source = None
         self._type = None
         self._url = None
         self.discriminator = None
@@ -84,6 +90,8 @@ class UDF(object):
             self.created_by = created_by
         if description is not None:
             self.description = description
+        if is_aggregation is not None:
+            self.is_aggregation = is_aggregation
         if last_updated_at is not None:
             self.last_updated_at = last_updated_at
         if last_updated_by is not None:
@@ -92,6 +100,8 @@ class UDF(object):
             self.name = name
         if return_type is not None:
             self.return_type = return_type
+        if source is not None:
+            self.source = source
         if type is not None:
             self.type = type
         if url is not None:
@@ -101,6 +111,7 @@ class UDF(object):
     def arguments(self):
         """Gets the arguments of this UDF.  # noqa: E501
 
+        The input argument of the UDF   * For UDA: the number and type of arguments should be consistent with the main function of UDA.     the type should be the data types of proton not javascript types. It only supports int8/16/32/64, uint8/16/32/64,  # noqa: E501
 
         :return: The arguments of this UDF.  # noqa: E501
         :rtype: list[UDFArgument]
@@ -111,6 +122,7 @@ class UDF(object):
     def arguments(self, arguments):
         """Sets the arguments of this UDF.
 
+        The input argument of the UDF   * For UDA: the number and type of arguments should be consistent with the main function of UDA.     the type should be the data types of proton not javascript types. It only supports int8/16/32/64, uint8/16/32/64,  # noqa: E501
 
         :param arguments: The arguments of this UDF.  # noqa: E501
         :type: list[UDFArgument]
@@ -224,6 +236,29 @@ class UDF(object):
         self._description = description
 
     @property
+    def is_aggregation(self):
+        """Gets the is_aggregation of this UDF.  # noqa: E501
+
+        Whether it is an aggregation function. Only valid when type is 'javascript'  # noqa: E501
+
+        :return: The is_aggregation of this UDF.  # noqa: E501
+        :rtype: bool
+        """
+        return self._is_aggregation
+
+    @is_aggregation.setter
+    def is_aggregation(self, is_aggregation):
+        """Sets the is_aggregation of this UDF.
+
+        Whether it is an aggregation function. Only valid when type is 'javascript'  # noqa: E501
+
+        :param is_aggregation: The is_aggregation of this UDF.  # noqa: E501
+        :type: bool
+        """
+
+        self._is_aggregation = is_aggregation
+
+    @property
     def last_updated_at(self):
         """Gets the last_updated_at of this UDF.  # noqa: E501
 
@@ -290,6 +325,7 @@ class UDF(object):
     def return_type(self):
         """Gets the return_type of this UDF.  # noqa: E501
 
+        The erturn type of the UDF   * For UDA: if it returns a single value, the return type is the corresponding data type of Timeplus.     It supports the same types of input arguments, except for datetime, it only supports DateTime64(3).  # noqa: E501
 
         :return: The return_type of this UDF.  # noqa: E501
         :rtype: str
@@ -300,6 +336,7 @@ class UDF(object):
     def return_type(self, return_type):
         """Sets the return_type of this UDF.
 
+        The erturn type of the UDF   * For UDA: if it returns a single value, the return type is the corresponding data type of Timeplus.     It supports the same types of input arguments, except for datetime, it only supports DateTime64(3).  # noqa: E501
 
         :param return_type: The return_type of this UDF.  # noqa: E501
         :type: str
@@ -308,9 +345,33 @@ class UDF(object):
         self._return_type = return_type
 
     @property
+    def source(self):
+        """Gets the source of this UDF.  # noqa: E501
+
+        The source code of the UDA. There are functions to be defined:  * main function: with the same name as UDA. Timeplus calls this function for each input row. The main function can return two types of result: object or simple data type    - If it returns an object, the object is like {“emit”: true, “result”: …}. ‘Emit’ (boolean) property tells Timeplus whether or not the result should emit. ‘result’ is the current aggregate result, if ‘emit’ is false, the result will be ignored by Timeplus. Timeplus will convert the ‘result’ property of v8 to the data types defined when creating UDA.    - If it returns a simple data type, Timeplus considers the return data as the result to be emitted immediately. It converts the return data to the corresponding data type and Timeplus emits the aggregating result.    - Once UDA tells Timeplus to emit the data, UDA takes the full responsibility to clear the internal state, prepare and restart a new aggregating window, et al.  * state function: which returns the serialized state of all internal states of UDA in string. The UDA takes the responsibility therefore Timeplus can choose to persist the internal state of UDA for query recovery.  * init function: the input of this function is the string of serialized state of the internal states UDA. Timeplus calls this function when it wants to recover the aggregation function with the persisted internal state.  # noqa: E501
+
+        :return: The source of this UDF.  # noqa: E501
+        :rtype: str
+        """
+        return self._source
+
+    @source.setter
+    def source(self, source):
+        """Sets the source of this UDF.
+
+        The source code of the UDA. There are functions to be defined:  * main function: with the same name as UDA. Timeplus calls this function for each input row. The main function can return two types of result: object or simple data type    - If it returns an object, the object is like {“emit”: true, “result”: …}. ‘Emit’ (boolean) property tells Timeplus whether or not the result should emit. ‘result’ is the current aggregate result, if ‘emit’ is false, the result will be ignored by Timeplus. Timeplus will convert the ‘result’ property of v8 to the data types defined when creating UDA.    - If it returns a simple data type, Timeplus considers the return data as the result to be emitted immediately. It converts the return data to the corresponding data type and Timeplus emits the aggregating result.    - Once UDA tells Timeplus to emit the data, UDA takes the full responsibility to clear the internal state, prepare and restart a new aggregating window, et al.  * state function: which returns the serialized state of all internal states of UDA in string. The UDA takes the responsibility therefore Timeplus can choose to persist the internal state of UDA for query recovery.  * init function: the input of this function is the string of serialized state of the internal states UDA. Timeplus calls this function when it wants to recover the aggregation function with the persisted internal state.  # noqa: E501
+
+        :param source: The source of this UDF.  # noqa: E501
+        :type: str
+        """
+
+        self._source = source
+
+    @property
     def type(self):
         """Gets the type of this UDF.  # noqa: E501
 
+        Either `javascript` or `remote`  # noqa: E501
 
         :return: The type of this UDF.  # noqa: E501
         :rtype: str
@@ -321,6 +382,7 @@ class UDF(object):
     def type(self, type):
         """Sets the type of this UDF.
 
+        Either `javascript` or `remote`  # noqa: E501
 
         :param type: The type of this UDF.  # noqa: E501
         :type: str

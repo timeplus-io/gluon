@@ -4,7 +4,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **event_time** | **int** |  | 
-**index_time** | **int** |  | 
 **window_end** | **int** |  | 
 **window_start** | **int** |  | 
 

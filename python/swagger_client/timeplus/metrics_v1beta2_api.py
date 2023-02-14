@@ -32,45 +32,43 @@ class MetricsV1beta2Api(object):
             api_client = ApiClient()
         self.api_client = api_client
 
-    def v1beta2_global_metrics_post(self, body, **kwargs):  # noqa: E501
+    def v1beta2_global_metrics_get(self, **kwargs):  # noqa: E501
         """query global metrics.  # noqa: E501
 
         query global metrics..  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_global_metrics_post(body, async_req=True)
+        >>> thread = api.v1beta2_global_metrics_get(async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param InternalHttpHandlerV1beta2GlobalMetricsRequest body: metrics query request parameters (required)
         :return: GlobalMetricsResult
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.v1beta2_global_metrics_post_with_http_info(body, **kwargs)  # noqa: E501
+            return self.v1beta2_global_metrics_get_with_http_info(**kwargs)  # noqa: E501
         else:
-            (data) = self.v1beta2_global_metrics_post_with_http_info(body, **kwargs)  # noqa: E501
+            (data) = self.v1beta2_global_metrics_get_with_http_info(**kwargs)  # noqa: E501
             return data
 
-    def v1beta2_global_metrics_post_with_http_info(self, body, **kwargs):  # noqa: E501
+    def v1beta2_global_metrics_get_with_http_info(self, **kwargs):  # noqa: E501
         """query global metrics.  # noqa: E501
 
         query global metrics..  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_global_metrics_post_with_http_info(body, async_req=True)
+        >>> thread = api.v1beta2_global_metrics_get_with_http_info(async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param InternalHttpHandlerV1beta2GlobalMetricsRequest body: metrics query request parameters (required)
         :return: GlobalMetricsResult
                  If the method is called asynchronously,
                  returns the request thread.
         """
 
-        all_params = ['body']  # noqa: E501
+        all_params = []  # noqa: E501
         all_params.append('async_req')
         all_params.append('_return_http_data_only')
         all_params.append('_preload_content')
@@ -81,14 +79,10 @@ class MetricsV1beta2Api(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method v1beta2_global_metrics_post" % key
+                    " to method v1beta2_global_metrics_get" % key
                 )
             params[key] = val
         del params['kwargs']
-        # verify the required parameter 'body' is set
-        if ('body' not in params or
-                params['body'] is None):
-            raise ValueError("Missing the required parameter `body` when calling `v1beta2_global_metrics_post`")  # noqa: E501
 
         collection_formats = {}
 
@@ -102,21 +96,15 @@ class MetricsV1beta2Api(object):
         local_var_files = {}
 
         body_params = None
-        if 'body' in params:
-            body_params = params['body']
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
-
-        # HTTP header `Content-Type`
-        header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
             ['application/json'])  # noqa: E501
 
         # Authentication setting
         auth_settings = ['ApiKeyAuth']  # noqa: E501
 
         return self.api_client.call_api(
-            '/v1beta2/global_metrics', 'POST',
+            '/v1beta2/global-metrics', 'GET',
             path_params,
             query_params,
             header_params,
@@ -131,39 +119,39 @@ class MetricsV1beta2Api(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def v1beta2_resource_metrics_post(self, body, **kwargs):  # noqa: E501
+    def v1beta2_resource_metrics_get(self, body, **kwargs):  # noqa: E501
         """query resource metrics.  # noqa: E501
 
         query resource metrics..  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_resource_metrics_post(body, async_req=True)
+        >>> thread = api.v1beta2_resource_metrics_get(body, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param InternalHttpHandlerV1beta2GlobalMetricsRequest body: metrics query request parameters (required)
+        :param ResourceMetricsRequest body: metrics query request parameters (required)
         :return: ResourceMetricsResult
                  If the method is called asynchronously,
                  returns the request thread.
         """
         kwargs['_return_http_data_only'] = True
         if kwargs.get('async_req'):
-            return self.v1beta2_resource_metrics_post_with_http_info(body, **kwargs)  # noqa: E501
+            return self.v1beta2_resource_metrics_get_with_http_info(body, **kwargs)  # noqa: E501
         else:
-            (data) = self.v1beta2_resource_metrics_post_with_http_info(body, **kwargs)  # noqa: E501
+            (data) = self.v1beta2_resource_metrics_get_with_http_info(body, **kwargs)  # noqa: E501
             return data
 
-    def v1beta2_resource_metrics_post_with_http_info(self, body, **kwargs):  # noqa: E501
+    def v1beta2_resource_metrics_get_with_http_info(self, body, **kwargs):  # noqa: E501
         """query resource metrics.  # noqa: E501
 
         query resource metrics..  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_resource_metrics_post_with_http_info(body, async_req=True)
+        >>> thread = api.v1beta2_resource_metrics_get_with_http_info(body, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param InternalHttpHandlerV1beta2GlobalMetricsRequest body: metrics query request parameters (required)
+        :param ResourceMetricsRequest body: metrics query request parameters (required)
         :return: ResourceMetricsResult
                  If the method is called asynchronously,
                  returns the request thread.
@@ -180,14 +168,14 @@ class MetricsV1beta2Api(object):
             if key not in all_params:
                 raise TypeError(
                     "Got an unexpected keyword argument '%s'"
-                    " to method v1beta2_resource_metrics_post" % key
+                    " to method v1beta2_resource_metrics_get" % key
                 )
             params[key] = val
         del params['kwargs']
         # verify the required parameter 'body' is set
         if ('body' not in params or
                 params['body'] is None):
-            raise ValueError("Missing the required parameter `body` when calling `v1beta2_resource_metrics_post`")  # noqa: E501
+            raise ValueError("Missing the required parameter `body` when calling `v1beta2_resource_metrics_get`")  # noqa: E501
 
         collection_formats = {}
 
@@ -215,7 +203,7 @@ class MetricsV1beta2Api(object):
         auth_settings = ['ApiKeyAuth']  # noqa: E501
 
         return self.api_client.call_api(
-            '/v1beta2/resource_metrics', 'POST',
+            '/v1beta2/resource-metrics', 'GET',
             path_params,
             query_params,
             header_params,

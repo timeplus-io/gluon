@@ -29,27 +29,23 @@ class TimeColumns(object):
     """
     swagger_types = {
         'event_time': 'int',
-        'index_time': 'int',
         'window_end': 'int',
         'window_start': 'int'
     }
 
     attribute_map = {
         'event_time': 'eventTime',
-        'index_time': 'indexTime',
         'window_end': 'windowEnd',
         'window_start': 'windowStart'
     }
 
-    def __init__(self, event_time=None, index_time=None, window_end=None, window_start=None):  # noqa: E501
+    def __init__(self, event_time=None, window_end=None, window_start=None):  # noqa: E501
         """TimeColumns - a model defined in Swagger"""  # noqa: E501
         self._event_time = None
-        self._index_time = None
         self._window_end = None
         self._window_start = None
         self.discriminator = None
         self.event_time = event_time
-        self.index_time = index_time
         self.window_end = window_end
         self.window_start = window_start
 
@@ -75,29 +71,6 @@ class TimeColumns(object):
             raise ValueError("Invalid value for `event_time`, must not be `None`")  # noqa: E501
 
         self._event_time = event_time
-
-    @property
-    def index_time(self):
-        """Gets the index_time of this TimeColumns.  # noqa: E501
-
-
-        :return: The index_time of this TimeColumns.  # noqa: E501
-        :rtype: int
-        """
-        return self._index_time
-
-    @index_time.setter
-    def index_time(self, index_time):
-        """Sets the index_time of this TimeColumns.
-
-
-        :param index_time: The index_time of this TimeColumns.  # noqa: E501
-        :type: int
-        """
-        if index_time is None:
-            raise ValueError("Invalid value for `index_time`, must not be `None`")  # noqa: E501
-
-        self._index_time = index_time
 
     @property
     def window_end(self):

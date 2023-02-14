@@ -33,9 +33,9 @@ class QueriesV1beta2Api(object):
         self.api_client = api_client
 
     def v1beta2_queries_post(self, body, **kwargs):  # noqa: E501
-        """execute a query.  # noqa: E501
+        """execute a query and return the results.  # noqa: E501
 
-        execute a query.  # noqa: E501
+        Execute a query and return the results. * If the request fails, the response content type will be `application/json`. Please refer to the failure codes in Responses section below. * If the query is executed successfully, the response content type will be `text/event-stream`. **For SSE** There are 3 types of data that will be sent to SSE channel 1. Query (type `query`): The first event of the result will ALWAYS be this type. 2. Metrics (type `metrics`): The query metrics in JSON. They will be sent every 1 seconds. 3. Data (the type is empty): The query result.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_queries_post(body, async_req=True)
@@ -43,7 +43,7 @@ class QueriesV1beta2Api(object):
 
         :param async_req bool
         :param CreateQueryRequestV1Beta2 body: query request parameters (required)
-        :return: None
+        :return: Query
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -59,9 +59,9 @@ class QueriesV1beta2Api(object):
             return data
 
     def v1beta2_queries_post_with_http_info(self, body, **kwargs):  # noqa: E501
-        """execute a query.  # noqa: E501
+        """execute a query and return the results.  # noqa: E501
 
-        execute a query.  # noqa: E501
+        Execute a query and return the results. * If the request fails, the response content type will be `application/json`. Please refer to the failure codes in Responses section below. * If the query is executed successfully, the response content type will be `text/event-stream`. **For SSE** There are 3 types of data that will be sent to SSE channel 1. Query (type `query`): The first event of the result will ALWAYS be this type. 2. Metrics (type `metrics`): The query metrics in JSON. They will be sent every 1 seconds. 3. Data (the type is empty): The query result.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_queries_post_with_http_info(body, async_req=True)
@@ -69,7 +69,7 @@ class QueriesV1beta2Api(object):
 
         :param async_req bool
         :param CreateQueryRequestV1Beta2 body: query request parameters (required)
-        :return: None
+        :return: Query
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -111,7 +111,7 @@ class QueriesV1beta2Api(object):
             body_params = params["body"]
         # HTTP header `Accept`
         header_params["Accept"] = self.api_client.select_header_accept(
-            ["application/json"]
+            ["application/json", "text/event-stream"]
         )  # noqa: E501
 
         # HTTP header `Content-Type`
@@ -133,7 +133,7 @@ class QueriesV1beta2Api(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type=None,  # noqa: E501
+            response_type="Query",  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get("async_req"),
             _return_http_data_only=params.get("_return_http_data_only"),

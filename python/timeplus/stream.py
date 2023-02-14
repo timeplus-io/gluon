@@ -22,6 +22,8 @@ class Stream:
         self._logstore_retention_ms = None
         self._ttl_expression = None
         self._description = None
+        self._mode = None
+        self._primary_key = None
 
     def name(self, stream_name):
         self._name = stream_name
@@ -59,6 +61,14 @@ class Stream:
         self._description = description
         return self
 
+    def mode(self, mode):
+        self._mode = mode
+        return self
+
+    def primary_key(self, primary_key):
+        self._primary_key = primary_key
+        return self
+
     def create(self):
         body = {"columns": self._columns, "name": self._name}
 
@@ -79,6 +89,12 @@ class Stream:
 
         if self._description:
             body["description"] = self._description
+
+        if self._mode:
+            body["mode"] = self._mode
+
+        if self._primary_key:
+            body["primary_key"] = self._primary_key
 
         try:
             self._metadata = self._api_instance.v1beta1_streams_post(body)

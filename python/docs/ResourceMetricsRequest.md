@@ -1,13 +1,12 @@
-# CreateQueryRequestV1Beta2
+# ResourceMetricsRequest
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**batching_policy** | [**BatchingPolicy**](BatchingPolicy.md) |  | [optional] 
-**description** | **str** |  | [optional] 
-**name** | **str** |  | [optional] 
-**sql** | **str** |  | 
-**tags** | **list[str]** |  | [optional] 
+**metrics_names** | **list[str]** |  | [optional] 
+**metrics_types** | **list[str]** |  | [optional] 
+**resource_ids** | **list[str]** |  | [optional] 
+**time_range** | **int** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

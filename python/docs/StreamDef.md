@@ -9,10 +9,12 @@ Name | Type | Description | Notes
 **event_time_timezone** | **str** |  | [optional] 
 **logstore_retention_bytes** | **int** |  | [optional] 
 **logstore_retention_ms** | **int** |  | [optional] 
-**name** | **str** |  | 
+**mode** | **str** |  | [optional] 
+**name** | **str** | Stream name should only contain a maximum of 64 letters, numbers, or _, and start with a letter | 
 **order_by_expression** | **str** |  | [optional] 
 **order_by_granularity** | **str** |  | [optional] 
 **partition_by_granularity** | **str** |  | [optional] 
+**primary_key** | **str** |  | [optional] 
 **replication_factor** | **int** |  | [optional] 
 **shards** | **int** |  | [optional] 
 **ttl_expression** | **str** |  | [optional] 
