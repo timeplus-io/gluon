@@ -18,9 +18,8 @@ try:
 
     # create a new query
     query = (
-        Query(env=env)
-        .sql(query="SELECT * FROM iot")
-        .batching_pilicy(1000, 1000)
+        Query(env=env).sql(query="SELECT * FROM iot")
+        # .batching_pilicy(1000, 1000)
         .create()
     )
     query_id = query.metadata()["id"]
@@ -32,7 +31,7 @@ try:
     pprint(f"get a query with id {metadata['id']}")
 
     # iterate query result
-    limit = 3
+    limit = 10
     count = 0
     for event in query.result():
         print(event.event)
