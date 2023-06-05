@@ -168,7 +168,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta2_dashboards_id_put**
-> v1beta2_dashboards_id_put(body, id)
+> DashboardDashboard v1beta2_dashboards_id_put(body, id)
 
 Update a dashboard.
 
@@ -195,7 +195,8 @@ id = 'id_example' # str | dashboard ID
 
 try:
     # Update a dashboard.
-    api_instance.v1beta2_dashboards_id_put(body, id)
+    api_response = api_instance.v1beta2_dashboards_id_put(body, id)
+    pprint(api_response)
 except ApiException as e:
     print("Exception when calling DashboardsV1beta2Api->v1beta2_dashboards_id_put: %s\n" % e)
 ```
@@ -209,7 +210,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**DashboardDashboard**](DashboardDashboard.md)
 
 ### Authorization
 

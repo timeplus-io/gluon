@@ -55,12 +55,14 @@ definitions:
       default:
         type: string
       name:
+        example: name
         type: string
       skipping_index_expression:
         type: string
       ttl_expression:
         type: string
       type:
+        example: string
         type: string
     required:
     - name
@@ -68,44 +70,16 @@ definitions:
     type: object
   ColumnsResp:
     properties:
-      alias:
-        type: string
-      comment:
-        type: string
       default:
         type: string
       name:
+        example: my_col
         type: string
       nullable:
         type: boolean
       type:
+        example: int64
         type: string
-    type: object
-  Connection:
-    properties:
-      config:
-        $ref: '#/definitions/ConnectionConfig'
-      stat:
-        $ref: '#/definitions/ConnectionStat'
-    required:
-    - stat
-    type: object
-  ConnectionConfig:
-    properties:
-      auto_create:
-        type: boolean
-      stream_definition:
-        $ref: '#/definitions/StreamDef'
-    type: object
-  ConnectionStat:
-    properties:
-      message:
-        type: string
-      status:
-        type: string
-    required:
-    - message
-    - status
     type: object
   CreateAPIKeyRequest:
     properties:
@@ -176,19 +150,6 @@ definitions:
     required:
     - name
     type: object
-  CreateQueryRequestV1Beta1:
-    properties:
-      description:
-        type: string
-      name:
-        type: string
-      sql:
-        type: string
-      tags:
-        items:
-          type: string
-        type: array
-    type: object
   CreateQueryRequestV1Beta2:
     properties:
       batching_policy:
@@ -207,64 +168,6 @@ definitions:
         type: array
     required:
     - sql
-    type: object
-  CreateQueryResponse:
-    properties:
-      analysis:
-        $ref: '#/definitions/SQLAnalyzeResult'
-      created_at:
-        type: string
-      created_by:
-        $ref: '#/definitions/Owner'
-      description:
-        type: string
-      duration:
-        type: integer
-      end_time:
-        type: integer
-      id:
-        type: string
-      last_updated_at:
-        type: string
-      last_updated_by:
-        $ref: '#/definitions/Owner'
-      message:
-        type: string
-      name:
-        type: string
-      response_time:
-        type: integer
-      result:
-        $ref: '#/definitions/QueryResult'
-      sinks:
-        additionalProperties:
-          $ref: '#/definitions/SinkStat'
-        type: object
-      sql:
-        type: string
-      start_time:
-        type: integer
-      status:
-        type: string
-      tags:
-        items:
-          type: string
-        type: array
-      timeColumns:
-        $ref: '#/definitions/TimeColumns'
-    required:
-    - analysis
-    - duration
-    - end_time
-    - id
-    - message
-    - response_time
-    - result
-    - sinks
-    - sql
-    - start_time
-    - status
-    - timeColumns
     type: object
   CreateSinkRequest:
     properties:
@@ -286,20 +189,55 @@ definitions:
     type: object
   CreateSourceRequest:
     properties:
-      connection_config:
-        $ref: '#/definitions/ConnectionConfig'
       description:
+        example: read from my kafka topic
         type: string
       name:
+        description: Source name should only contain a maximum of 64 letters, numbers,
+          or _, and start with a letter
+        example: my_kafka_source
         type: string
       properties:
         additionalProperties: {}
+        description: Additional properties that required to read the data from source.
+          Please refer to the documentation for this source type
         type: object
+      stream:
+        description: The name of the target stream that this source writes to. The
+          stream needs to be created first.
+        example: kafak_stream
+        type: string
       type:
+        description: Type of the source
+        example: kafka
         type: string
     required:
     - name
+    - stream
     - type
+    type: object
+  CreateViewRequest:
+    properties:
+      description:
+        example: the description of my_test_stream
+        type: string
+      materialized:
+        default: false
+        type: boolean
+      name:
+        example: my_test_stream
+        type: string
+      query:
+        example: select * from devops
+        type: string
+      target_stream:
+        description: |-
+          This option is applicable only when `materialized` is `true`. Specify this when you want to have multiple
+          materialized views sink to the same target stream.
+        type: string
+    required:
+    - name
+    - query
     type: object
   Edge:
     properties:
@@ -364,12 +302,16 @@ definitions:
     type: object
   GlobalMetricsResult:
     properties:
-      name:
-        type: string
-      time:
-        type: string
-      value:
+      sink_throughput:
         type: number
+      source_throughput:
+        type: number
+      storage:
+        type: integer
+    required:
+    - sink_throughput
+    - source_throughput
+    - storage
     type: object
   Graph:
     properties:
@@ -411,8 +353,10 @@ definitions:
   Owner:
     properties:
       id:
+        example: bob-id
         type: string
       name:
+        example: Bob
         type: string
     type: object
   Query:
@@ -420,6 +364,7 @@ definitions:
       analysis:
         $ref: '#/definitions/SQLAnalyzeResult'
       created_at:
+        example: "2023-02-01 23:22:59"
         type: string
       created_by:
         $ref: '#/definitions/Owner'
@@ -432,6 +377,7 @@ definitions:
       id:
         type: string
       last_updated_at:
+        example: "2023-02-05 11:12:13"
         type: string
       last_updated_by:
         $ref: '#/definitions/Owner'
@@ -523,41 +469,23 @@ definitions:
     required:
     - header
     type: object
-  ResourceMetricsRequest:
-    properties:
-      metricsNames:
-        items:
-          type: string
-        type: array
-      metricsTypes:
-        items:
-          type: string
-        type: array
-      resourceIds:
-        items:
-          type: string
-        type: array
-      timeRange:
-        type: integer
-    type: object
   ResourceMetricsResult:
     properties:
+      failure_count:
+        type: number
       id:
         type: string
-      metrics_name:
-        type: string
-      metrics_type:
-        type: string
-      time:
-        type: string
-      value:
+      success_count:
         type: number
+      throughput:
+        items:
+          $ref: '#/definitions/metrics_query.Throughput'
+        type: array
     required:
+    - failure_count
     - id
-    - metrics_name
-    - metrics_type
-    - time
-    - value
+    - success_count
+    - throughput
     type: object
   SQLAnalyzeColumn:
     properties:
@@ -606,6 +534,7 @@ definitions:
   Sink:
     properties:
       created_at:
+        example: "2023-02-01 23:22:59"
         type: string
       created_by:
         $ref: '#/definitions/Owner'
@@ -614,28 +543,32 @@ definitions:
       id:
         type: string
       last_updated_at:
+        example: "2023-02-05 11:12:13"
         type: string
       last_updated_by:
         $ref: '#/definitions/Owner'
+      message:
+        type: string
       name:
         type: string
       properties:
         additionalProperties: {}
         type: object
-      queries:
-        items:
-          type: string
-        type: array
       query:
-        $ref: '#/definitions/Query'
+        type: string
+      status:
+        example: running
+        type: string
       type:
         type: string
     required:
     - description
     - id
+    - message
     - name
     - properties
-    - queries
+    - query
+    - status
     - type
     type: object
   SinkStat:
@@ -647,36 +580,55 @@ definitions:
     type: object
   Source:
     properties:
-      connection:
-        $ref: '#/definitions/Connection'
       created_at:
+        example: "2023-02-01 23:22:59"
         type: string
       created_by:
         $ref: '#/definitions/Owner'
       description:
+        example: read data from my kafka topic
         type: string
       id:
+        example: source_id
         type: string
       last_updated_at:
+        example: "2023-02-05 11:12:13"
         type: string
       last_updated_by:
         $ref: '#/definitions/Owner'
+      message:
+        type: string
       name:
+        example: my_kafka_source
         type: string
       properties:
         additionalProperties: {}
+        description: Additional properties of the source
         type: object
       start_time:
+        description: Unix timestamp when the source get started
+        example: 1680301788
         type: integer
+      status:
+        example: running
+        type: string
+      stream:
+        description: The name of the target stream that this source writes to.
+        example: kafka_stream
+        type: string
       type:
+        description: Type of the source
+        example: kafka
         type: string
     required:
-    - connection
     - description
     - id
+    - message
     - name
     - properties
     - start_time
+    - status
+    - stream
     - type
     type: object
   SourcePreviewRequest:
@@ -686,6 +638,11 @@ definitions:
         type: object
       size:
         type: integer
+      timeout:
+        description: |-
+          Indicates how long should preview last to fetch the desired amount of data indicated by `size`
+          A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as "300ms", "-1.5h" or "2h45m". Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+        type: string
       type:
         type: string
     type: object
@@ -696,31 +653,47 @@ definitions:
           $ref: '#/definitions/ColumnsResp'
         type: array
       created_at:
+        example: "2023-02-01 23:22:59"
         type: string
       created_by:
         $ref: '#/definitions/Owner'
       description:
+        example: my test stream
         type: string
       engine:
+        example: Stream
         type: string
       is_external:
+        example: false
         type: boolean
       last_updated_at:
+        example: "2023-02-05 11:12:13"
         type: string
       last_updated_by:
         $ref: '#/definitions/Owner'
       logstore_retention_bytes:
+        example: 1073741824
         type: integer
       logstore_retention_ms:
+        example: 86400000
         type: integer
-      name:
+      mode:
+        description: 'Storage mode of stream. Possible values: `append`, `changelog`,
+          `changelog_kv`, `versioned_kv`'
+        example: append
         type: string
-      stats:
-        $ref: '#/definitions/StreamStats'
+      name:
+        example: test_stream
+        type: string
+      primary_key:
+        description: Expression of primary key, required in `changelog_kv`` and `versioned_kv``
+          mode
+        type: string
       ttl:
         description: |-
           ORDER_BY     string        `json:"order_by_expression"`
           PATTITION_BY string        `json:"partition_by_expression"`
+        example: to_datetime(_tp_time) + INTERVAL 7 DAY
         type: string
     required:
     - columns
@@ -729,6 +702,7 @@ definitions:
     - is_external
     - logstore_retention_bytes
     - logstore_retention_ms
+    - mode
     - name
     - ttl
     type: object
@@ -739,16 +713,29 @@ definitions:
           $ref: '#/definitions/ColumnDef'
         type: array
       description:
+        example: my first stream
         type: string
       event_time_column:
+        description: This column will be used as the event time if specified
+        example: time
         type: string
       event_time_timezone:
+        description: The timezone of the `TimestampColumn`
+        example: UTC
         type: string
       logstore_retention_bytes:
+        description: The max size a stream can grow. Defaulted to 10 GiB
+        example: 10737418240
         type: integer
       logstore_retention_ms:
+        description: The max time the data can be retained in the stream. Defaulted
+          to 7 days
+        example: 604800000
         type: integer
       mode:
+        description: 'Storage mode of stream. Possible values: `append`, `changelog`,
+          `changelog_kv`, `versioned_kv`'
+        example: append
         type: string
       name:
         description: Stream name should only contain a maximum of 64 letters, numbers,
@@ -762,6 +749,8 @@ definitions:
       partition_by_granularity:
         type: string
       primary_key:
+        description: Expression of primary key, required in `changelog_kv`` and `versioned_kv``
+          mode
         type: string
       replication_factor:
         type: integer
@@ -788,11 +777,20 @@ definitions:
     type: object
   StreamStats:
     properties:
+      earliest_event:
+        example: "2023-02-01T01:02:03.456Z"
+        type: string
       historical_data_bytes:
+        example: 234567
         type: integer
+      latest_event:
+        example: "2023-02-13T07:08:09.012Z"
+        type: string
       row_count:
+        example: 20
         type: integer
       streaming_data_bytes:
+        example: 12345
         type: integer
     type: object
   TimeColumns:
@@ -823,6 +821,7 @@ definitions:
       auth_method:
         type: string
       created_at:
+        example: "2023-02-01 23:22:59"
         type: string
       created_by:
         $ref: '#/definitions/Owner'
@@ -833,6 +832,7 @@ definitions:
           'javascript'
         type: boolean
       last_updated_at:
+        example: "2023-02-05 11:12:13"
         type: string
       last_updated_by:
         $ref: '#/definitions/Owner'
@@ -889,23 +889,37 @@ definitions:
     type: object
   UpdateSourceRequest:
     properties:
-      connection_config:
-        $ref: '#/definitions/ConnectionConfig'
       description:
+        example: new description for the source
         type: string
       name:
+        description: Source name should only contain a maximum of 64 letters, numbers,
+          or _, and start with a letter
+        example: new_source_name
         type: string
       properties:
         additionalProperties: {}
+        description: Additional properties that required to read the data from source.
+          Please refer to the documentation for this source type
         type: object
+      stream:
+        description: The name of the target stream that this source writes to. The
+          stream needs to be created first.
+        example: new_stream
+        type: string
     type: object
   UpdateStreamRequest:
     properties:
       description:
         type: string
       logstore_retention_bytes:
+        description: The max size a stream can grow. Defaulted to 10 GiB
+        example: 10737418240
         type: integer
       logstore_retention_ms:
+        description: The max time the data can be retained in the stream. Defaulted
+          to 7 days
+        example: 604800000
         type: integer
       ttl_expression:
         type: string
@@ -915,8 +929,13 @@ definitions:
       description:
         type: string
       logstore_retention_bytes:
+        description: The max size a stream can grow. Defaulted to 10 GiB
+        example: 10737418240
         type: integer
       logstore_retention_ms:
+        description: The max time the data can be retained in the stream. Defaulted
+          to 7 days
+        example: 604800000
         type: integer
       query:
         type: string
@@ -930,12 +949,14 @@ definitions:
           $ref: '#/definitions/ColumnsResp'
         type: array
       created_at:
+        example: "2023-02-01 23:22:59"
         type: string
       created_by:
         $ref: '#/definitions/Owner'
       description:
         type: string
       last_updated_at:
+        example: "2023-02-05 11:12:13"
         type: string
       last_updated_by:
         $ref: '#/definitions/Owner'
@@ -949,20 +970,20 @@ definitions:
         type: string
       query:
         type: string
-      stats:
-        $ref: '#/definitions/StreamStats'
+      target_stream:
+        type: string
       ttl:
         type: string
     required:
     - columns
     - logstore_retention_bytes
     - logstore_retention_ms
-    - stats
     - ttl
     type: object
   dashboard.Dashboard:
     properties:
       created_at:
+        example: "2023-02-01 23:22:59"
         type: string
       created_by:
         $ref: '#/definitions/Owner'
@@ -971,6 +992,7 @@ definitions:
       id:
         type: string
       last_updated_at:
+        example: "2023-02-05 11:12:13"
         type: string
       last_updated_by:
         $ref: '#/definitions/Owner'
@@ -1014,6 +1036,16 @@ definitions:
         description: e.g. `chart`, `markdown`
         type: string
     type: object
+  metrics_query.Throughput:
+    properties:
+      time:
+        type: string
+      value:
+        type: number
+    required:
+    - time
+    - value
+    type: object
 host: us.timeplus.cloud
 info:
   contact:
@@ -1024,7 +1056,102 @@ info:
   title: Timeplus
   version: v1
 paths:
-  /v1beta1/auth/api_keys:
+  /api/internal/tenants/{tenant}/alerts/{id}/start:
+    post:
+      consumes:
+      - application/json
+      description: Start the alert with the given ID. If the alert is already running,
+        the API does nothing and returns 204.
+      parameters:
+      - description: Alert ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: start an alert.
+      tags:
+      - Alerts internal
+  /api/internal/tenants/{tenant}/sinks/{id}/start:
+    post:
+      consumes:
+      - application/json
+      description: Start the sink with the given ID. If the sink is already running,
+        the API does nothing and returns 204.
+      parameters:
+      - description: Sink ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: start a sink.
+      tags:
+      - Sinks internal
+  /v1beta2/alerts/{id}/stop:
+    post:
+      consumes:
+      - application/json
+      description: Stop the alert with the given ID.
+      parameters:
+      - description: alert ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: stop an alert.
+      tags:
+      - Alerts v1beta2
+  /v1beta2/auth/api_keys:
     get:
       description: list all API keys created by current user
       produces:
@@ -1048,7 +1175,7 @@ paths:
       - ApiKeyAuth: []
       summary: List API keys
       tags:
-      - API keys v1beta1
+      - API keys v1beta2
     post:
       consumes:
       - application/json
@@ -1084,8 +1211,8 @@ paths:
       - ApiKeyAuth: []
       summary: Create an API key
       tags:
-      - API keys v1beta1
-  /v1beta1/auth/api_keys/{id}:
+      - API keys v1beta2
+  /v1beta2/auth/api_keys/{id}:
     delete:
       description: delete the API key with the specified ID
       parameters:
@@ -1117,1287 +1244,7 @@ paths:
       - ApiKeyAuth: []
       summary: Delete an API key
       tags:
-      - API keys v1beta1
-  /v1beta1/format:
-    post:
-      consumes:
-      - application/json
-      description: Format the given query and make it easy to read.
-      parameters:
-      - description: the query SQL to be formatted
-        in: body
-        name: query
-        required: true
-        schema:
-          $ref: '#/definitions/FormatQueryRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/FormatQueryResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: format a query.
-      tags:
-      - Queries v1beta1
-  /v1beta1/queries:
-    get:
-      consumes:
-      - application/json
-      description: Get all queries.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/Query'
-            type: array
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: list queries.
-      tags:
-      - Queries v1beta1
-    post:
-      consumes:
-      - application/json
-      description: execute a query.
-      parameters:
-      - description: query request parameters
-        in: body
-        name: query
-        required: true
-        schema:
-          $ref: '#/definitions/CreateQueryRequestV1Beta1'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: '`status` will be set to either `running` or `failed` depends
-            on the result. If this is a non-streaming and it finishes really fast,
-            there is a rare chance the status will be `finished`'
-          schema:
-            $ref: '#/definitions/CreateQueryResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: execute a query.
-      tags:
-      - Queries v1beta1
-  /v1beta1/queries/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete the query with the given ID.
-      parameters:
-      - description: query ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: delete a query.
-      tags:
-      - Queries v1beta1
-    get:
-      consumes:
-      - application/json
-      description: Get the query with the given ID.
-      parameters:
-      - description: query ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/Query'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: get a query.
-      tags:
-      - Queries v1beta1
-  /v1beta1/queries/{id}/cancel:
-    post:
-      consumes:
-      - application/json
-      description: Cancel the query with the given ID. If given query is not running,
-        the request will do nothing. Otherwise, the query will be canceled and the
-        `status` will be set to `canceled`
-      parameters:
-      - description: query ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: cancel a query.
-      tags:
-      - Queries v1beta1
-  /v1beta1/queries/{id}/pipeline:
-    get:
-      consumes:
-      - application/json
-      description: get the pipeline for a query
-      parameters:
-      - description: query ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/QueryPipeline'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: get the pipeline for a query
-      tags:
-      - Queries v1beta1
-  /v1beta1/sinks:
-    get:
-      consumes:
-      - application/json
-      description: Get all sinks
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/Sink'
-            type: array
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: list sinks
-      tags:
-      - Sinks v1beta1
-    post:
-      consumes:
-      - application/json
-      description: Create a sink.
-      parameters:
-      - description: create sink request parameters
-        in: body
-        name: sink
-        required: true
-        schema:
-          $ref: '#/definitions/CreateSinkRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/Sink'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: create a sink.
-      tags:
-      - Sinks v1beta1
-  /v1beta1/sinks/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete a sink with the given ID.
-      parameters:
-      - description: sink ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: delete a sink.
-      tags:
-      - Sinks v1beta1
-    get:
-      consumes:
-      - application/json
-      description: Get a sink with the given ID.
-      parameters:
-      - description: sink ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/Sink'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: get a sink.
-      tags:
-      - Sinks v1beta1
-  /v1beta1/source/infer:
-    post:
-      consumes:
-      - application/json
-      description: infer schema from an existing event
-      parameters:
-      - description: events used to infer schema
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/EventInferRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/EventInferResponse'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: infer schema from an existing event
-      tags:
-      - Sources v1beta1
-  /v1beta1/source/match:
-    post:
-      consumes:
-      - application/json
-      description: return streams match provided events
-      parameters:
-      - description: events to match
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/StreamMatchRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              type: string
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: return streams match provided events
-      tags:
-      - Sources v1beta1
-  /v1beta1/source/preview:
-    post:
-      consumes:
-      - application/json
-      description: Get sample events from the source with the given ID.
-      parameters:
-      - description: source propeties for preview
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/SourcePreviewRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/Event'
-            type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: preview a source.
-      tags:
-      - Sources v1beta1
-  /v1beta1/source/upload:
-    post:
-      consumes:
-      - application/json
-      description: Upload a file to the system.
-      parameters:
-      - description: file to be uploaded
-        in: formData
-        name: file
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/FileUploadResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: upload a file
-      tags:
-      - Sources v1beta1
-  /v1beta1/sources:
-    get:
-      consumes:
-      - application/json
-      description: Get all sources.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/Source'
-            type: array
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: list sources.
-      tags:
-      - Sources v1beta1
-    post:
-      consumes:
-      - application/json
-      description: Create a source.
-      parameters:
-      - description: create source request parameters
-        in: body
-        name: source
-        required: true
-        schema:
-          $ref: '#/definitions/CreateSourceRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/Source'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: create a source.
-      tags:
-      - Sources v1beta1
-  /v1beta1/sources/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete the source with the given ID.
-      parameters:
-      - description: source ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: delete a source.
-      tags:
-      - Sources v1beta1
-    get:
-      consumes:
-      - application/json
-      description: Get a source with the given ID.
-      parameters:
-      - description: source ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/Source'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: get a source.
-      tags:
-      - Sources v1beta1
-    put:
-      consumes:
-      - application/json
-      description: Update the specific source with the given ID. Only stopped sources
-        can be updated.
-      parameters:
-      - description: source ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: update source request parameters
-        in: body
-        name: source
-        required: true
-        schema:
-          $ref: '#/definitions/UpdateSourceRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: Update a source.
-      tags:
-      - Sources v1beta1
-  /v1beta1/sources/{id}/start:
-    post:
-      consumes:
-      - application/json
-      description: Start the source with the given ID.
-      parameters:
-      - description: source ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: start a source.
-      tags:
-      - Sources v1beta1
-  /v1beta1/sources/{id}/stop:
-    post:
-      consumes:
-      - application/json
-      description: Stop the source with the given ID.
-      parameters:
-      - description: source ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: stop a source.
-      tags:
-      - Sources v1beta1
-  /v1beta1/sqlanalyze:
-    post:
-      consumes:
-      - application/json
-      description: analyze sql
-      parameters:
-      - description: sql request parameters
-        in: body
-        name: query
-        required: true
-        schema:
-          $ref: '#/definitions/AnalyzeSQLRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/SQLAnalyzeResult'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: analyze sql
-      tags:
-      - Queries v1beta1
-  /v1beta1/streams:
-    get:
-      consumes:
-      - application/json
-      description: Get all streams.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/Stream'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: list streams.
-      tags:
-      - Streams v1beta1
-    post:
-      consumes:
-      - application/json
-      description: Create a stream.
-      parameters:
-      - description: create stream request parameters
-        in: body
-        name: stream
-        required: true
-        schema:
-          $ref: '#/definitions/StreamDef'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/StreamDef'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: create a stream.
-      tags:
-      - Streams v1beta1
-  /v1beta1/streams/{name}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete the stream with the given name.
-      parameters:
-      - description: stream name
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: delete a stream.
-      tags:
-      - Streams v1beta1
-    patch:
-      consumes:
-      - application/json
-      description: Update the specific stream with the given name.
-      parameters:
-      - description: name of the stream
-        in: path
-        name: name
-        required: true
-        type: string
-      - description: update stream request parameters
-        in: body
-        name: stream
-        required: true
-        schema:
-          $ref: '#/definitions/UpdateStreamRequest'
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "501":
-          description: Not Implemented
-      security:
-      - ApiKeyAuth: []
-      summary: Update a stream.
-      tags:
-      - Streams v1beta1
-  /v1beta1/streams/{name}/ingest:
-    post:
-      consumes:
-      - application/json
-      - application/vnd.timeplus+json
-      - application/json;format=compat
-      - application/vnd.timeplus+json;format=compat
-      - application/json;format=stream
-      - application/vnd.timeplus+json;format=stream
-      - application/x-ndjson
-      - text/plain
-      - text/plain;format=raw
-      - text/plain;format=lines
-      description: |
-        Ingest data to a stream with the given name.
-        For formats are supported:
-        * compact JSON: when `Content-Type` is set to one of `application/json`, `application/json;format=compact`, `application/vnd.timeplus+json`, `application/vnd.timeplus+json;format=compat`, or set `format` query parameter with value `compact`. And this is the API's default format.
-        * JSON stream: when `Content-Type` is set to one of `application/json;format=streaming`, `application/vnd.timeplus+json;format=streaming`, or set `format` query parameter with value `streaming`.
-        * raw string: when `Content-Type` is set to one of `text/plain`, `text/plain;format=raw`, or set `format` query parameter with value `raw`.
-        * string lines: when `Content-Type` is set to `text/plain;format=lines`, or set `format` query parameter with value `lines`.
-      parameters:
-      - description: stream name
-        in: path
-        name: name
-        required: true
-        type: string
-      - description: ingest data
-        in: body
-        name: query
-        required: true
-        schema:
-          $ref: '#/definitions/IngestData'
-      - description: enfoce payload format, if it is set, it overwrite the Content-Type
-          header
-        enum:
-        - compact
-        - streaming
-        - raw
-        - lines
-        in: query
-        name: format
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: ingest data.
-      tags:
-      - Streams v1beta1
-  /v1beta1/streams/external:
-    post:
-      consumes:
-      - application/json
-      description: Create an external stream.
-      parameters:
-      - description: create external stream request parameters
-        in: body
-        name: stream
-        required: true
-        schema:
-          $ref: '#/definitions/ExternalStreamDef'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/ExternalStreamDef'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: create an external stream.
-      tags:
-      - Streams v1beta1
-  /v1beta1/udfs:
-    get:
-      consumes:
-      - application/json
-      description: Get all udf.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/UDF'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: list udf.
-      tags:
-      - UDFs v1beta1
-    post:
-      consumes:
-      - application/json
-      description: Create a udf.
-      parameters:
-      - description: create udf request parameters
-        in: body
-        name: udf
-        required: true
-        schema:
-          $ref: '#/definitions/UDF'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/UDF'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: create a udf.
-      tags:
-      - UDFs v1beta1
-  /v1beta1/udfs/{name}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete the udf with the given name.
-      parameters:
-      - description: udf name
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: delete a udf.
-      tags:
-      - UDFs v1beta1
-    get:
-      consumes:
-      - application/json
-      description: get the udf with the given name.
-      parameters:
-      - description: udf name
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/UDF'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: get a udf.
-      tags:
-      - UDFs v1beta1
-    put:
-      consumes:
-      - application/json
-      description: Update a udf.
-      parameters:
-      - description: update udf request parameters
-        in: body
-        name: udf
-        required: true
-        schema:
-          $ref: '#/definitions/UDF'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/UDF'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: update a udf.
-      tags:
-      - UDFs v1beta1
-  /v1beta1/views:
-    get:
-      consumes:
-      - application/json
-      description: Get all views.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/View'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: list views.
-      tags:
-      - Views v1beta1
-    post:
-      consumes:
-      - application/json
-      description: Create a view.
-      parameters:
-      - description: create view request parameters
-        in: body
-        name: view
-        required: true
-        schema:
-          $ref: '#/definitions/View'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/View'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: create a view.
-      tags:
-      - Views v1beta1
-  /v1beta1/views/{name}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete the view with the given name.
-      parameters:
-      - description: view name
-        in: path
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: delete a view.
-      tags:
-      - Views v1beta1
-    patch:
-      consumes:
-      - application/json
-      description: Update the specific view with the given name. Updating the query
-        of a materialized view is not allowed
-      parameters:
-      - description: name of the view
-        in: path
-        name: name
-        required: true
-        type: string
-      - description: update view request parameters
-        in: body
-        name: view
-        required: true
-        schema:
-          $ref: '#/definitions/UpdateViewRequest'
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "404":
-          description: Not Found
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: Update a view.
-      tags:
-      - Views v1beta1
+      - API keys v1beta2
   /v1beta2/dashboards:
     get:
       consumes:
@@ -2544,6 +1391,8 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/dashboard.Dashboard'
         "400":
           description: Bad Request
           schema:
@@ -2563,6 +1412,42 @@ paths:
       summary: Update a dashboard.
       tags:
       - Dashboards v1beta2
+  /v1beta2/format:
+    post:
+      consumes:
+      - application/json
+      description: Format the given query and make it easy to read.
+      parameters:
+      - description: the query SQL to be formatted
+        in: body
+        name: query
+        required: true
+        schema:
+          $ref: '#/definitions/FormatQueryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/FormatQueryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: format a query.
+      tags:
+      - Queries v1beta2
   /v1beta2/global-metrics:
     get:
       consumes:
@@ -2593,6 +1478,37 @@ paths:
       tags:
       - Metrics v1beta2
   /v1beta2/queries:
+    get:
+      consumes:
+      - application/json
+      description: Get all queries.
+      parameters:
+      - description: filter by tag
+        in: query
+        name: tag
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Query'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list queries.
+      tags:
+      - Queries v1beta2
     post:
       consumes:
       - application/json
@@ -2637,18 +1553,153 @@ paths:
       summary: execute a query and return the results.
       tags:
       - Queries v1beta2
+  /v1beta2/queries/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the query with the given ID.
+      parameters:
+      - description: query ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: delete a query.
+      tags:
+      - Queries v1beta2
+    get:
+      consumes:
+      - application/json
+      description: Get the query with the given ID.
+      parameters:
+      - description: query ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Query'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get a query.
+      tags:
+      - Queries v1beta2
+  /v1beta2/queries/{id}/cancel:
+    post:
+      consumes:
+      - application/json
+      description: Cancel the query with the given ID. If given query is not running,
+        the request will do nothing. Otherwise, the query will be canceled and the
+        `status` will be set to `canceled`
+      parameters:
+      - description: query ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: cancel a query.
+      tags:
+      - Queries v1beta2
+  /v1beta2/queries/{id}/pipeline:
+    get:
+      consumes:
+      - application/json
+      description: get the pipeline for a query
+      parameters:
+      - description: query ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/QueryPipeline'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get the pipeline for a query
+      tags:
+      - Queries v1beta2
   /v1beta2/resource-metrics:
     get:
       consumes:
       - application/json
       description: query resource metrics..
       parameters:
-      - description: metrics query request parameters
-        in: body
-        name: request
+      - in: query
+        name: metrics_type
         required: true
-        schema:
-          $ref: '#/definitions/ResourceMetricsRequest'
+        type: string
+      - in: query
+        items:
+          type: string
+        name: resource_ids[]
+        required: true
+        type: array
+      - in: query
+        name: time_range
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -2673,6 +1724,873 @@ paths:
       summary: query resource metrics.
       tags:
       - Metrics v1beta2
+  /v1beta2/sinks:
+    get:
+      consumes:
+      - application/json
+      description: Get all sinks
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Sink'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list sinks
+      tags:
+      - Sinks v1beta2
+    post:
+      consumes:
+      - application/json
+      description: Create a sink.
+      parameters:
+      - description: create sink request parameters
+        in: body
+        name: sink
+        required: true
+        schema:
+          $ref: '#/definitions/CreateSinkRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Sink'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create a sink.
+      tags:
+      - Sinks v1beta2
+  /v1beta2/sinks/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a sink with the given ID.
+      parameters:
+      - description: sink ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: delete a sink.
+      tags:
+      - Sinks v1beta2
+    get:
+      consumes:
+      - application/json
+      description: Get a sink with the given ID.
+      parameters:
+      - description: sink ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Sink'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get a sink.
+      tags:
+      - Sinks v1beta2
+  /v1beta2/sinks/{id}/stop:
+    post:
+      consumes:
+      - application/json
+      description: Stop the sink with the given ID from sending out data.
+      parameters:
+      - description: sink ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: stop a sink.
+      tags:
+      - Sinks v1beta2
+  /v1beta2/source/infer:
+    post:
+      consumes:
+      - application/json
+      description: infer schema from an existing event
+      parameters:
+      - description: events used to infer schema
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/EventInferRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/EventInferResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: infer schema from an existing event
+      tags:
+      - Sources v1beta2
+  /v1beta2/source/match:
+    post:
+      consumes:
+      - application/json
+      description: return streams match provided events
+      parameters:
+      - description: events to match
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/StreamMatchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: return streams match provided events
+      tags:
+      - Sources v1beta2
+  /v1beta2/source/preview:
+    post:
+      consumes:
+      - application/json
+      description: Get sample events from the source with the given ID.
+      parameters:
+      - description: source propeties for preview
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/SourcePreviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Event'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: preview a source.
+      tags:
+      - Sources v1beta2
+  /v1beta2/source/upload:
+    post:
+      consumes:
+      - application/json
+      description: Upload a file to the system.
+      parameters:
+      - description: file to be uploaded
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/FileUploadResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: upload a file
+      tags:
+      - Sources v1beta2
+  /v1beta2/sources:
+    get:
+      consumes:
+      - application/json
+      description: Get all sources.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Source'
+            type: array
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list sources.
+      tags:
+      - Sources v1beta2
+    post:
+      consumes:
+      - application/json
+      description: Create a source.
+      parameters:
+      - description: create source request parameters
+        in: body
+        name: source
+        required: true
+        schema:
+          $ref: '#/definitions/CreateSourceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Source'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create a source.
+      tags:
+      - Sources v1beta2
+  /v1beta2/sources/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the source with the given ID.
+      parameters:
+      - description: source ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: delete a source.
+      tags:
+      - Sources v1beta2
+    get:
+      consumes:
+      - application/json
+      description: Get a source with the given ID.
+      parameters:
+      - description: source ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Source'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get a source.
+      tags:
+      - Sources v1beta2
+    put:
+      consumes:
+      - application/json
+      description: Update the specific source with the given ID. Only stopped sources
+        can be updated.
+      parameters:
+      - description: source ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: update source request parameters
+        in: body
+        name: source
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateSourceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Source'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a source.
+      tags:
+      - Sources v1beta2
+  /v1beta2/sources/{id}/start:
+    post:
+      consumes:
+      - application/json
+      description: Start the source with the given ID.
+      parameters:
+      - description: source ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: start a source.
+      tags:
+      - Sources v1beta2
+  /v1beta2/sources/{id}/stop:
+    post:
+      consumes:
+      - application/json
+      description: Stop the source with the given ID.
+      parameters:
+      - description: source ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: stop a source.
+      tags:
+      - Sources v1beta2
+  /v1beta2/sqlanalyze:
+    post:
+      consumes:
+      - application/json
+      description: analyze sql
+      parameters:
+      - description: sql request parameters
+        in: body
+        name: query
+        required: true
+        schema:
+          $ref: '#/definitions/AnalyzeSQLRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/SQLAnalyzeResult'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: analyze sql
+      tags:
+      - Queries v1beta2
+  /v1beta2/streams:
+    get:
+      consumes:
+      - application/json
+      description: Get all streams.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Stream'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list streams.
+      tags:
+      - Streams v1beta2
+    post:
+      consumes:
+      - application/json
+      description: Create a stream.
+      parameters:
+      - description: create stream request parameters
+        in: body
+        name: stream
+        required: true
+        schema:
+          $ref: '#/definitions/StreamDef'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/StreamDef'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create a stream.
+      tags:
+      - Streams v1beta2
+  /v1beta2/streams/:name:
+    get:
+      consumes:
+      - application/json
+      description: Get a stream with the given name.
+      parameters:
+      - description: stream name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Stream'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get a stream.
+      tags:
+      - Streams v1beta2
+  /v1beta2/streams/:name/stats:
+    get:
+      consumes:
+      - application/json
+      description: Get the stats of a stream with the given name.
+      parameters:
+      - description: stream name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/StreamStats'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get the stats of a stream.
+      tags:
+      - Streams v1beta2
+  /v1beta2/streams/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the stream with the given name.
+      parameters:
+      - description: stream name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: delete a stream.
+      tags:
+      - Streams v1beta2
+    patch:
+      consumes:
+      - application/json
+      description: Update the specific stream with the given name.
+      parameters:
+      - description: name of the stream
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: update stream request parameters
+        in: body
+        name: stream
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateStreamRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "501":
+          description: Not Implemented
+      security:
+      - ApiKeyAuth: []
+      summary: Update a stream.
+      tags:
+      - Streams v1beta2
+  /v1beta2/streams/{name}/ingest:
+    post:
+      consumes:
+      - application/json
+      - application/vnd.timeplus+json
+      - application/json;format=compat
+      - application/vnd.timeplus+json;format=compat
+      - application/json;format=stream
+      - application/vnd.timeplus+json;format=stream
+      - application/x-ndjson
+      - text/plain
+      - text/plain;format=raw
+      - text/plain;format=lines
+      description: |
+        Ingest data to a stream with the given name.
+        For formats are supported:
+        * compact JSON: when `Content-Type` is set to one of `application/json`, `application/json;format=compact`, `application/vnd.timeplus+json`, `application/vnd.timeplus+json;format=compat`, or set `format` query parameter with value `compact`. And this is the API's default format.
+        * JSON stream: when `Content-Type` is set to one of `application/json;format=streaming`, `application/vnd.timeplus+json;format=streaming`, or set `format` query parameter with value `streaming`.
+        * raw string: when `Content-Type` is set to one of `text/plain`, `text/plain;format=raw`, or set `format` query parameter with value `raw`.
+        * string lines: when `Content-Type` is set to `text/plain;format=lines`, or set `format` query parameter with value `lines`.
+        * refer to https://docs.timeplus.com/docs/ingest-api for more information *
+      parameters:
+      - description: stream name
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: ingest data
+        in: body
+        name: query
+        required: true
+        schema:
+          $ref: '#/definitions/IngestData'
+      - description: enfoce payload format, if it is set, it overwrite the Content-Type
+          header
+        enum:
+        - compact
+        - streaming
+        - raw
+        - lines
+        in: query
+        name: format
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: ingest data.
+      tags:
+      - Streams v1beta2
+  /v1beta2/streams/external:
+    post:
+      consumes:
+      - application/json
+      description: Create an external stream.
+      parameters:
+      - description: create external stream request parameters
+        in: body
+        name: stream
+        required: true
+        schema:
+          $ref: '#/definitions/ExternalStreamDef'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/ExternalStreamDef'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create an external stream.
+      tags:
+      - Streams v1beta2
   /v1beta2/topology:
     get:
       consumes:
@@ -2700,30 +2618,358 @@ paths:
       summary: get topology graph.
       tags:
       - Topology v1beta2
-  /ws/queries/{id}:
+  /v1beta2/udfs:
     get:
-      description: stream query result via websocket
+      consumes:
+      - application/json
+      description: Get all udf.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/UDF'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list udf.
+      tags:
+      - UDFs v1beta2
+    post:
+      consumes:
+      - application/json
+      description: Create a udf.
       parameters:
-      - description: query id
+      - description: create udf request parameters
+        in: body
+        name: udf
+        required: true
+        schema:
+          $ref: '#/definitions/UDF'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/UDF'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create a udf.
+      tags:
+      - UDFs v1beta2
+  /v1beta2/udfs/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the udf with the given name.
+      parameters:
+      - description: udf name
         in: path
-        name: id
+        name: name
         required: true
         type: string
       produces:
-      - text/plain
+      - application/json
       responses:
         "204":
           description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
         "404":
           description: Not Found
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/ErrorResponse'
-      summary: stream query result via websocket [THIS API DOESN'T HAVE `v1beta1`
-        IN PATH]
+      security:
+      - ApiKeyAuth: []
+      summary: delete a udf.
       tags:
-      - Queries v1beta1
+      - UDFs v1beta2
+    get:
+      consumes:
+      - application/json
+      description: get the udf with the given name.
+      parameters:
+      - description: udf name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/UDF'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get a udf.
+      tags:
+      - UDFs v1beta2
+    put:
+      consumes:
+      - application/json
+      description: Update a udf.
+      parameters:
+      - description: update udf request parameters
+        in: body
+        name: udf
+        required: true
+        schema:
+          $ref: '#/definitions/UDF'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/UDF'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: update a udf.
+      tags:
+      - UDFs v1beta2
+  /v1beta2/views:
+    get:
+      consumes:
+      - application/json
+      description: Get all views.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/View'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list views.
+      tags:
+      - Views v1beta2
+    post:
+      consumes:
+      - application/json
+      description: Create a view.
+      parameters:
+      - description: create view request parameters
+        in: body
+        name: view
+        required: true
+        schema:
+          $ref: '#/definitions/CreateViewRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/View'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create a view.
+      tags:
+      - Views v1beta2
+  /v1beta2/views/:name:
+    get:
+      consumes:
+      - application/json
+      description: Get a view with the given name.
+      parameters:
+      - description: view name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/View'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get a view.
+      tags:
+      - Views v1beta2
+  /v1beta2/views/:name/stats:
+    get:
+      consumes:
+      - application/json
+      description: Get the stats of a view with the given name.
+      parameters:
+      - description: view name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/StreamStats'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get the stats of a view.
+      tags:
+      - Views v1beta2
+  /v1beta2/views/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the view with the given name.
+      parameters:
+      - description: view name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: delete a view.
+      tags:
+      - Views v1beta2
+    patch:
+      consumes:
+      - application/json
+      description: Update the specific view with the given name. Updating the query
+        of a materialized view is not allowed
+      parameters:
+      - description: name of the view
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: update view request parameters
+        in: body
+        name: view
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateViewRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a view.
+      tags:
+      - Views v1beta2
 securityDefinitions:
   ApiKeyAuth:
     description: use API keys created via the CreateAPIKey API to authorize API access.

@@ -28,92 +28,95 @@ class GlobalMetricsResult(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'name': 'str',
-        'time': 'str',
-        'value': 'float'
+        'sink_throughput': 'float',
+        'source_throughput': 'float',
+        'storage': 'int'
     }
 
     attribute_map = {
-        'name': 'name',
-        'time': 'time',
-        'value': 'value'
+        'sink_throughput': 'sink_throughput',
+        'source_throughput': 'source_throughput',
+        'storage': 'storage'
     }
 
-    def __init__(self, name=None, time=None, value=None):  # noqa: E501
+    def __init__(self, sink_throughput=None, source_throughput=None, storage=None):  # noqa: E501
         """GlobalMetricsResult - a model defined in Swagger"""  # noqa: E501
-        self._name = None
-        self._time = None
-        self._value = None
+        self._sink_throughput = None
+        self._source_throughput = None
+        self._storage = None
         self.discriminator = None
-        if name is not None:
-            self.name = name
-        if time is not None:
-            self.time = time
-        if value is not None:
-            self.value = value
+        self.sink_throughput = sink_throughput
+        self.source_throughput = source_throughput
+        self.storage = storage
 
     @property
-    def name(self):
-        """Gets the name of this GlobalMetricsResult.  # noqa: E501
+    def sink_throughput(self):
+        """Gets the sink_throughput of this GlobalMetricsResult.  # noqa: E501
 
 
-        :return: The name of this GlobalMetricsResult.  # noqa: E501
-        :rtype: str
-        """
-        return self._name
-
-    @name.setter
-    def name(self, name):
-        """Sets the name of this GlobalMetricsResult.
-
-
-        :param name: The name of this GlobalMetricsResult.  # noqa: E501
-        :type: str
-        """
-
-        self._name = name
-
-    @property
-    def time(self):
-        """Gets the time of this GlobalMetricsResult.  # noqa: E501
-
-
-        :return: The time of this GlobalMetricsResult.  # noqa: E501
-        :rtype: str
-        """
-        return self._time
-
-    @time.setter
-    def time(self, time):
-        """Sets the time of this GlobalMetricsResult.
-
-
-        :param time: The time of this GlobalMetricsResult.  # noqa: E501
-        :type: str
-        """
-
-        self._time = time
-
-    @property
-    def value(self):
-        """Gets the value of this GlobalMetricsResult.  # noqa: E501
-
-
-        :return: The value of this GlobalMetricsResult.  # noqa: E501
+        :return: The sink_throughput of this GlobalMetricsResult.  # noqa: E501
         :rtype: float
         """
-        return self._value
+        return self._sink_throughput
 
-    @value.setter
-    def value(self, value):
-        """Sets the value of this GlobalMetricsResult.
+    @sink_throughput.setter
+    def sink_throughput(self, sink_throughput):
+        """Sets the sink_throughput of this GlobalMetricsResult.
 
 
-        :param value: The value of this GlobalMetricsResult.  # noqa: E501
+        :param sink_throughput: The sink_throughput of this GlobalMetricsResult.  # noqa: E501
         :type: float
         """
+        if sink_throughput is None:
+            raise ValueError("Invalid value for `sink_throughput`, must not be `None`")  # noqa: E501
 
-        self._value = value
+        self._sink_throughput = sink_throughput
+
+    @property
+    def source_throughput(self):
+        """Gets the source_throughput of this GlobalMetricsResult.  # noqa: E501
+
+
+        :return: The source_throughput of this GlobalMetricsResult.  # noqa: E501
+        :rtype: float
+        """
+        return self._source_throughput
+
+    @source_throughput.setter
+    def source_throughput(self, source_throughput):
+        """Sets the source_throughput of this GlobalMetricsResult.
+
+
+        :param source_throughput: The source_throughput of this GlobalMetricsResult.  # noqa: E501
+        :type: float
+        """
+        if source_throughput is None:
+            raise ValueError("Invalid value for `source_throughput`, must not be `None`")  # noqa: E501
+
+        self._source_throughput = source_throughput
+
+    @property
+    def storage(self):
+        """Gets the storage of this GlobalMetricsResult.  # noqa: E501
+
+
+        :return: The storage of this GlobalMetricsResult.  # noqa: E501
+        :rtype: int
+        """
+        return self._storage
+
+    @storage.setter
+    def storage(self, storage):
+        """Sets the storage of this GlobalMetricsResult.
+
+
+        :param storage: The storage of this GlobalMetricsResult.  # noqa: E501
+        :type: int
+        """
+        if storage is None:
+            raise ValueError("Invalid value for `storage`, must not be `None`")  # noqa: E501
+
+        self._storage = storage
 
     def to_dict(self):
         """Returns the model properties as a dict"""

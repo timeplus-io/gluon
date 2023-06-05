@@ -82,6 +82,7 @@ class UpdateStreamRequest(object):
     def logstore_retention_bytes(self):
         """Gets the logstore_retention_bytes of this UpdateStreamRequest.  # noqa: E501
 
+        The max size a stream can grow. Defaulted to 10 GiB  # noqa: E501
 
         :return: The logstore_retention_bytes of this UpdateStreamRequest.  # noqa: E501
         :rtype: int
@@ -92,6 +93,7 @@ class UpdateStreamRequest(object):
     def logstore_retention_bytes(self, logstore_retention_bytes):
         """Sets the logstore_retention_bytes of this UpdateStreamRequest.
 
+        The max size a stream can grow. Defaulted to 10 GiB  # noqa: E501
 
         :param logstore_retention_bytes: The logstore_retention_bytes of this UpdateStreamRequest.  # noqa: E501
         :type: int
@@ -103,6 +105,7 @@ class UpdateStreamRequest(object):
     def logstore_retention_ms(self):
         """Gets the logstore_retention_ms of this UpdateStreamRequest.  # noqa: E501
 
+        The max time the data can be retained in the stream. Defaulted to 7 days  # noqa: E501
 
         :return: The logstore_retention_ms of this UpdateStreamRequest.  # noqa: E501
         :rtype: int
@@ -113,6 +116,7 @@ class UpdateStreamRequest(object):
     def logstore_retention_ms(self, logstore_retention_ms):
         """Sets the logstore_retention_ms of this UpdateStreamRequest.
 
+        The max time the data can be retained in the stream. Defaulted to 7 days  # noqa: E501
 
         :param logstore_retention_ms: The logstore_retention_ms of this UpdateStreamRequest.  # noqa: E501
         :type: int

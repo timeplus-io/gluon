@@ -30,25 +30,30 @@ class SourcePreviewRequest(object):
     swagger_types = {
         'properties': 'dict(str, object)',
         'size': 'int',
+        'timeout': 'str',
         'type': 'str'
     }
 
     attribute_map = {
         'properties': 'properties',
         'size': 'size',
+        'timeout': 'timeout',
         'type': 'type'
     }
 
-    def __init__(self, properties=None, size=None, type=None):  # noqa: E501
+    def __init__(self, properties=None, size=None, timeout=None, type=None):  # noqa: E501
         """SourcePreviewRequest - a model defined in Swagger"""  # noqa: E501
         self._properties = None
         self._size = None
+        self._timeout = None
         self._type = None
         self.discriminator = None
         if properties is not None:
             self.properties = properties
         if size is not None:
             self.size = size
+        if timeout is not None:
+            self.timeout = timeout
         if type is not None:
             self.type = type
 
@@ -93,6 +98,29 @@ class SourcePreviewRequest(object):
         """
 
         self._size = size
+
+    @property
+    def timeout(self):
+        """Gets the timeout of this SourcePreviewRequest.  # noqa: E501
+
+        Indicates how long should preview last to fetch the desired amount of data indicated by `size` A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as \"300ms\", \"-1.5h\" or \"2h45m\". Valid time units are \"ns\", \"us\" (or \"µs\"), \"ms\", \"s\", \"m\", \"h\".  # noqa: E501
+
+        :return: The timeout of this SourcePreviewRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._timeout
+
+    @timeout.setter
+    def timeout(self, timeout):
+        """Sets the timeout of this SourcePreviewRequest.
+
+        Indicates how long should preview last to fetch the desired amount of data indicated by `size` A duration string is a possibly signed sequence of decimal numbers, each with optional fraction and a unit suffix, such as \"300ms\", \"-1.5h\" or \"2h45m\". Valid time units are \"ns\", \"us\" (or \"µs\"), \"ms\", \"s\", \"m\", \"h\".  # noqa: E501
+
+        :param timeout: The timeout of this SourcePreviewRequest.  # noqa: E501
+        :type: str
+        """
+
+        self._timeout = timeout
 
     @property
     def type(self):

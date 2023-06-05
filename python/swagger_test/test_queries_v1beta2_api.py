@@ -28,10 +28,59 @@ class TestQueriesV1beta2Api(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_v1beta2_format_post(self):
+        """Test case for v1beta2_format_post
+
+        format a query.  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_queries_get(self):
+        """Test case for v1beta2_queries_get
+
+        list queries.  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_queries_id_cancel_post(self):
+        """Test case for v1beta2_queries_id_cancel_post
+
+        cancel a query.  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_queries_id_delete(self):
+        """Test case for v1beta2_queries_id_delete
+
+        delete a query.  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_queries_id_get(self):
+        """Test case for v1beta2_queries_id_get
+
+        get a query.  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_queries_id_pipeline_get(self):
+        """Test case for v1beta2_queries_id_pipeline_get
+
+        get the pipeline for a query  # noqa: E501
+        """
+        pass
+
     def test_v1beta2_queries_post(self):
         """Test case for v1beta2_queries_post
 
         execute a query and return the results.  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_sqlanalyze_post(self):
+        """Test case for v1beta2_sqlanalyze_post
+
+        analyze sql  # noqa: E501
         """
         pass
 

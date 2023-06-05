@@ -28,29 +28,60 @@ class StreamStats(object):
                             and the value is json key in definition.
     """
     swagger_types = {
+        'earliest_event': 'str',
         'historical_data_bytes': 'int',
+        'latest_event': 'str',
         'row_count': 'int',
         'streaming_data_bytes': 'int'
     }
 
     attribute_map = {
+        'earliest_event': 'earliest_event',
         'historical_data_bytes': 'historical_data_bytes',
+        'latest_event': 'latest_event',
         'row_count': 'row_count',
         'streaming_data_bytes': 'streaming_data_bytes'
     }
 
-    def __init__(self, historical_data_bytes=None, row_count=None, streaming_data_bytes=None):  # noqa: E501
+    def __init__(self, earliest_event=None, historical_data_bytes=None, latest_event=None, row_count=None, streaming_data_bytes=None):  # noqa: E501
         """StreamStats - a model defined in Swagger"""  # noqa: E501
+        self._earliest_event = None
         self._historical_data_bytes = None
+        self._latest_event = None
         self._row_count = None
         self._streaming_data_bytes = None
         self.discriminator = None
+        if earliest_event is not None:
+            self.earliest_event = earliest_event
         if historical_data_bytes is not None:
             self.historical_data_bytes = historical_data_bytes
+        if latest_event is not None:
+            self.latest_event = latest_event
         if row_count is not None:
             self.row_count = row_count
         if streaming_data_bytes is not None:
             self.streaming_data_bytes = streaming_data_bytes
+
+    @property
+    def earliest_event(self):
+        """Gets the earliest_event of this StreamStats.  # noqa: E501
+
+
+        :return: The earliest_event of this StreamStats.  # noqa: E501
+        :rtype: str
+        """
+        return self._earliest_event
+
+    @earliest_event.setter
+    def earliest_event(self, earliest_event):
+        """Sets the earliest_event of this StreamStats.
+
+
+        :param earliest_event: The earliest_event of this StreamStats.  # noqa: E501
+        :type: str
+        """
+
+        self._earliest_event = earliest_event
 
     @property
     def historical_data_bytes(self):
@@ -72,6 +103,27 @@ class StreamStats(object):
         """
 
         self._historical_data_bytes = historical_data_bytes
+
+    @property
+    def latest_event(self):
+        """Gets the latest_event of this StreamStats.  # noqa: E501
+
+
+        :return: The latest_event of this StreamStats.  # noqa: E501
+        :rtype: str
+        """
+        return self._latest_event
+
+    @latest_event.setter
+    def latest_event(self, latest_event):
+        """Sets the latest_event of this StreamStats.
+
+
+        :param latest_event: The latest_event of this StreamStats.  # noqa: E501
+        :type: str
+        """
+
+        self._latest_event = latest_event
 
     @property
     def row_count(self):

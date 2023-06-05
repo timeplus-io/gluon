@@ -3,11 +3,10 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**failure_count** | **float** |  | 
 **id** | **str** |  | 
-**metrics_name** | **str** |  | 
-**metrics_type** | **str** |  | 
-**time** | **str** |  | 
-**value** | **float** |  | 
+**success_count** | **float** |  | 
+**throughput** | [**list[MetricsQueryThroughput]**](MetricsQueryThroughput.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

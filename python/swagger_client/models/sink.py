@@ -34,10 +34,11 @@ class Sink(object):
         'id': 'str',
         'last_updated_at': 'str',
         'last_updated_by': 'Owner',
+        'message': 'str',
         'name': 'str',
         'properties': 'dict(str, object)',
-        'queries': 'list[str]',
-        'query': 'Query',
+        'query': 'str',
+        'status': 'str',
         'type': 'str'
     }
 
@@ -48,14 +49,15 @@ class Sink(object):
         'id': 'id',
         'last_updated_at': 'last_updated_at',
         'last_updated_by': 'last_updated_by',
+        'message': 'message',
         'name': 'name',
         'properties': 'properties',
-        'queries': 'queries',
         'query': 'query',
+        'status': 'status',
         'type': 'type'
     }
 
-    def __init__(self, created_at=None, created_by=None, description=None, id=None, last_updated_at=None, last_updated_by=None, name=None, properties=None, queries=None, query=None, type=None):  # noqa: E501
+    def __init__(self, created_at=None, created_by=None, description=None, id=None, last_updated_at=None, last_updated_by=None, message=None, name=None, properties=None, query=None, status=None, type=None):  # noqa: E501
         """Sink - a model defined in Swagger"""  # noqa: E501
         self._created_at = None
         self._created_by = None
@@ -63,10 +65,11 @@ class Sink(object):
         self._id = None
         self._last_updated_at = None
         self._last_updated_by = None
+        self._message = None
         self._name = None
         self._properties = None
-        self._queries = None
         self._query = None
+        self._status = None
         self._type = None
         self.discriminator = None
         if created_at is not None:
@@ -79,11 +82,11 @@ class Sink(object):
             self.last_updated_at = last_updated_at
         if last_updated_by is not None:
             self.last_updated_by = last_updated_by
+        self.message = message
         self.name = name
         self.properties = properties
-        self.queries = queries
-        if query is not None:
-            self.query = query
+        self.query = query
+        self.status = status
         self.type = type
 
     @property
@@ -217,6 +220,29 @@ class Sink(object):
         self._last_updated_by = last_updated_by
 
     @property
+    def message(self):
+        """Gets the message of this Sink.  # noqa: E501
+
+
+        :return: The message of this Sink.  # noqa: E501
+        :rtype: str
+        """
+        return self._message
+
+    @message.setter
+    def message(self, message):
+        """Sets the message of this Sink.
+
+
+        :param message: The message of this Sink.  # noqa: E501
+        :type: str
+        """
+        if message is None:
+            raise ValueError("Invalid value for `message`, must not be `None`")  # noqa: E501
+
+        self._message = message
+
+    @property
     def name(self):
         """Gets the name of this Sink.  # noqa: E501
 
@@ -263,35 +289,12 @@ class Sink(object):
         self._properties = properties
 
     @property
-    def queries(self):
-        """Gets the queries of this Sink.  # noqa: E501
-
-
-        :return: The queries of this Sink.  # noqa: E501
-        :rtype: list[str]
-        """
-        return self._queries
-
-    @queries.setter
-    def queries(self, queries):
-        """Sets the queries of this Sink.
-
-
-        :param queries: The queries of this Sink.  # noqa: E501
-        :type: list[str]
-        """
-        if queries is None:
-            raise ValueError("Invalid value for `queries`, must not be `None`")  # noqa: E501
-
-        self._queries = queries
-
-    @property
     def query(self):
         """Gets the query of this Sink.  # noqa: E501
 
 
         :return: The query of this Sink.  # noqa: E501
-        :rtype: Query
+        :rtype: str
         """
         return self._query
 
@@ -301,10 +304,35 @@ class Sink(object):
 
 
         :param query: The query of this Sink.  # noqa: E501
-        :type: Query
+        :type: str
         """
+        if query is None:
+            raise ValueError("Invalid value for `query`, must not be `None`")  # noqa: E501
 
         self._query = query
+
+    @property
+    def status(self):
+        """Gets the status of this Sink.  # noqa: E501
+
+
+        :return: The status of this Sink.  # noqa: E501
+        :rtype: str
+        """
+        return self._status
+
+    @status.setter
+    def status(self, status):
+        """Sets the status of this Sink.
+
+
+        :param status: The status of this Sink.  # noqa: E501
+        :type: str
+        """
+        if status is None:
+            raise ValueError("Invalid value for `status`, must not be `None`")  # noqa: E501
+
+        self._status = status
 
     @property
     def type(self):

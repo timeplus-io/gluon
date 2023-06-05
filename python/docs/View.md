@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **materialized** | **bool** |  | [optional] 
 **name** | **str** |  | [optional] 
 **query** | **str** |  | [optional] 
-**stats** | [**StreamStats**](StreamStats.md) |  | 
+**target_stream** | **str** |  | [optional] 
 **ttl** | **str** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
