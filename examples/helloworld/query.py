@@ -6,7 +6,7 @@ from pprint import pprint
 from timeplus import Query, Environment
 
 api_key = os.environ.get("TIMEPLUS_API_KEY")
-api_address = os.environ.get("TIMEPLUS_ADDRESS")
+api_address = os.environ.get("TIMEPLUS_HOST")
 workspace = os.environ.get("TIMEPLUS_WORKSPACE")
 
 # Configure API key and address

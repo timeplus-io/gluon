@@ -60,8 +60,8 @@ class Query:
 
     def cancel(self):
         try:
-            self._cancel_response = (
-                self._api_instance.v1beta2_queries_id_cancel_post(id=self._id)
+            self._cancel_response = self._api_instance.v1beta2_queries_id_cancel_post(
+                id=self._id
             )
         except ApiException as e:
             pprint(
@@ -73,9 +73,7 @@ class Query:
     def get(self, id):
         self._id = id
         try:
-            self._get_response = self._api_instance.v1beta2_queries_id_get(
-                id=self._id
-            )
+            self._get_response = self._api_instance.v1beta2_queries_id_get(id=self._id)
             self._metadata = self._get_response
             return self
         except ApiException as e:
