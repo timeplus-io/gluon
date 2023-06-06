@@ -28,34 +28,53 @@ class ResourceMetricsResult(object):
                             and the value is json key in definition.
     """
     swagger_types = {
+        'failure_count': 'float',
         'id': 'str',
-        'metrics_name': 'str',
-        'metrics_type': 'str',
-        'time': 'str',
-        'value': 'float'
+        'success_count': 'float',
+        'throughput': 'list[MetricsQueryThroughput]'
     }
 
     attribute_map = {
+        'failure_count': 'failure_count',
         'id': 'id',
-        'metrics_name': 'metrics_name',
-        'metrics_type': 'metrics_type',
-        'time': 'time',
-        'value': 'value'
+        'success_count': 'success_count',
+        'throughput': 'throughput'
     }
 
-    def __init__(self, id=None, metrics_name=None, metrics_type=None, time=None, value=None):  # noqa: E501
+    def __init__(self, failure_count=None, id=None, success_count=None, throughput=None):  # noqa: E501
         """ResourceMetricsResult - a model defined in Swagger"""  # noqa: E501
+        self._failure_count = None
         self._id = None
-        self._metrics_name = None
-        self._metrics_type = None
-        self._time = None
-        self._value = None
+        self._success_count = None
+        self._throughput = None
         self.discriminator = None
+        self.failure_count = failure_count
         self.id = id
-        self.metrics_name = metrics_name
-        self.metrics_type = metrics_type
-        self.time = time
-        self.value = value
+        self.success_count = success_count
+        self.throughput = throughput
+
+    @property
+    def failure_count(self):
+        """Gets the failure_count of this ResourceMetricsResult.  # noqa: E501
+
+
+        :return: The failure_count of this ResourceMetricsResult.  # noqa: E501
+        :rtype: float
+        """
+        return self._failure_count
+
+    @failure_count.setter
+    def failure_count(self, failure_count):
+        """Sets the failure_count of this ResourceMetricsResult.
+
+
+        :param failure_count: The failure_count of this ResourceMetricsResult.  # noqa: E501
+        :type: float
+        """
+        if failure_count is None:
+            raise ValueError("Invalid value for `failure_count`, must not be `None`")  # noqa: E501
+
+        self._failure_count = failure_count
 
     @property
     def id(self):
@@ -81,96 +100,50 @@ class ResourceMetricsResult(object):
         self._id = id
 
     @property
-    def metrics_name(self):
-        """Gets the metrics_name of this ResourceMetricsResult.  # noqa: E501
+    def success_count(self):
+        """Gets the success_count of this ResourceMetricsResult.  # noqa: E501
 
 
-        :return: The metrics_name of this ResourceMetricsResult.  # noqa: E501
-        :rtype: str
-        """
-        return self._metrics_name
-
-    @metrics_name.setter
-    def metrics_name(self, metrics_name):
-        """Sets the metrics_name of this ResourceMetricsResult.
-
-
-        :param metrics_name: The metrics_name of this ResourceMetricsResult.  # noqa: E501
-        :type: str
-        """
-        if metrics_name is None:
-            raise ValueError("Invalid value for `metrics_name`, must not be `None`")  # noqa: E501
-
-        self._metrics_name = metrics_name
-
-    @property
-    def metrics_type(self):
-        """Gets the metrics_type of this ResourceMetricsResult.  # noqa: E501
-
-
-        :return: The metrics_type of this ResourceMetricsResult.  # noqa: E501
-        :rtype: str
-        """
-        return self._metrics_type
-
-    @metrics_type.setter
-    def metrics_type(self, metrics_type):
-        """Sets the metrics_type of this ResourceMetricsResult.
-
-
-        :param metrics_type: The metrics_type of this ResourceMetricsResult.  # noqa: E501
-        :type: str
-        """
-        if metrics_type is None:
-            raise ValueError("Invalid value for `metrics_type`, must not be `None`")  # noqa: E501
-
-        self._metrics_type = metrics_type
-
-    @property
-    def time(self):
-        """Gets the time of this ResourceMetricsResult.  # noqa: E501
-
-
-        :return: The time of this ResourceMetricsResult.  # noqa: E501
-        :rtype: str
-        """
-        return self._time
-
-    @time.setter
-    def time(self, time):
-        """Sets the time of this ResourceMetricsResult.
-
-
-        :param time: The time of this ResourceMetricsResult.  # noqa: E501
-        :type: str
-        """
-        if time is None:
-            raise ValueError("Invalid value for `time`, must not be `None`")  # noqa: E501
-
-        self._time = time
-
-    @property
-    def value(self):
-        """Gets the value of this ResourceMetricsResult.  # noqa: E501
-
-
-        :return: The value of this ResourceMetricsResult.  # noqa: E501
+        :return: The success_count of this ResourceMetricsResult.  # noqa: E501
         :rtype: float
         """
-        return self._value
+        return self._success_count
 
-    @value.setter
-    def value(self, value):
-        """Sets the value of this ResourceMetricsResult.
+    @success_count.setter
+    def success_count(self, success_count):
+        """Sets the success_count of this ResourceMetricsResult.
 
 
-        :param value: The value of this ResourceMetricsResult.  # noqa: E501
+        :param success_count: The success_count of this ResourceMetricsResult.  # noqa: E501
         :type: float
         """
-        if value is None:
-            raise ValueError("Invalid value for `value`, must not be `None`")  # noqa: E501
+        if success_count is None:
+            raise ValueError("Invalid value for `success_count`, must not be `None`")  # noqa: E501
 
-        self._value = value
+        self._success_count = success_count
+
+    @property
+    def throughput(self):
+        """Gets the throughput of this ResourceMetricsResult.  # noqa: E501
+
+
+        :return: The throughput of this ResourceMetricsResult.  # noqa: E501
+        :rtype: list[MetricsQueryThroughput]
+        """
+        return self._throughput
+
+    @throughput.setter
+    def throughput(self, throughput):
+        """Sets the throughput of this ResourceMetricsResult.
+
+
+        :param throughput: The throughput of this ResourceMetricsResult.  # noqa: E501
+        :type: list[MetricsQueryThroughput]
+        """
+        if throughput is None:
+            raise ValueError("Invalid value for `throughput`, must not be `None`")  # noqa: E501
+
+        self._throughput = throughput
 
     def to_dict(self):
         """Returns the model properties as a dict"""

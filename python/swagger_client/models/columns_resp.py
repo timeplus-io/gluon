@@ -28,8 +28,6 @@ class ColumnsResp(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'alias': 'str',
-        'comment': 'str',
         'default': 'str',
         'name': 'str',
         'nullable': 'bool',
@@ -37,27 +35,19 @@ class ColumnsResp(object):
     }
 
     attribute_map = {
-        'alias': 'alias',
-        'comment': 'comment',
         'default': 'default',
         'name': 'name',
         'nullable': 'nullable',
         'type': 'type'
     }
 
-    def __init__(self, alias=None, comment=None, default=None, name=None, nullable=None, type=None):  # noqa: E501
+    def __init__(self, default=None, name=None, nullable=None, type=None):  # noqa: E501
         """ColumnsResp - a model defined in Swagger"""  # noqa: E501
-        self._alias = None
-        self._comment = None
         self._default = None
         self._name = None
         self._nullable = None
         self._type = None
         self.discriminator = None
-        if alias is not None:
-            self.alias = alias
-        if comment is not None:
-            self.comment = comment
         if default is not None:
             self.default = default
         if name is not None:
@@ -66,48 +56,6 @@ class ColumnsResp(object):
             self.nullable = nullable
         if type is not None:
             self.type = type
-
-    @property
-    def alias(self):
-        """Gets the alias of this ColumnsResp.  # noqa: E501
-
-
-        :return: The alias of this ColumnsResp.  # noqa: E501
-        :rtype: str
-        """
-        return self._alias
-
-    @alias.setter
-    def alias(self, alias):
-        """Sets the alias of this ColumnsResp.
-
-
-        :param alias: The alias of this ColumnsResp.  # noqa: E501
-        :type: str
-        """
-
-        self._alias = alias
-
-    @property
-    def comment(self):
-        """Gets the comment of this ColumnsResp.  # noqa: E501
-
-
-        :return: The comment of this ColumnsResp.  # noqa: E501
-        :rtype: str
-        """
-        return self._comment
-
-    @comment.setter
-    def comment(self, comment):
-        """Sets the comment of this ColumnsResp.
-
-
-        :param comment: The comment of this ColumnsResp.  # noqa: E501
-        :type: str
-        """
-
-        self._comment = comment
 
     @property
     def default(self):

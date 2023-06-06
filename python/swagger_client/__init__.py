@@ -15,17 +15,19 @@
 from __future__ import absolute_import
 
 # import apis into sdk package
-from swagger_client.timeplus.api_keys_v1beta1_api import APIKeysV1beta1Api
+from swagger_client.timeplus.api_keys_v1beta2_api import APIKeysV1beta2Api
+from swagger_client.timeplus.alerts_internal_api import AlertsInternalApi
+from swagger_client.timeplus.alerts_v1beta2_api import AlertsV1beta2Api
 from swagger_client.timeplus.dashboards_v1beta2_api import DashboardsV1beta2Api
 from swagger_client.timeplus.metrics_v1beta2_api import MetricsV1beta2Api
-from swagger_client.timeplus.queries_v1beta1_api import QueriesV1beta1Api
 from swagger_client.timeplus.queries_v1beta2_api import QueriesV1beta2Api
-from swagger_client.timeplus.sinks_v1beta1_api import SinksV1beta1Api
-from swagger_client.timeplus.sources_v1beta1_api import SourcesV1beta1Api
-from swagger_client.timeplus.streams_v1beta1_api import StreamsV1beta1Api
+from swagger_client.timeplus.sinks_internal_api import SinksInternalApi
+from swagger_client.timeplus.sinks_v1beta2_api import SinksV1beta2Api
+from swagger_client.timeplus.sources_v1beta2_api import SourcesV1beta2Api
+from swagger_client.timeplus.streams_v1beta2_api import StreamsV1beta2Api
 from swagger_client.timeplus.topology_v1beta2_api import TopologyV1beta2Api
-from swagger_client.timeplus.udfs_v1beta1_api import UDFsV1beta1Api
-from swagger_client.timeplus.views_v1beta1_api import ViewsV1beta1Api
+from swagger_client.timeplus.udfs_v1beta2_api import UDFsV1beta2Api
+from swagger_client.timeplus.views_v1beta2_api import ViewsV1beta2Api
 # import ApiClient
 from swagger_client.api_client import ApiClient
 from swagger_client.configuration import Configuration
@@ -36,17 +38,13 @@ from swagger_client.models.batching_policy import BatchingPolicy
 from swagger_client.models.column import Column
 from swagger_client.models.column_def import ColumnDef
 from swagger_client.models.columns_resp import ColumnsResp
-from swagger_client.models.connection import Connection
-from swagger_client.models.connection_config import ConnectionConfig
-from swagger_client.models.connection_stat import ConnectionStat
 from swagger_client.models.create_api_key_request import CreateAPIKeyRequest
 from swagger_client.models.create_api_key_response import CreateAPIKeyResponse
 from swagger_client.models.create_dashboard_request import CreateDashboardRequest
-from swagger_client.models.create_query_request_v1_beta1 import CreateQueryRequestV1Beta1
 from swagger_client.models.create_query_request_v1_beta2 import CreateQueryRequestV1Beta2
-from swagger_client.models.create_query_response import CreateQueryResponse
 from swagger_client.models.create_sink_request import CreateSinkRequest
 from swagger_client.models.create_source_request import CreateSourceRequest
+from swagger_client.models.create_view_request import CreateViewRequest
 from swagger_client.models.dashboard_dashboard import DashboardDashboard
 from swagger_client.models.dashboard_panel import DashboardPanel
 from swagger_client.models.edge import Edge
@@ -61,6 +59,7 @@ from swagger_client.models.format_query_response import FormatQueryResponse
 from swagger_client.models.global_metrics_result import GlobalMetricsResult
 from swagger_client.models.graph import Graph
 from swagger_client.models.ingest_data import IngestData
+from swagger_client.models.metrics_query_throughput import MetricsQueryThroughput
 from swagger_client.models.node import Node
 from swagger_client.models.owner import Owner
 from swagger_client.models.query import Query
@@ -69,7 +68,6 @@ from swagger_client.models.query_pipeline_edge import QueryPipelineEdge
 from swagger_client.models.query_pipeline_node import QueryPipelineNode
 from swagger_client.models.query_pipeline_node_metric import QueryPipelineNodeMetric
 from swagger_client.models.query_result import QueryResult
-from swagger_client.models.resource_metrics_request import ResourceMetricsRequest
 from swagger_client.models.resource_metrics_result import ResourceMetricsResult
 from swagger_client.models.sql_analyze_column import SQLAnalyzeColumn
 from swagger_client.models.sql_analyze_result import SQLAnalyzeResult

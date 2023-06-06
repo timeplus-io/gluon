@@ -39,7 +39,7 @@ class View(object):
         'materialized': 'bool',
         'name': 'str',
         'query': 'str',
-        'stats': 'StreamStats',
+        'target_stream': 'str',
         'ttl': 'str'
     }
 
@@ -55,11 +55,11 @@ class View(object):
         'materialized': 'materialized',
         'name': 'name',
         'query': 'query',
-        'stats': 'stats',
+        'target_stream': 'target_stream',
         'ttl': 'ttl'
     }
 
-    def __init__(self, columns=None, created_at=None, created_by=None, description=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, materialized=None, name=None, query=None, stats=None, ttl=None):  # noqa: E501
+    def __init__(self, columns=None, created_at=None, created_by=None, description=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, materialized=None, name=None, query=None, target_stream=None, ttl=None):  # noqa: E501
         """View - a model defined in Swagger"""  # noqa: E501
         self._columns = None
         self._created_at = None
@@ -72,7 +72,7 @@ class View(object):
         self._materialized = None
         self._name = None
         self._query = None
-        self._stats = None
+        self._target_stream = None
         self._ttl = None
         self.discriminator = None
         self.columns = columns
@@ -94,7 +94,8 @@ class View(object):
             self.name = name
         if query is not None:
             self.query = query
-        self.stats = stats
+        if target_stream is not None:
+            self.target_stream = target_stream
         self.ttl = ttl
 
     @property
@@ -335,27 +336,25 @@ class View(object):
         self._query = query
 
     @property
-    def stats(self):
-        """Gets the stats of this View.  # noqa: E501
+    def target_stream(self):
+        """Gets the target_stream of this View.  # noqa: E501
 
 
-        :return: The stats of this View.  # noqa: E501
-        :rtype: StreamStats
+        :return: The target_stream of this View.  # noqa: E501
+        :rtype: str
         """
-        return self._stats
+        return self._target_stream
 
-    @stats.setter
-    def stats(self, stats):
-        """Sets the stats of this View.
+    @target_stream.setter
+    def target_stream(self, target_stream):
+        """Sets the target_stream of this View.
 
 
-        :param stats: The stats of this View.  # noqa: E501
-        :type: StreamStats
+        :param target_stream: The target_stream of this View.  # noqa: E501
+        :type: str
         """
-        if stats is None:
-            raise ValueError("Invalid value for `stats`, must not be `None`")  # noqa: E501
 
-        self._stats = stats
+        self._target_stream = target_stream
 
     @property
     def ttl(self):

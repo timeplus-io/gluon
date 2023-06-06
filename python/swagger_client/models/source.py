@@ -28,48 +28,53 @@ class Source(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'connection': 'Connection',
         'created_at': 'str',
         'created_by': 'Owner',
         'description': 'str',
         'id': 'str',
         'last_updated_at': 'str',
         'last_updated_by': 'Owner',
+        'message': 'str',
         'name': 'str',
         'properties': 'dict(str, object)',
         'start_time': 'int',
+        'status': 'str',
+        'stream': 'str',
         'type': 'str'
     }
 
     attribute_map = {
-        'connection': 'connection',
         'created_at': 'created_at',
         'created_by': 'created_by',
         'description': 'description',
         'id': 'id',
         'last_updated_at': 'last_updated_at',
         'last_updated_by': 'last_updated_by',
+        'message': 'message',
         'name': 'name',
         'properties': 'properties',
         'start_time': 'start_time',
+        'status': 'status',
+        'stream': 'stream',
         'type': 'type'
     }
 
-    def __init__(self, connection=None, created_at=None, created_by=None, description=None, id=None, last_updated_at=None, last_updated_by=None, name=None, properties=None, start_time=None, type=None):  # noqa: E501
+    def __init__(self, created_at=None, created_by=None, description=None, id=None, last_updated_at=None, last_updated_by=None, message=None, name=None, properties=None, start_time=None, status=None, stream=None, type=None):  # noqa: E501
         """Source - a model defined in Swagger"""  # noqa: E501
-        self._connection = None
         self._created_at = None
         self._created_by = None
         self._description = None
         self._id = None
         self._last_updated_at = None
         self._last_updated_by = None
+        self._message = None
         self._name = None
         self._properties = None
         self._start_time = None
+        self._status = None
+        self._stream = None
         self._type = None
         self.discriminator = None
-        self.connection = connection
         if created_at is not None:
             self.created_at = created_at
         if created_by is not None:
@@ -80,33 +85,13 @@ class Source(object):
             self.last_updated_at = last_updated_at
         if last_updated_by is not None:
             self.last_updated_by = last_updated_by
+        self.message = message
         self.name = name
         self.properties = properties
         self.start_time = start_time
+        self.status = status
+        self.stream = stream
         self.type = type
-
-    @property
-    def connection(self):
-        """Gets the connection of this Source.  # noqa: E501
-
-
-        :return: The connection of this Source.  # noqa: E501
-        :rtype: Connection
-        """
-        return self._connection
-
-    @connection.setter
-    def connection(self, connection):
-        """Sets the connection of this Source.
-
-
-        :param connection: The connection of this Source.  # noqa: E501
-        :type: Connection
-        """
-        if connection is None:
-            raise ValueError("Invalid value for `connection`, must not be `None`")  # noqa: E501
-
-        self._connection = connection
 
     @property
     def created_at(self):
@@ -239,6 +224,29 @@ class Source(object):
         self._last_updated_by = last_updated_by
 
     @property
+    def message(self):
+        """Gets the message of this Source.  # noqa: E501
+
+
+        :return: The message of this Source.  # noqa: E501
+        :rtype: str
+        """
+        return self._message
+
+    @message.setter
+    def message(self, message):
+        """Sets the message of this Source.
+
+
+        :param message: The message of this Source.  # noqa: E501
+        :type: str
+        """
+        if message is None:
+            raise ValueError("Invalid value for `message`, must not be `None`")  # noqa: E501
+
+        self._message = message
+
+    @property
     def name(self):
         """Gets the name of this Source.  # noqa: E501
 
@@ -265,6 +273,7 @@ class Source(object):
     def properties(self):
         """Gets the properties of this Source.  # noqa: E501
 
+        Additional properties of the source  # noqa: E501
 
         :return: The properties of this Source.  # noqa: E501
         :rtype: dict(str, object)
@@ -275,6 +284,7 @@ class Source(object):
     def properties(self, properties):
         """Sets the properties of this Source.
 
+        Additional properties of the source  # noqa: E501
 
         :param properties: The properties of this Source.  # noqa: E501
         :type: dict(str, object)
@@ -288,6 +298,7 @@ class Source(object):
     def start_time(self):
         """Gets the start_time of this Source.  # noqa: E501
 
+        Unix timestamp when the source get started  # noqa: E501
 
         :return: The start_time of this Source.  # noqa: E501
         :rtype: int
@@ -298,6 +309,7 @@ class Source(object):
     def start_time(self, start_time):
         """Sets the start_time of this Source.
 
+        Unix timestamp when the source get started  # noqa: E501
 
         :param start_time: The start_time of this Source.  # noqa: E501
         :type: int
@@ -308,9 +320,58 @@ class Source(object):
         self._start_time = start_time
 
     @property
+    def status(self):
+        """Gets the status of this Source.  # noqa: E501
+
+
+        :return: The status of this Source.  # noqa: E501
+        :rtype: str
+        """
+        return self._status
+
+    @status.setter
+    def status(self, status):
+        """Sets the status of this Source.
+
+
+        :param status: The status of this Source.  # noqa: E501
+        :type: str
+        """
+        if status is None:
+            raise ValueError("Invalid value for `status`, must not be `None`")  # noqa: E501
+
+        self._status = status
+
+    @property
+    def stream(self):
+        """Gets the stream of this Source.  # noqa: E501
+
+        The name of the target stream that this source writes to.  # noqa: E501
+
+        :return: The stream of this Source.  # noqa: E501
+        :rtype: str
+        """
+        return self._stream
+
+    @stream.setter
+    def stream(self, stream):
+        """Sets the stream of this Source.
+
+        The name of the target stream that this source writes to.  # noqa: E501
+
+        :param stream: The stream of this Source.  # noqa: E501
+        :type: str
+        """
+        if stream is None:
+            raise ValueError("Invalid value for `stream`, must not be `None`")  # noqa: E501
+
+        self._stream = stream
+
+    @property
     def type(self):
         """Gets the type of this Source.  # noqa: E501
 
+        Type of the source  # noqa: E501
 
         :return: The type of this Source.  # noqa: E501
         :rtype: str
@@ -321,6 +382,7 @@ class Source(object):
     def type(self, type):
         """Sets the type of this Source.
 
+        Type of the source  # noqa: E501
 
         :param type: The type of this Source.  # noqa: E501
         :type: str

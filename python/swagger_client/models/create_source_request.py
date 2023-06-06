@@ -28,58 +28,36 @@ class CreateSourceRequest(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'connection_config': 'ConnectionConfig',
         'description': 'str',
         'name': 'str',
         'properties': 'dict(str, object)',
+        'stream': 'str',
         'type': 'str'
     }
 
     attribute_map = {
-        'connection_config': 'connection_config',
         'description': 'description',
         'name': 'name',
         'properties': 'properties',
+        'stream': 'stream',
         'type': 'type'
     }
 
-    def __init__(self, connection_config=None, description=None, name=None, properties=None, type=None):  # noqa: E501
+    def __init__(self, description=None, name=None, properties=None, stream=None, type=None):  # noqa: E501
         """CreateSourceRequest - a model defined in Swagger"""  # noqa: E501
-        self._connection_config = None
         self._description = None
         self._name = None
         self._properties = None
+        self._stream = None
         self._type = None
         self.discriminator = None
-        if connection_config is not None:
-            self.connection_config = connection_config
         if description is not None:
             self.description = description
         self.name = name
         if properties is not None:
             self.properties = properties
+        self.stream = stream
         self.type = type
-
-    @property
-    def connection_config(self):
-        """Gets the connection_config of this CreateSourceRequest.  # noqa: E501
-
-
-        :return: The connection_config of this CreateSourceRequest.  # noqa: E501
-        :rtype: ConnectionConfig
-        """
-        return self._connection_config
-
-    @connection_config.setter
-    def connection_config(self, connection_config):
-        """Sets the connection_config of this CreateSourceRequest.
-
-
-        :param connection_config: The connection_config of this CreateSourceRequest.  # noqa: E501
-        :type: ConnectionConfig
-        """
-
-        self._connection_config = connection_config
 
     @property
     def description(self):
@@ -106,6 +84,7 @@ class CreateSourceRequest(object):
     def name(self):
         """Gets the name of this CreateSourceRequest.  # noqa: E501
 
+        Source name should only contain a maximum of 64 letters, numbers, or _, and start with a letter  # noqa: E501
 
         :return: The name of this CreateSourceRequest.  # noqa: E501
         :rtype: str
@@ -116,6 +95,7 @@ class CreateSourceRequest(object):
     def name(self, name):
         """Sets the name of this CreateSourceRequest.
 
+        Source name should only contain a maximum of 64 letters, numbers, or _, and start with a letter  # noqa: E501
 
         :param name: The name of this CreateSourceRequest.  # noqa: E501
         :type: str
@@ -129,6 +109,7 @@ class CreateSourceRequest(object):
     def properties(self):
         """Gets the properties of this CreateSourceRequest.  # noqa: E501
 
+        Additional properties that required to read the data from source. Please refer to the documentation for this source type  # noqa: E501
 
         :return: The properties of this CreateSourceRequest.  # noqa: E501
         :rtype: dict(str, object)
@@ -139,6 +120,7 @@ class CreateSourceRequest(object):
     def properties(self, properties):
         """Sets the properties of this CreateSourceRequest.
 
+        Additional properties that required to read the data from source. Please refer to the documentation for this source type  # noqa: E501
 
         :param properties: The properties of this CreateSourceRequest.  # noqa: E501
         :type: dict(str, object)
@@ -147,9 +129,35 @@ class CreateSourceRequest(object):
         self._properties = properties
 
     @property
+    def stream(self):
+        """Gets the stream of this CreateSourceRequest.  # noqa: E501
+
+        The name of the target stream that this source writes to. The stream needs to be created first.  # noqa: E501
+
+        :return: The stream of this CreateSourceRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._stream
+
+    @stream.setter
+    def stream(self, stream):
+        """Sets the stream of this CreateSourceRequest.
+
+        The name of the target stream that this source writes to. The stream needs to be created first.  # noqa: E501
+
+        :param stream: The stream of this CreateSourceRequest.  # noqa: E501
+        :type: str
+        """
+        if stream is None:
+            raise ValueError("Invalid value for `stream`, must not be `None`")  # noqa: E501
+
+        self._stream = stream
+
+    @property
     def type(self):
         """Gets the type of this CreateSourceRequest.  # noqa: E501
 
+        Type of the source  # noqa: E501
 
         :return: The type of this CreateSourceRequest.  # noqa: E501
         :rtype: str
@@ -160,6 +168,7 @@ class CreateSourceRequest(object):
     def type(self, type):
         """Sets the type of this CreateSourceRequest.
 
+        Type of the source  # noqa: E501
 
         :param type: The type of this CreateSourceRequest.  # noqa: E501
         :type: str

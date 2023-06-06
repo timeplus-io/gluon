@@ -13,8 +13,9 @@ Name | Type | Description | Notes
 **last_updated_by** | [**Owner**](Owner.md) |  | [optional] 
 **logstore_retention_bytes** | **int** |  | 
 **logstore_retention_ms** | **int** |  | 
+**mode** | **str** | Storage mode of stream. Possible values: &#x60;append&#x60;, &#x60;changelog&#x60;, &#x60;changelog_kv&#x60;, &#x60;versioned_kv&#x60; | 
 **name** | **str** |  | 
-**stats** | [**StreamStats**](StreamStats.md) |  | [optional] 
+**primary_key** | **str** | Expression of primary key, required in &#x60;changelog_kv&#x60;&#x60; and &#x60;versioned_kv&#x60;&#x60; mode | [optional] 
 **ttl** | **str** | ORDER_BY     string        &#x60;json:\&quot;order_by_expression\&quot;&#x60; PATTITION_BY string        &#x60;json:\&quot;partition_by_expression\&quot;&#x60; | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

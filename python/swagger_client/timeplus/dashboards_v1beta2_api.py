@@ -321,7 +321,7 @@ class DashboardsV1beta2Api(object):
         :param async_req bool
         :param UpdateDashboardRequest body: update dashboard request parameters (required)
         :param str id: dashboard ID (required)
-        :return: None
+        :return: DashboardDashboard
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -344,7 +344,7 @@ class DashboardsV1beta2Api(object):
         :param async_req bool
         :param UpdateDashboardRequest body: update dashboard request parameters (required)
         :param str id: dashboard ID (required)
-        :return: None
+        :return: DashboardDashboard
                  If the method is called asynchronously,
                  returns the request thread.
         """
@@ -408,7 +408,7 @@ class DashboardsV1beta2Api(object):
             body=body_params,
             post_params=form_params,
             files=local_var_files,
-            response_type=None,  # noqa: E501
+            response_type='DashboardDashboard',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),

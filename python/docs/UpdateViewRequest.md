@@ -4,8 +4,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **description** | **str** |  | [optional] 
-**logstore_retention_bytes** | **int** |  | [optional] 
-**logstore_retention_ms** | **int** |  | [optional] 
+**logstore_retention_bytes** | **int** | The max size a stream can grow. Defaulted to 10 GiB | [optional] 
+**logstore_retention_ms** | **int** | The max time the data can be retained in the stream. Defaulted to 7 days | [optional] 
 **query** | **str** |  | [optional] 
 **ttl_expression** | **str** |  | [optional] 
 

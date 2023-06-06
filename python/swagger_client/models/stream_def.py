@@ -157,6 +157,7 @@ class StreamDef(object):
     def event_time_column(self):
         """Gets the event_time_column of this StreamDef.  # noqa: E501
 
+        This column will be used as the event time if specified  # noqa: E501
 
         :return: The event_time_column of this StreamDef.  # noqa: E501
         :rtype: str
@@ -167,6 +168,7 @@ class StreamDef(object):
     def event_time_column(self, event_time_column):
         """Sets the event_time_column of this StreamDef.
 
+        This column will be used as the event time if specified  # noqa: E501
 
         :param event_time_column: The event_time_column of this StreamDef.  # noqa: E501
         :type: str
@@ -178,6 +180,7 @@ class StreamDef(object):
     def event_time_timezone(self):
         """Gets the event_time_timezone of this StreamDef.  # noqa: E501
 
+        The timezone of the `TimestampColumn`  # noqa: E501
 
         :return: The event_time_timezone of this StreamDef.  # noqa: E501
         :rtype: str
@@ -188,6 +191,7 @@ class StreamDef(object):
     def event_time_timezone(self, event_time_timezone):
         """Sets the event_time_timezone of this StreamDef.
 
+        The timezone of the `TimestampColumn`  # noqa: E501
 
         :param event_time_timezone: The event_time_timezone of this StreamDef.  # noqa: E501
         :type: str
@@ -199,6 +203,7 @@ class StreamDef(object):
     def logstore_retention_bytes(self):
         """Gets the logstore_retention_bytes of this StreamDef.  # noqa: E501
 
+        The max size a stream can grow. Defaulted to 10 GiB  # noqa: E501
 
         :return: The logstore_retention_bytes of this StreamDef.  # noqa: E501
         :rtype: int
@@ -209,6 +214,7 @@ class StreamDef(object):
     def logstore_retention_bytes(self, logstore_retention_bytes):
         """Sets the logstore_retention_bytes of this StreamDef.
 
+        The max size a stream can grow. Defaulted to 10 GiB  # noqa: E501
 
         :param logstore_retention_bytes: The logstore_retention_bytes of this StreamDef.  # noqa: E501
         :type: int
@@ -220,6 +226,7 @@ class StreamDef(object):
     def logstore_retention_ms(self):
         """Gets the logstore_retention_ms of this StreamDef.  # noqa: E501
 
+        The max time the data can be retained in the stream. Defaulted to 7 days  # noqa: E501
 
         :return: The logstore_retention_ms of this StreamDef.  # noqa: E501
         :rtype: int
@@ -230,6 +237,7 @@ class StreamDef(object):
     def logstore_retention_ms(self, logstore_retention_ms):
         """Sets the logstore_retention_ms of this StreamDef.
 
+        The max time the data can be retained in the stream. Defaulted to 7 days  # noqa: E501
 
         :param logstore_retention_ms: The logstore_retention_ms of this StreamDef.  # noqa: E501
         :type: int
@@ -241,6 +249,7 @@ class StreamDef(object):
     def mode(self):
         """Gets the mode of this StreamDef.  # noqa: E501
 
+        Storage mode of stream. Possible values: `append`, `changelog`, `changelog_kv`, `versioned_kv`  # noqa: E501
 
         :return: The mode of this StreamDef.  # noqa: E501
         :rtype: str
@@ -251,6 +260,7 @@ class StreamDef(object):
     def mode(self, mode):
         """Sets the mode of this StreamDef.
 
+        Storage mode of stream. Possible values: `append`, `changelog`, `changelog_kv`, `versioned_kv`  # noqa: E501
 
         :param mode: The mode of this StreamDef.  # noqa: E501
         :type: str
@@ -350,6 +360,7 @@ class StreamDef(object):
     def primary_key(self):
         """Gets the primary_key of this StreamDef.  # noqa: E501
 
+        Expression of primary key, required in `changelog_kv`` and `versioned_kv`` mode  # noqa: E501
 
         :return: The primary_key of this StreamDef.  # noqa: E501
         :rtype: str
@@ -360,6 +371,7 @@ class StreamDef(object):
     def primary_key(self, primary_key):
         """Sets the primary_key of this StreamDef.
 
+        Expression of primary key, required in `changelog_kv`` and `versioned_kv`` mode  # noqa: E501
 
         :param primary_key: The primary_key of this StreamDef.  # noqa: E501
         :type: str

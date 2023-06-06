@@ -38,8 +38,9 @@ class Stream(object):
         'last_updated_by': 'Owner',
         'logstore_retention_bytes': 'int',
         'logstore_retention_ms': 'int',
+        'mode': 'str',
         'name': 'str',
-        'stats': 'StreamStats',
+        'primary_key': 'str',
         'ttl': 'str'
     }
 
@@ -54,12 +55,13 @@ class Stream(object):
         'last_updated_by': 'last_updated_by',
         'logstore_retention_bytes': 'logstore_retention_bytes',
         'logstore_retention_ms': 'logstore_retention_ms',
+        'mode': 'mode',
         'name': 'name',
-        'stats': 'stats',
+        'primary_key': 'primary_key',
         'ttl': 'ttl'
     }
 
-    def __init__(self, columns=None, created_at=None, created_by=None, description=None, engine=None, is_external=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, name=None, stats=None, ttl=None):  # noqa: E501
+    def __init__(self, columns=None, created_at=None, created_by=None, description=None, engine=None, is_external=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, mode=None, name=None, primary_key=None, ttl=None):  # noqa: E501
         """Stream - a model defined in Swagger"""  # noqa: E501
         self._columns = None
         self._created_at = None
@@ -71,8 +73,9 @@ class Stream(object):
         self._last_updated_by = None
         self._logstore_retention_bytes = None
         self._logstore_retention_ms = None
+        self._mode = None
         self._name = None
-        self._stats = None
+        self._primary_key = None
         self._ttl = None
         self.discriminator = None
         self.columns = columns
@@ -89,9 +92,10 @@ class Stream(object):
             self.last_updated_by = last_updated_by
         self.logstore_retention_bytes = logstore_retention_bytes
         self.logstore_retention_ms = logstore_retention_ms
+        self.mode = mode
         self.name = name
-        if stats is not None:
-            self.stats = stats
+        if primary_key is not None:
+            self.primary_key = primary_key
         self.ttl = ttl
 
     @property
@@ -317,6 +321,31 @@ class Stream(object):
         self._logstore_retention_ms = logstore_retention_ms
 
     @property
+    def mode(self):
+        """Gets the mode of this Stream.  # noqa: E501
+
+        Storage mode of stream. Possible values: `append`, `changelog`, `changelog_kv`, `versioned_kv`  # noqa: E501
+
+        :return: The mode of this Stream.  # noqa: E501
+        :rtype: str
+        """
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        """Sets the mode of this Stream.
+
+        Storage mode of stream. Possible values: `append`, `changelog`, `changelog_kv`, `versioned_kv`  # noqa: E501
+
+        :param mode: The mode of this Stream.  # noqa: E501
+        :type: str
+        """
+        if mode is None:
+            raise ValueError("Invalid value for `mode`, must not be `None`")  # noqa: E501
+
+        self._mode = mode
+
+    @property
     def name(self):
         """Gets the name of this Stream.  # noqa: E501
 
@@ -340,25 +369,27 @@ class Stream(object):
         self._name = name
 
     @property
-    def stats(self):
-        """Gets the stats of this Stream.  # noqa: E501
+    def primary_key(self):
+        """Gets the primary_key of this Stream.  # noqa: E501
 
+        Expression of primary key, required in `changelog_kv`` and `versioned_kv`` mode  # noqa: E501
 
-        :return: The stats of this Stream.  # noqa: E501
-        :rtype: StreamStats
+        :return: The primary_key of this Stream.  # noqa: E501
+        :rtype: str
         """
-        return self._stats
+        return self._primary_key
 
-    @stats.setter
-    def stats(self, stats):
-        """Sets the stats of this Stream.
+    @primary_key.setter
+    def primary_key(self, primary_key):
+        """Sets the primary_key of this Stream.
 
+        Expression of primary key, required in `changelog_kv`` and `versioned_kv`` mode  # noqa: E501
 
-        :param stats: The stats of this Stream.  # noqa: E501
-        :type: StreamStats
+        :param primary_key: The primary_key of this Stream.  # noqa: E501
+        :type: str
         """
 
-        self._stats = stats
+        self._primary_key = primary_key
 
     @property
     def ttl(self):

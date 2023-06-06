@@ -58,7 +58,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta2_resource_metrics_get**
-> ResourceMetricsResult v1beta2_resource_metrics_get(body)
+> ResourceMetricsResult v1beta2_resource_metrics_get(metrics_type, resource_ids, time_range)
 
 query resource metrics.
 
@@ -80,11 +80,13 @@ configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.MetricsV1beta2Api(swagger_client.ApiClient(configuration))
-body = swagger_client.ResourceMetricsRequest() # ResourceMetricsRequest | metrics query request parameters
+metrics_type = 'metrics_type_example' # str | 
+resource_ids = ['resource_ids_example'] # list[str] | 
+time_range = 56 # int | 
 
 try:
     # query resource metrics.
-    api_response = api_instance.v1beta2_resource_metrics_get(body)
+    api_response = api_instance.v1beta2_resource_metrics_get(metrics_type, resource_ids, time_range)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling MetricsV1beta2Api->v1beta2_resource_metrics_get: %s\n" % e)
@@ -94,7 +96,9 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**ResourceMetricsRequest**](ResourceMetricsRequest.md)| metrics query request parameters | 
+ **metrics_type** | **str**|  | 
+ **resource_ids** | [**list[str]**](str.md)|  | 
+ **time_range** | **int**|  | 
 
 ### Return type
 
@@ -106,7 +110,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
+ - **Content-Type**: Not defined
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
