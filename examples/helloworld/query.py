@@ -19,7 +19,7 @@ try:
 
     # create a new query
     query = (
-        Query(env=env).sql(query="SELECT * FROM iot")
+        Query(env=env).sql(query="SELECT * FROM car_live_data")
         # .batching_pilicy(1000, 1000)
         .create()
     )
