@@ -9,7 +9,7 @@ class Stream:
     def __init__(self, env):
         self._env = env
         self._configuration = self._env._conf()
-        self._api_instance = swagger_client.StreamsV1beta1Api(
+        self._api_instance = swagger_client.StreamsV1beta2Api(
             swagger_client.ApiClient(self._configuration)
         )
         self._id = None
@@ -97,28 +97,28 @@ class Stream:
             body["primary_key"] = self._primary_key
 
         try:
-            self._metadata = self._api_instance.v1beta1_streams_post(body)
+            self._metadata = self._api_instance.v1beta2_streams_post(body)
             return self
         except ApiException as e:
             pprint(
-                "Exception when calling StreamsV1beta1Api->v1beta1_streams_post: %s\n"
+                "Exception when calling StreamsV1beta2Api->v1beta2_streams_post: %s\n"
                 % e
             )
             raise e
 
     def list(self):
         try:
-            list_response = self._api_instance.v1beta1_streams_get()
+            list_response = self._api_instance.v1beta2_streams_get()
             return list_response
         except ApiException as e:
             pprint(
-                "Exception when calling StreamsV1beta1Api->v1beta1_streams_get: %s\n"
+                "Exception when calling StreamsV1beta2Api->v1beta2_streams_get: %s\n"
                 % e
             )
             raise e
 
     def delete(self):
-        self._api_instance.v1beta1_streams_name_delete(self._name)
+        self._api_instance.v1beta2_streams_name_delete(self._name)
 
     def get(self):
         streams = self.list()
@@ -135,21 +135,21 @@ class Stream:
         if format == "compact":
             body = swagger_client.IngestData(colums, rows)
             try:
-                self._api_instance.v1beta1_streams_name_ingest_post(body, self._name)
+                self._api_instance.v1beta2_streams_name_ingest_post(body, self._name)
             except ApiException as e:
                 pprint(
-                    "Exception when calling StreamsV1beta1Api->v1beta1_streams_name_ingest_post: %s\n"
+                    "Exception when calling StreamsV1beta2Api->v1beta2_streams_name_ingest_post: %s\n"
                     % e
                 )
                 raise e
         else:
             try:
-                self._api_instance.v1beta1_streams_name_ingest_post(
+                self._api_instance.v1beta2_streams_name_ingest_post(
                     body=payload, name=self._name, format=format
                 )
             except ApiException as e:
                 pprint(
-                    "Exception when calling StreamsV1beta1Api->v1beta1_streams_name_ingest_post: %s\n"
+                    "Exception when calling StreamsV1beta2Api->v1beta2_streams_name_ingest_post: %s\n"
                     % e
                 )
                 raise e
