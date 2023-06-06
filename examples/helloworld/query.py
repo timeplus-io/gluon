@@ -7,9 +7,10 @@ from timeplus import Query, Environment
 
 api_key = os.environ.get("TIMEPLUS_API_KEY")
 api_address = os.environ.get("TIMEPLUS_ADDRESS")
+workspace = os.environ.get("TIMEPLUS_WORKSPACE")
 
 # Configure API key and address
-env = Environment().address(api_address).apikey(api_key)
+env = Environment().address(api_address).workspace(workspace).apikey(api_key)
 
 try:
     # list all qeuries

@@ -16,7 +16,7 @@ class Environment:
         self._workspace = name
         if not self._address:
             self._configuration.host = (
-                f"https//beta.timeplus.cloud/{self._workspace}/api"
+                f"https//us.timeplus.cloud/{self._workspace}/api"
             )
         else:
             self._configuration.host = f"{self._address}/{self._workspace}/api"
