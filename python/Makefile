@@ -1,10 +1,5 @@
 VERSION = $(shell git describe --tags --abbrev=0 | sed -e "s/v//g")
 
-BIN_NAME ?= gluon
-IMAGE_NAME ?= $(BIN_NAME):$(VERSION)
-FULLNAME=$(DOCKER_ID_USER)/${IMAGE_NAME}
-DOCKER_ID_USER ?= timeplus
-
 .PHONY: build test
 
 venv:
@@ -35,18 +30,6 @@ doc:
 test:
 	pytest ./test
 
-docker: Dockerfile
-	docker build --build-arg VERSION="$(VERSION)" -t $(IMAGE_NAME) .
-
-run:
-	docker run -p 8888:8888 -e TIMEPLUS_API_TOKEN=$(TIMEPLUS_API_TOKEN) -e KAFKA_USER=$(KAFKA_USER) -e KAFKA_PASS=$(KAFKA_PASS) $(IMAGE_NAME)
-
-push:
-	docker tag $(IMAGE_NAME) $(FULLNAME)
-	docker tag $(IMAGE_NAME) $(DOCKER_ID_USER)/${BIN_NAME}:latest
-	docker push $(FULLNAME)
-	docker push $(DOCKER_ID_USER)/${BIN_NAME}:latest
-	
 upload:
 	twine upload  --config-file ./.pypirc  dist/*
 

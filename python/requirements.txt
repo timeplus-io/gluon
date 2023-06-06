@@ -4,6 +4,5 @@ python_dateutil >= 2.5.3
 setuptools >= 21.0.0
 urllib3 >= 1.15.1
 sseclient-py>=1.7.2
-rx>=3.2.0
 loguru>=0.6.0
 
