@@ -20,23 +20,45 @@ try:
     # create a new query
     query = (
         Query(env=env).sql(query="SELECT * FROM car_live_data")
-        # .batching_pilicy(1000, 1000)
+        # .batching_policy(1000, 1000)
         .create()
     )
-    query_id = query.metadata()["id"]
+
+    # query header is the colume definitions of query result table
+    # it is a list of name/value pair
+    # for example : [{'name': 'in_use', 'type': 'bool'}, {'name': 'speed', 'type': 'float32'}]
+    query_header = query.header()
+    pprint(f"query with header {query.header()}")
+
+    # query id is the unqie identification, can be used to control query like cancel/delete
+    query_id = query.id()
     pprint(f"created a query with id {query_id}")
 
-    # get a query by id
+    # user can get a query by id
     get_query = Query(env=env).get(id=query_id)
     metadata = query.metadata()
     pprint(f"get a query with id {metadata['id']}")
 
     # iterate query result
-    limit = 10
+    limit = 3
     count = 0
     for event in query.result():
-        print(event.event)
-        print(json.loads(event.data))
+
+        # metric event return result time query metrics
+        # a sample metrics event:
+        # {'count': 117, 'eps': 75, 'processing_time': 1560,
+        # 'last_event_time': 1686237113265, 'response_time': 861,
+        # 'scanned_rows': 117, 'scanned_bytes': 7605}
+        if event.event == "metrics":
+            pprint(json.loads(event.data))
+
+        # message event contains query result which is an array of array
+        # representing multiple query result rows
+        # a sample message event:
+        # [[True,-73.857],[False, 84.1]]
+        if event.event == "message":
+            pprint(json.loads(event.data))
+
         count += 1
         if count >= limit:
             break
