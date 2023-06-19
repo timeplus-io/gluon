@@ -24,26 +24,22 @@ try:
         .create()
     )
 
+    pprint(f"query with metadata {json.dumps(query.metadata())}")
+
     # query header is the colume definitions of query result table
     # it is a list of name/value pair
     # for example : [{'name': 'in_use', 'type': 'bool'}, {'name': 'speed', 'type': 'float32'}]
     query_header = query.header()
     pprint(f"query with header {query.header()}")
 
-    # query id is the unqie identification, can be used to control query like cancel/delete
-    query_id = query.id()
-    pprint(f"created a query with id {query_id}")
-
-    # user can get a query by id
-    get_query = Query(env=env).get(id=query_id)
-    metadata = query.metadata()
-    pprint(f"get a query with id {metadata['id']}")
-
     # iterate query result
     limit = 3
     count = 0
-    for event in query.result():
 
+    # query.result() is an iterator which will pull all the query result in small batches
+    # the iterator will continously pulling query result
+    # for streaming query, the iterator will not end until user cancel the query
+    for event in query.result():
         # metric event return result time query metrics
         # a sample metrics event:
         # {'count': 117, 'eps': 75, 'processing_time': 1560,
@@ -52,13 +48,12 @@ try:
         if event.event == "metrics":
             pprint(json.loads(event.data))
 
-        # message event contains query result which is an array of array
+        # message event contains query result which is an array of arrays
         # representing multiple query result rows
         # a sample message event:
         # [[True,-73.857],[False, 84.1]]
         if event.event == "message":
             pprint(json.loads(event.data))
-
         count += 1
         if count >= limit:
             break
