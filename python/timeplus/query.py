@@ -16,21 +16,24 @@ class Query:
         )
         self._create_response = None
         self._id = None
-        self._batching_pilicy = None
+        self._batching_policy = None
 
     def sql(self, query):
         self._sql = query
         return self
 
-    def batching_pilicy(self, count, time_ms):
-        self._batching_pilicy = swagger_client.models.BatchingPolicy(
+    # refer to https://docs.timeplus.com/rest.html#tag/Queries-v1beta2/paths/~1v1beta2~1queries/post
+    # count : The max result count per batch
+    # time_ms : The max interval per batch in milliseconds
+    def batching_policy(self, count, time_ms):
+        self._batching_policy = swagger_client.models.BatchingPolicy(
             count=count, time_ms=time_ms
         )
         return self
 
     def create(self):
         body = swagger_client.CreateQueryRequestV1Beta2(
-            sql=self._sql, batching_policy=self._batching_pilicy
+            sql=self._sql, batching_policy=self._batching_policy
         )
         try:
             # as to support sse, the reponse is urllib3.response.HTTPResponse
@@ -51,6 +54,12 @@ class Query:
 
     def metadata(self):
         return self._metadata
+
+    def id(self):
+        return self._id
+
+    def header(self):
+        return self._metadata["result"]["header"]
 
     def result(self):
         return self._events
