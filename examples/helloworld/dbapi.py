@@ -3,10 +3,10 @@ import os
 from timeplus.api import connect
 
 api_key = os.environ.get("TIMEPLUS_API_KEY")
-api_address = os.environ.get("TIMEPLUS_HOST")
+api_address = "dev.timeplus.cloud"
 workspace = os.environ.get("TIMEPLUS_WORKSPACE")
 
-conn = connect(address=api_address, apikey=api_key, workspace=workspace)
+conn = connect(host=api_address, password=api_key, path=workspace)
 cusor = conn.execute("select * from car_live_data")
 
 next = cusor.next()

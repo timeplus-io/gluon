@@ -4,10 +4,25 @@ import itertools
 from collections import namedtuple
 
 from timeplus import Environment, Query
-from timeplus.error import TimeplusAPIError
+from timeplus.error import Error
 
 
-def connect(address="https://us.timeplus.cloud", apikey=None, workspace=None):
+def connect(
+    host="localhost",
+    port=443,
+    scheme="https",
+    path="",
+    user=None,
+    password=None,
+    context=None,
+    header=False,
+    ssl_verify_cert=True,
+    ssl_client_cert=None,
+    proxies=None,
+):
+    address = f"{scheme}://{host}:{port}"
+    apikey = password
+    workspace = path
     return Connection(address, apikey, workspace)
 
 
@@ -17,6 +32,7 @@ class Connection(object):
     def __init__(
         self, address="https://us.timeplus.cloud", apikey=None, workspace=None
     ):
+        print(f"build connection with {address} {workspace}")
         self.env = Environment().address(address).workspace(workspace).apikey(apikey)
         self.closed = False
         self.cursors = []
@@ -27,11 +43,15 @@ class Connection(object):
         for cursor in self.cursors:
             try:
                 cursor.close()
-            except TimeplusAPIError:
+            except Error:
                 pass  # already closed
 
     def commit(self):
-        # not commit support yet
+        # no commit support
+        pass
+
+    def rollback(self):
+        # no rollback support
         pass
 
     def cursor(self):
@@ -59,9 +79,14 @@ class Cursor(object):
     def __init__(self, env):
         self.env = env
         self.closed = False
+        self.description = None
         self._results = None
-        self._query = None
-        self._header = None
+        self.query = None
+        self.header = None
+
+    # refer to https://peps.python.org/pep-0249/#description
+    def description(self):
+        return self.description
 
     @property
     def rowcount(self):
@@ -92,13 +117,13 @@ class Cursor(object):
         self._query_type = analyze_result.query_type
 
         if self._query_type != "SELECT":
-            raise TimeplusAPIError("only select query is supported now")
+            raise Error("only select query is supported now")
 
         self._results = self._stream_query(operation)
         return self
 
     def executemany(self, operation, seq_of_parameters=None):
-        raise TimeplusAPIError("`executemany` is not supported")
+        raise Error("`executemany` is not supported")
 
     def fetchone(self):
         """
@@ -145,9 +170,22 @@ class Cursor(object):
 
     def _stream_query(self, query):
         self.query = Query(env=self.env).sql(query=query).create()
-        self._header = self.query.header()
-        field_names = [field["name"] for field in self._header]
+        self.header = self.query.header()
+        field_names = [field["name"] for field in self.header]
         keys = " ".join(field_names)
+
+        self.description = [
+            (
+                field["name"],  # name
+                field["type"],  # type
+                None,  # [display_size]
+                None,  # [internal_size]
+                None,  # [precision]
+                None,  # [scale]
+                False,  # [null_ok]
+            )
+            for field in self.header
+        ]
 
         for event in self.query.result():
             if event.event == "message":

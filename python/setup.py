@@ -27,6 +27,7 @@ requirements = [
     "certifi",
     "sseclient-py>=1.7.2",
     "loguru>=0.6.0",
+    "sqlalchemy>=2.0.16",
     "python-dateutil",
 ]
 
