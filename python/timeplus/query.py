@@ -113,7 +113,7 @@ class Query:
             return analyze_response
         except ApiException as e:
             pprint(
-                "Exception when calling QueriesV1beta2Api->v1beta2_queries_id_get: %s\n"
+                "Exception when calling QueriesV1beta2Api->v1beta2_sqlanalyze_post: %s\n"
                 % e
             )
             raise e
