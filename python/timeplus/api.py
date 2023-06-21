@@ -5,8 +5,6 @@ from collections import namedtuple
 from timeplus import Environment, Query, Stream
 from timeplus.error import Error
 
-import traceback
-
 
 def connect(
     host="localhost",
@@ -102,14 +100,6 @@ class Cursor(object):
     @property
     def rowcount(self):
         return -1
-        # if self._is_streaming is not None and not self._is_streaming:
-        #     results = list(self._results)
-        #     n = len(results)
-        #     self._results = iter(results)
-        #     return n
-        # else:
-        #     # for streaming query no row count available
-        #     return sys.maxsize
 
     def close(self):
         """Close the cursor."""
@@ -120,10 +110,8 @@ class Cursor(object):
             self.closed = True
 
     def execute(self, operation, parameters=None):
-        # TODO: Run query analysis here
-        # TODO: apply parameters here
-
-        analyze_result = Query(env=self.env).sql(query=operation).analyze()
+        sql = apply_parameters(operation, parameters)
+        analyze_result = Query(env=self.env).sql(query=sql).analyze()
 
         self._is_streaming = analyze_result.is_streaming
         self._query_type = analyze_result.query_type
@@ -131,7 +119,7 @@ class Cursor(object):
         if self._query_type != "SELECT":
             raise Error("only select query is supported now")
 
-        self._results = self._stream_query(operation)
+        self._results = self._stream_query(sql)
         return self
 
     def executemany(self, operation, seq_of_parameters=None):
@@ -207,3 +195,24 @@ class Cursor(object):
                         "Row", keys, rename=True
                     )  # _tp_time will be renamed here
                     yield Row(*row)
+
+
+def apply_parameters(operation, parameters):
+    if not parameters:
+        return operation
+
+    escaped_parameters = {key: escape(value) for key, value in parameters.items()}
+    return operation % escaped_parameters
+
+
+def escape(value):
+    if value == "*":
+        return value
+    elif isinstance(value, str):
+        return "'{}'".format(value.replace("'", "''"))
+    elif isinstance(value, bool):
+        return "TRUE" if value else "FALSE"
+    elif isinstance(value, (int, float)):
+        return value
+    elif isinstance(value, (list, tuple)):
+        return ", ".join(escape(element) for element in value)

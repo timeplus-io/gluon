@@ -1,5 +1,6 @@
 from sqlalchemy.engine import default
 from sqlalchemy import types, util
+from sqlalchemy.sql import compiler
 
 type_map = {
     "uint32": types.BigInteger,
@@ -12,9 +13,86 @@ type_map = {
     "decimal(10, 2)": types.Float,
     "string": types.String,
     "bool": types.Boolean,
-    "datetime64(3)": types.TIMESTAMP,
-    "datetime64(3, 'UTC')": types.TIMESTAMP,
+    "datetime64(3)": types.DateTime,
+    "datetime64(3, 'UTC')": types.DateTime,
 }
+
+
+class TimeplusSQLCompiler(compiler.SQLCompiler):
+    pass
+    # def visit_select(
+    #     self,
+    #     select_stmt,
+    #     asfrom=False,
+    #     insert_into=False,
+    #     fromhints=None,
+    #     compound_index=None,
+    #     select_wraps_for=None,
+    #     lateral=False,
+    #     from_linter=None,
+    #     **kwargs,
+    # ):
+    #     breakpoint()
+    #     if select_stmt.froms:
+    #         modified_froms = []
+    #         for selectable in select_stmt.froms:
+    #             if isinstance(selectable, Select):
+    #                 modified_selectable = selectable.replace_selectable(
+    #                     selectable,
+    #                     selectable.set_label("table(" + selectable.name + ")"),
+    #                 )
+    #                 modified_froms.append(modified_selectable)
+    #             else:
+    #                 selectable.name = "table(" + selectable.name + ")"
+    #                 modified_froms.append(selectable)
+    #         select_stmt = select_stmt.replace(froms=modified_froms)
+
+    #     return super().visit_select(
+    #         select_stmt,
+    #         asfrom=asfrom,
+    #         insert_into=insert_into,
+    #         fromhints=fromhints,
+    #         compound_index=compound_index,
+    #         select_wraps_for=select_wraps_for,
+    #         lateral=lateral,
+    #         from_linter=from_linter,
+    #         **kwargs,
+    #     )
+
+
+class TimeplusTypeCompiler(compiler.GenericTypeCompiler):
+    def visit_REAL(self, type_, **kwargs):
+        return "float"
+
+    def visit_NUMERIC(self, type_, **kwargs):
+        return "integer"
+
+    visit_DECIMAL = visit_NUMERIC
+    visit_INTEGER = visit_NUMERIC
+    visit_SMALLINT = visit_NUMERIC
+    visit_BIGINT = visit_NUMERIC
+    visit_BOOLEAN = visit_NUMERIC
+    visit_TIMESTAMP = visit_NUMERIC
+    visit_DATE = visit_NUMERIC
+
+    def visit_CHAR(self, type_, **kwargs):
+        return "string"
+
+    visit_NCHAR = visit_CHAR
+    visit_VARCHAR = visit_CHAR
+    visit_NVARCHAR = visit_CHAR
+    visit_TEXT = visit_CHAR
+
+    def visit_DATETIME(self, type_, **kwargs):
+        return "datetime64"
+
+    def visit_BLOB(self, type_, **kwargs):
+        return "string"
+
+    visit_CLOB = visit_BLOB
+    visit_NCLOB = visit_BLOB
+    visit_VARBINARY = visit_BLOB
+    visit_BINARY = visit_BLOB
 
 
 # the interface refer to
@@ -28,6 +106,10 @@ class TimeplusDialect(default.DefaultDialect):
     password = None
     dialect_description = "timeplus sqlalchemy driver"
     default_schema_name = "default"
+
+    statement_compiler = TimeplusSQLCompiler
+    type_compiler = TimeplusTypeCompiler
+
     supports_alter = False
     supports_pk_autoincrement = False
     supports_default_values = False
@@ -85,7 +167,6 @@ class TimeplusDialect(default.DefaultDialect):
             "path": url.database,
             "scheme": self.scheme,
             "context": self.context,
-            "header": url.query.get("header") == "true",
         }
         return ([], kwargs)
 
