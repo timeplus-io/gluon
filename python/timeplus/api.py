@@ -6,6 +6,8 @@ from collections import namedtuple
 from timeplus import Environment, Query
 from timeplus.error import Error
 
+import traceback
+
 
 def connect(
     host="localhost",
@@ -32,7 +34,6 @@ class Connection(object):
     def __init__(
         self, address="https://us.timeplus.cloud", apikey=None, workspace=None
     ):
-        print(f"build connection with {address} {workspace}")
         self.env = Environment().address(address).workspace(workspace).apikey(apikey)
         self.closed = False
         self.cursors = []
@@ -79,8 +80,9 @@ class Cursor(object):
     def __init__(self, env):
         self.env = env
         self.closed = False
-        self.description = None
+        self.description = []
         self._results = None
+        self._is_streaming = None
         self.query = None
         self.header = None
 
@@ -90,14 +92,15 @@ class Cursor(object):
 
     @property
     def rowcount(self):
-        if not self._is_streaming:
-            results = list(self._results)
-            n = len(results)
-            self._results = iter(results)
-            return n
-        else:
-            # for streaming query no row count available
-            return sys.maxsize
+        return -1
+        # if self._is_streaming is not None and not self._is_streaming:
+        #     results = list(self._results)
+        #     n = len(results)
+        #     self._results = iter(results)
+        #     return n
+        # else:
+        #     # for streaming query no row count available
+        #     return sys.maxsize
 
     def close(self):
         """Close the cursor."""

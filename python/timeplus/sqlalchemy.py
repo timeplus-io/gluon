@@ -17,9 +17,13 @@ class TimeplusDialect(default.DefaultDialect):
     supports_empty_insert = False
     supports_unicode_statements = True
     supports_unicode_binds = True
+    supports_statement_cache = True
     returns_unicode_strings = True
     description_encoding = None
     supports_native_boolean = True
+
+    supports_sane_rowcount = False
+    supports_sane_multi_rowcount = False
 
     def __init__(self, context=None, *args, **kwargs):
         super(TimeplusDialect, self).__init__(*args, **kwargs)
@@ -60,3 +64,15 @@ class TimeplusDialect(default.DefaultDialect):
             return False
 
         return True
+
+    def do_execute(
+        self,
+        cursor,
+        statement,
+        parameters,
+        context,
+    ):
+        return cursor.execute(statement, parameters)
+
+    def do_close(self, dbapi_connection):
+        return dbapi_connection.close()

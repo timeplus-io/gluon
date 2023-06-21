@@ -7,10 +7,13 @@ api_address = "dev.timeplus.cloud"
 workspace = os.environ.get("TIMEPLUS_WORKSPACE")
 
 conn = connect(host=api_address, password=api_key, path=workspace)
-cusor = conn.execute("select * from car_live_data")
+cusor = conn.execute("select * from table(car_live_data) limit 5")
 
 next = cusor.next()
 print(f"next is {next}")
+
+row1 = cusor.fetchone()
+print(f"row one is {row1}")
 
 rows = cusor.fetchmany(3)
 print("fetch multiple rows")
