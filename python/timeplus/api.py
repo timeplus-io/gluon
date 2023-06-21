@@ -1,9 +1,8 @@
 import json
-import sys
 import itertools
 from collections import namedtuple
 
-from timeplus import Environment, Query
+from timeplus import Environment, Query, Stream
 from timeplus.error import Error
 
 import traceback
@@ -72,6 +71,16 @@ class Connection(object):
 
     def __exit__(self, *exc):
         self.close()
+
+    # internal method in a hacky way,
+    # since some SQL is not exposed through API yet
+    def _exist(self, name):
+        stream = Stream(env=self.env).name(name)
+        return stream.exist()
+
+    def _get_table(self, name):
+        stream = Stream(env=self.env).name(name).get()
+        return stream
 
 
 class Cursor(object):

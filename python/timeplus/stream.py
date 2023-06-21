@@ -120,6 +120,7 @@ class Stream:
     def delete(self):
         self._api_instance.v1beta2_streams_name_delete(self._name)
 
+    # TODO: should switch to get API
     def get(self):
         streams = self.list()
         for s in streams:
