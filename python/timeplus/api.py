@@ -2,7 +2,7 @@ import json
 import itertools
 from collections import namedtuple
 
-from timeplus import Environment, Query, Stream
+from timeplus import Environment, Query, Stream, View
 from timeplus.error import Error
 
 
@@ -72,13 +72,18 @@ class Connection(object):
 
     # internal method in a hacky way,
     # since some SQL is not exposed through API yet
-    def _exist(self, name):
+    def _exist_table(self, name):
         stream = Stream(env=self.env).name(name)
         return stream.exist()
 
     def _get_table(self, name):
-        stream = Stream(env=self.env).name(name).get()
-        return stream
+        return Stream(env=self.env).name(name).get()
+
+    def _list_table(self):
+        return Stream(env=self.env).list()
+
+    def _list_view(self):
+        return View(env=self.env).list()
 
 
 class Cursor(object):

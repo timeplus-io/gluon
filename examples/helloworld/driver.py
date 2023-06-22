@@ -40,6 +40,21 @@ with engine.connect() as conn:
     table_exists = engine.dialect.has_table(conn, table_name)
     print(f"{table_name} exist : {table_exists}")
 
+# list all tables
+with engine.connect() as conn:
+    tables = engine.dialect.get_table_names(conn)
+    print(f"list tables : {tables}")
+
+# list all views
+with engine.connect() as conn:
+    views = engine.dialect.get_view_names(conn)
+    print(f"list views : {views}")
+
+# list all mv
+with engine.connect() as conn:
+    mvs = engine.dialect.get_materialized_view_names(conn)
+    print(f"list materialized views : {mvs}")
+
 
 # stream/table refection
 metadata_obj = MetaData()

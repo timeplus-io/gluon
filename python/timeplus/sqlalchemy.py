@@ -198,7 +198,7 @@ class TimeplusDialect(default.DefaultDialect):
 
     def has_table(self, connection, table_name, schema=None):
         api_connection = connection._dbapi_connection.connection
-        return api_connection._exist(table_name)
+        return api_connection._exist_table(table_name)
 
     def get_columns(self, connection, table_name, schema=None, **kwargs):
         api_connection = connection._dbapi_connection.connection
@@ -214,6 +214,21 @@ class TimeplusDialect(default.DefaultDialect):
             }
             for col in metadata.columns
         ]
+
+    def get_table_names(self, connection, schema=None, **kw):
+        api_connection = connection._dbapi_connection.connection
+        tables = api_connection._list_table()
+        return [t.name for t in tables]
+
+    def get_view_names(self, connection, schema=None, **kw):
+        api_connection = connection._dbapi_connection.connection
+        views = api_connection._list_view()
+        return [t.name for t in views if not t.materialized]
+
+    def get_materialized_view_names(self, connection, schema=None, **kw):
+        api_connection = connection._dbapi_connection.connection
+        views = api_connection._list_view()
+        return [t.name for t in views if t.materialized]
 
     def get_pk_constraint(self, connection, table_name, schema=None, **kwargs):
         return {"constrained_columns": [], "name": None}
