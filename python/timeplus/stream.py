@@ -12,7 +12,6 @@ class Stream:
         self._api_instance = swagger_client.StreamsV1beta2Api(
             swagger_client.ApiClient(self._configuration)
         )
-        self._id = None
         self._body = None
         self._columns = None
 
