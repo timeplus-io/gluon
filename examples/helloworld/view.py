@@ -22,6 +22,7 @@ def clean():
 
 clean()
 
+
 try:
     # list all views
     view_list = View(env=env).list()

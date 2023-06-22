@@ -1,7 +1,10 @@
 from sqlalchemy.engine import default
 from sqlalchemy import types, util
 from sqlalchemy.sql import compiler
+from timeplus.error import Error
 
+
+# TODO : need a better type mapping here
 type_map = {
     "uint32": types.BigInteger,
     "int32": types.BigInteger,
@@ -15,49 +18,12 @@ type_map = {
     "bool": types.Boolean,
     "datetime64(3)": types.DateTime,
     "datetime64(3, 'UTC')": types.DateTime,
+    "datetime": types.DateTime,
 }
 
 
 class TimeplusSQLCompiler(compiler.SQLCompiler):
     pass
-    # def visit_select(
-    #     self,
-    #     select_stmt,
-    #     asfrom=False,
-    #     insert_into=False,
-    #     fromhints=None,
-    #     compound_index=None,
-    #     select_wraps_for=None,
-    #     lateral=False,
-    #     from_linter=None,
-    #     **kwargs,
-    # ):
-    #     breakpoint()
-    #     if select_stmt.froms:
-    #         modified_froms = []
-    #         for selectable in select_stmt.froms:
-    #             if isinstance(selectable, Select):
-    #                 modified_selectable = selectable.replace_selectable(
-    #                     selectable,
-    #                     selectable.set_label("table(" + selectable.name + ")"),
-    #                 )
-    #                 modified_froms.append(modified_selectable)
-    #             else:
-    #                 selectable.name = "table(" + selectable.name + ")"
-    #                 modified_froms.append(selectable)
-    #         select_stmt = select_stmt.replace(froms=modified_froms)
-
-    #     return super().visit_select(
-    #         select_stmt,
-    #         asfrom=asfrom,
-    #         insert_into=insert_into,
-    #         fromhints=fromhints,
-    #         compound_index=compound_index,
-    #         select_wraps_for=select_wraps_for,
-    #         lateral=lateral,
-    #         from_linter=from_linter,
-    #         **kwargs,
-    #     )
 
 
 class TimeplusTypeCompiler(compiler.GenericTypeCompiler):
@@ -202,18 +168,34 @@ class TimeplusDialect(default.DefaultDialect):
 
     def get_columns(self, connection, table_name, schema=None, **kwargs):
         api_connection = connection._dbapi_connection.connection
-        table = api_connection._get_table(table_name)
-        metadata = table.metadata()
+        if api_connection._exist_table(table_name):
+            table = api_connection._get_table(table_name)
+            metadata = table.metadata()
 
-        return [
-            {
-                "name": col.name,
-                "type": self._map_type(col),
-                "nullable": col.nullable,
-                "default": col.default,
-            }
-            for col in metadata.columns
-        ]
+            return [
+                {
+                    "name": col.name,
+                    "type": self._map_type(col),
+                    "nullable": col.nullable,
+                    "default": col.default,
+                }
+                for col in metadata.columns
+            ]
+        elif api_connection._exist_view(table_name):
+            view = api_connection._get_view(table_name)
+            metadata = view.metadata()
+
+            return [
+                {
+                    "name": col.name,
+                    "type": self._map_type(col),
+                    "nullable": col.nullable,
+                    "default": col.default,
+                }
+                for col in metadata.columns
+            ]
+        else:
+            raise Error("no such table or view")
 
     def get_table_names(self, connection, schema=None, **kw):
         api_connection = connection._dbapi_connection.connection

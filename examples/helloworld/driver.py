@@ -55,8 +55,13 @@ with engine.connect() as conn:
     mvs = engine.dialect.get_materialized_view_names(conn)
     print(f"list materialized views : {mvs}")
 
+# view reflection
+metadata_obj = MetaData()
+slack_view = Table("slack_users", metadata_obj, autoload_with=engine)
+print(f"reflected view is {slack_view}")
+print(f"cols is {[ (c.name, c.type) for c in slack_view.columns]}")
 
-# stream/table refection
+# stream/table reflection
 metadata_obj = MetaData()
 car_table = Table(table_name, metadata_obj, autoload_with=engine)
 print(f"reflected table is {car_table}")

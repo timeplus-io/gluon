@@ -76,8 +76,15 @@ class Connection(object):
         stream = Stream(env=self.env).name(name)
         return stream.exist()
 
+    def _exist_view(self, name):
+        view = View(env=self.env).name(name)
+        return view.exist()
+
     def _get_table(self, name):
         return Stream(env=self.env).name(name).get()
+
+    def _get_view(self, name):
+        return View(env=self.env).name(name).get()
 
     def _list_table(self):
         return Stream(env=self.env).list()

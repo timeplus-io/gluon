@@ -119,7 +119,7 @@ class Stream:
     def delete(self):
         self._api_instance.v1beta2_streams_name_delete(self._name)
 
-    # TODO: should switch to get API
+    # TODO: bug https://github.com/timeplus-io/gluon/issues/70
     def get(self):
         streams = self.list()
         for s in streams:

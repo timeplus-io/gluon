@@ -1,6 +1,7 @@
 from pprint import pprint
 import swagger_client
 from swagger_client.rest import ApiException
+from .error import TimeplusAPIError
 
 
 class View:
@@ -73,22 +74,21 @@ class View:
     def delete(self):
         self._api_instance.v1beta2_views_name_delete(self._name)
 
+    # bug : refer tom https://github.com/timeplus-io/gluon/issues/70
     def get(self):
-        try:
-            self._metadata = self._api_instance.v1beta2_viewsname_get(self._name)
-        except ApiException as e:
-            pprint(
-                "Exception when calling ViewsV1beta2Api->v1beta2_viewsname_get: %s\n"
-                % e
-            )
-            raise e
+        views = self.list()
+        for s in views:
+            if s.name == self._name:
+                self._metadata = s
+                return self
+        raise TimeplusAPIError(f"no such view {self._name}")
 
     def metadata(self):
         return self._metadata
 
     def exist(self):
-        try:
-            self.get()
-            return True
-        except Exception:
-            return False
+        views = self.list()
+        for s in views:
+            if s.name == self._name:
+                return True
+        return False
