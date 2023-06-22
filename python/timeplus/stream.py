@@ -12,7 +12,6 @@ class Stream:
         self._api_instance = swagger_client.StreamsV1beta2Api(
             swagger_client.ApiClient(self._configuration)
         )
-        self._id = None
         self._body = None
         self._columns = None
 
@@ -120,6 +119,7 @@ class Stream:
     def delete(self):
         self._api_instance.v1beta2_streams_name_delete(self._name)
 
+    # TODO: bug https://github.com/timeplus-io/gluon/issues/70
     def get(self):
         streams = self.list()
         for s in streams:

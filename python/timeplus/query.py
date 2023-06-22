@@ -98,7 +98,22 @@ class Query:
             return list_response
         except ApiException as e:
             pprint(
-                "Exception when calling QueriesV1beta2Api->v1beta2_queries_id_get: %s\n"
+                "Exception when calling QueriesV1beta2Api->v1beta2_queries_get: %s\n"
+                % e
+            )
+            raise e
+
+    def analyze(self):
+        if self._sql is None:
+            raise ApiException("sql must be provided")
+
+        body = swagger_client.AnalyzeSQLRequest(sql=self._sql)
+        try:
+            analyze_response = self._api_instance.v1beta2_sqlanalyze_post(body)
+            return analyze_response
+        except ApiException as e:
+            pprint(
+                "Exception when calling QueriesV1beta2Api->v1beta2_sqlanalyze_post: %s\n"
                 % e
             )
             raise e
