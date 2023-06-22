@@ -111,7 +111,11 @@ class Cursor(object):
 
     @property
     def rowcount(self):
-        return -1
+        # consume the iterator
+        results = list(self._results)
+        n = len(results)
+        self._results = iter(results)
+        return n
 
     def close(self):
         """Close the cursor."""
