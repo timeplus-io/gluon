@@ -85,6 +85,7 @@ class TimeplusDialect(default.DefaultDialect):
     returns_unicode_strings = True
     description_encoding = None
     supports_native_boolean = True
+    supports_statement_cache = True
 
     # supports_alter = False
     # supports_pk_autoincrement = False
@@ -250,6 +251,7 @@ class TimeplusDialect(default.DefaultDialect):
         if col.type in type_map:
             return type_map[col.type]
         util.warn(
-            "Failed to map column {col.name} with raw type {col.type}".format(col=col)
+            "Failed to map column {col.name} with raw type {col.type}".format(
+                col=col)
         )
         return types.NullType

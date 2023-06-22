@@ -6,6 +6,30 @@ from timeplus import Environment, Query, Stream, View
 from timeplus.error import Error
 
 
+def check_closed(f):
+    """Decorator that checks if connection/cursor is closed."""
+
+    def wrap(self, *args, **kwargs):
+        if self.closed:
+            raise Error(
+                "{klass} already closed".format(klass=self.__class__.__name__)
+            )
+        return f(self, *args, **kwargs)
+
+    return wrap
+
+
+def check_result(f):
+    """Decorator that checks if the cursor has results from `execute`."""
+
+    def wrap(self, *args, **kwargs):
+        if self._results is None:
+            raise Error("Called before `execute`")
+        return f(self, *args, **kwargs)
+
+    return wrap
+
+
 def connect(
     host="localhost",
     port=443,
@@ -35,6 +59,7 @@ class Connection(object):
         self.closed = False
         self.cursors = []
 
+    @check_closed
     def close(self):
         """Close the connection now."""
         self.closed = True
@@ -44,14 +69,17 @@ class Connection(object):
             except Error:
                 pass  # already closed
 
+    @check_closed
     def commit(self):
         # no commit support
         pass
 
+    @check_closed
     def rollback(self):
         # no rollback support
         pass
 
+    @check_closed
     def cursor(self):
         """Return a new Cursor Object using the connection."""
 
@@ -60,6 +88,7 @@ class Connection(object):
 
         return cursor
 
+    @check_closed
     def execute(self, operation, parameters=None):
         cursor = self.cursor()
         return cursor.execute(operation, parameters)
@@ -105,11 +134,15 @@ class Cursor(object):
         self.query = None
         self.header = None
 
-    # refer to https://peps.python.org/pep-0249/#description
-    def description(self):
-        return self.description
+        self.arraysize = 1
+
+    # # refer to https://peps.python.org/pep-0249/#description
+    # def description(self):
+    #     return self.description
 
     @property
+    @check_result
+    @check_closed
     def rowcount(self):
         # consume the iterator
         results = list(self._results)
@@ -117,6 +150,7 @@ class Cursor(object):
         self._results = iter(results)
         return n
 
+    @check_closed
     def close(self):
         """Close the cursor."""
         try:
@@ -125,6 +159,7 @@ class Cursor(object):
         finally:
             self.closed = True
 
+    @check_closed
     def execute(self, operation, parameters=None):
         sql = apply_parameters(operation, parameters)
         analyze_result = Query(env=self.env).sql(query=sql).analyze()
@@ -138,9 +173,12 @@ class Cursor(object):
         self._results = self._stream_query(sql)
         return self
 
+    @check_closed
     def executemany(self, operation, seq_of_parameters=None):
         raise Error("`executemany` is not supported")
 
+    @check_closed
+    @check_result
     def fetchone(self):
         """
         Fetch the next row of a query result set, returning a single sequence,
@@ -151,6 +189,8 @@ class Cursor(object):
         except StopIteration:
             return None
 
+    @check_result
+    @check_closed
     def fetchmany(self, size=None):
         """
         Fetch the next set of rows of a query result, returning a sequence of
@@ -160,6 +200,8 @@ class Cursor(object):
         size = size or self.arraysize
         return list(itertools.islice(self._results, size))
 
+    @check_result
+    @check_closed
     def fetchall(self):
         """
         Fetch all (remaining) rows of a query result, returning them as a
@@ -168,17 +210,21 @@ class Cursor(object):
         """
         return list(self._results)
 
+    @check_closed
     def setinputsizes(self, sizes):
         # not supported
         pass
 
+    @check_closed
     def setoutputsizes(self, sizes):
         # not supported
         pass
 
+    @check_closed
     def __iter__(self):
         return self
 
+    @check_closed
     def __next__(self):
         return next(self._results)
 
@@ -217,7 +263,8 @@ def apply_parameters(operation, parameters):
     if not parameters:
         return operation
 
-    escaped_parameters = {key: escape(value) for key, value in parameters.items()}
+    escaped_parameters = {key: escape(value)
+                          for key, value in parameters.items()}
     return operation % escaped_parameters
 
 
