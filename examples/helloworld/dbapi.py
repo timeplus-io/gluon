@@ -1,6 +1,6 @@
 import os
 
-from timeplus.api import connect
+from timeplus.dbapi import connect
 
 api_key = os.environ.get("TIMEPLUS_API_KEY")
 api_address = "dev.timeplus.cloud"
