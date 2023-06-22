@@ -170,7 +170,8 @@ class Cursor(object):
         if self._query_type != "SELECT":
             raise Error("only select query is supported now")
 
-        self._results = self._stream_query(sql)
+        self._run_stream_query(sql)
+        self._results = self._stream_query_iter()
         return self
 
     @check_closed
@@ -230,12 +231,9 @@ class Cursor(object):
 
     next = __next__
 
-    def _stream_query(self, query):
+    def _run_stream_query(self, query):
         self.query = Query(env=self.env).sql(query=query).create()
         self.header = self.query.header()
-        field_names = [field["name"] for field in self.header]
-        keys = " ".join(field_names)
-
         self.description = [
             (
                 field["name"],  # name
@@ -248,7 +246,11 @@ class Cursor(object):
             )
             for field in self.header
         ]
+        return
 
+    def _stream_query_iter(self):
+        field_names = [field["name"] for field in self.header]
+        keys = " ".join(field_names)
         for event in self.query.result():
             if event.event == "message":
                 data = json.loads(event.data)

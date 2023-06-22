@@ -1,7 +1,6 @@
 import os
 from sqlalchemy import create_engine, text, select, MetaData, Table
 from sqlalchemy.dialects import registry
-from timeplus.sqlalchemy import TimeplusDialect
 
 registry.register("timeplus", "timeplus.sqlalchemy", "TimeplusDialect")
 
@@ -13,25 +12,18 @@ workspace = os.environ.get("TIMEPLUS_WORKSPACE") or "tp-demo"
 engine = create_engine(
     f"timeplus://:{api_key}@{api_address}:{port}/{workspace}")
 
-
 # execute driver sql
 with engine.connect() as conn:
     result = conn.exec_driver_sql(
         "select cid from table(car_live_data) limit 5")
     print(result.fetchall())
-    # for row in result:
-    #     print(f"got one row {row}")
 
 # execute text sql
 with engine.connect() as connection:
     result = connection.execute(
         text("select * from table(car_live_data) limit 3"))
-
-    row = result.fetchall()
-    print(f"got one row : {row}")
-
-    # for row in result:
-    #     print(f"got one row : {row}")
+    for row in result:
+        print(f"got one row : {row}")
 
 # execute text streaming sql
 with engine.connect() as connection:
