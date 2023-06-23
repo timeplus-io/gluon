@@ -15,7 +15,7 @@ engine = create_engine(
 # select basic types
 with engine.connect() as conn:
     result = conn.execute(text(
-        "select 1, 1,0, 'abc' , true, false, today(), now(), now64(), 1=2, 1<>2, uuid()"))
+        "select 1, 1.5, 'abc' , true, false, today(), now(), now64(), 1=2, 1<>2, uuid()"))
     for row in result:
         print(row)
 
