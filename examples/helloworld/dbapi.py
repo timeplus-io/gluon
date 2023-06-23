@@ -23,6 +23,6 @@ for row in rows:
 # for row in cusor:
 #     pprint(row)
 
-cusor = conn.execute("select 1=2")
+cusor = conn.execute("select 1<>2")
 for row in cusor:
     print(row)
