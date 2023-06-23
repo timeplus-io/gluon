@@ -6,19 +6,14 @@ from timeplus.error import Error
 
 # TODO : need a better type mapping here
 type_map = {
-    "uint32": types.BigInteger,
-    "int32": types.BigInteger,
-    "int64": types.BigInteger,
+    "uint": types.BigInteger,
     "int": types.BigInteger,
-    "float32": types.Float,
-    "float64": types.Float,
     "float": types.Float,
-    "decimal(10, 2)": types.Float,
+    "decimal": types.Float,
     "string": types.String,
     "bool": types.Boolean,
-    "datetime64(3)": types.DateTime,
-    "datetime64(3, 'UTC')": types.DateTime,
     "datetime": types.DateTime,
+    "uuid": types.String,
 }
 
 
@@ -33,13 +28,14 @@ class TimeplusTypeCompiler(compiler.GenericTypeCompiler):
     def visit_NUMERIC(self, type_, **kwargs):
         return "integer"
 
-    visit_DECIMAL = visit_NUMERIC
+    visit_DECIMAL = visit_REAL
     visit_INTEGER = visit_NUMERIC
     visit_SMALLINT = visit_NUMERIC
     visit_BIGINT = visit_NUMERIC
-    visit_BOOLEAN = visit_NUMERIC
     visit_TIMESTAMP = visit_NUMERIC
-    visit_DATE = visit_NUMERIC
+
+    def visit_BOOLEAN(self, type_, **kwargs):
+        return "bool"
 
     def visit_CHAR(self, type_, **kwargs):
         return "string"
@@ -49,8 +45,11 @@ class TimeplusTypeCompiler(compiler.GenericTypeCompiler):
     visit_NVARCHAR = visit_CHAR
     visit_TEXT = visit_CHAR
 
+    def visit_DATE(self, type_, **kwargs):
+        return "date"
+
     def visit_DATETIME(self, type_, **kwargs):
-        return "datetime64"
+        return "datetime"
 
     def visit_BLOB(self, type_, **kwargs):
         return "string"
@@ -239,10 +238,11 @@ class TimeplusDialect(default.DefaultDialect):
         pass
 
     def _map_type(self, col):
-        if col.type in type_map:
-            return type_map[col.type]
+        for key in type_map.keys():
+            if col.type.startswith(key):
+                return type_map[key]
         util.warn(
             "Failed to map column {col.name} with raw type {col.type}".format(
                 col=col)
         )
-        return types.NullType
+        return types.String
