@@ -1,5 +1,4 @@
 import os
-
 from timeplus.dbapi import connect
 
 api_key = os.environ.get("TIMEPLUS_API_KEY")
@@ -23,3 +22,7 @@ for row in rows:
 # in case run following code, it will not stop due to streaming query
 # for row in cusor:
 #     pprint(row)
+
+cusor = conn.execute("select 1=2")
+for row in cusor:
+    print(row)

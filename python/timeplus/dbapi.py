@@ -1,4 +1,5 @@
 import json
+import re
 import itertools
 from collections import namedtuple
 
@@ -249,7 +250,7 @@ class Cursor(object):
         return
 
     def _stream_query_iter(self):
-        field_names = [field["name"] for field in self.header]
+        field_names = [re.sub(r'[^a-zA-Z0-9]', '', field["name"]) for field in self.header]
         keys = " ".join(field_names)
         for event in self.query.result():
             if event.event == "message":

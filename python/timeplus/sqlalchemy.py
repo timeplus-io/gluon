@@ -6,19 +6,14 @@ from timeplus.error import Error
 
 # TODO : need a better type mapping here
 type_map = {
-    "uint32": types.BigInteger,
-    "int32": types.BigInteger,
-    "int64": types.BigInteger,
+    "uint": types.BigInteger,
     "int": types.BigInteger,
-    "float32": types.Float,
-    "float64": types.Float,
     "float": types.Float,
-    "decimal(10, 2)": types.Float,
+    "decimal": types.Float,
     "string": types.String,
     "bool": types.Boolean,
-    "datetime64(3)": types.DateTime,
-    "datetime64(3, 'UTC')": types.DateTime,
     "datetime": types.DateTime,
+    "uuid": types.String,
 }
 
 
@@ -239,10 +234,11 @@ class TimeplusDialect(default.DefaultDialect):
         pass
 
     def _map_type(self, col):
-        if col.type in type_map:
-            return type_map[col.type]
+        for key in type_map.keys():
+            if col.type.startswith(key):
+                return type_map[key]
         util.warn(
             "Failed to map column {col.name} with raw type {col.type}".format(
                 col=col)
         )
-        return types.NullType
+        return types.String
