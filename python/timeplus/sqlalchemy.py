@@ -28,13 +28,14 @@ class TimeplusTypeCompiler(compiler.GenericTypeCompiler):
     def visit_NUMERIC(self, type_, **kwargs):
         return "integer"
 
-    visit_DECIMAL = visit_NUMERIC
+    visit_DECIMAL = visit_REAL
     visit_INTEGER = visit_NUMERIC
     visit_SMALLINT = visit_NUMERIC
     visit_BIGINT = visit_NUMERIC
-    visit_BOOLEAN = visit_NUMERIC
     visit_TIMESTAMP = visit_NUMERIC
-    visit_DATE = visit_NUMERIC
+
+    def visit_BOOLEAN(self, type_, **kwargs):
+        return "bool"
 
     def visit_CHAR(self, type_, **kwargs):
         return "string"
@@ -44,8 +45,11 @@ class TimeplusTypeCompiler(compiler.GenericTypeCompiler):
     visit_NVARCHAR = visit_CHAR
     visit_TEXT = visit_CHAR
 
+    def visit_DATE(self, type_, **kwargs):
+        return "date"
+
     def visit_DATETIME(self, type_, **kwargs):
-        return "datetime64"
+        return "datetime"
 
     def visit_BLOB(self, type_, **kwargs):
         return "string"
