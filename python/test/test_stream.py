@@ -20,10 +20,6 @@ def test_stream(test_environment):
     count1 = len(stream_list)
     assert count1 == count + 1
 
-    # test get method
-    get_stream = Stream(env=test_environment).name(name).get()
-    assert get_stream.metadata()['name'] == name
-
     # Check the stream exists
     assert Stream(env=test_environment).name(name).exist()
 

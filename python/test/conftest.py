@@ -1,12 +1,14 @@
 """
 conftest.py
 """
+
 import pytest
 import os
 import random
 
 from timeplus import Environment
 from timeplus import Stream
+from timeplus.error import TimeplusAPIError
 
 
 @pytest.fixture
@@ -19,24 +21,30 @@ def test_environment():
 
 
 @pytest.fixture
-def test_table(test_environment):
-    # Create a new stream
+def test_stream(test_environment):
     stream_name = "test_stream"
+
+    # Create a new stream instance with the given name
+    stream = Stream(env=test_environment).name(stream_name)
+
+    try:
+        stream.delete()
+    except Exception:
+        pass
+
+    # Create a new stream
     stream = (
         Stream(env=test_environment)
         .name(stream_name)
-        .column("id", "integer")
+        .column("time", "integer")
         .column("data", "string")
         .create()
     )
 
-    # Generate and ingest some random data
-    data = ["id", "data"]
-    values = [[i, f"random_string_{random.randint(0, 1000)}"] for i in range(10)]
-    stream.ingest(data, values)
-
+    value = [["time", "data"], [[0, "abcd"]]]
+    stream.ingest(*value)
     # Provide the stream to the test
-    yield stream
+    return stream
 
-    # Clean up: delete the stream after test
-    stream.delete()
+
+
