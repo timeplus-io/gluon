@@ -9,6 +9,12 @@ from swagger_client.rest import ApiException
 
 class Query:
     def __init__(self, env):
+        """
+        Constructor for the Query class.
+
+        Parameters:
+        env: Environment - An instance of the Environment class.
+        """
         self._env = env
         self._configuration = self._env._conf()
         self._api_instance = swagger_client.QueriesV1beta2Api(
@@ -19,6 +25,15 @@ class Query:
         self._batching_policy = None
 
     def sql(self, query):
+        """
+        Method to set the SQL query.
+
+        Parameters:
+        query: String - The SQL query to be executed.
+
+        Returns:
+        Query: The current Query instance.
+        """
         self._sql = query
         return self
 
@@ -32,6 +47,15 @@ class Query:
         return self
 
     def create(self):
+        """
+        Method to create the query.
+
+        Returns:
+        Query: The current Query instance.
+
+        Raises:
+        ApiException: If an error occurs during the API call.
+        """
         body = swagger_client.CreateQueryRequestV1Beta2(
             sql=self._sql, batching_policy=self._batching_policy
         )
@@ -68,6 +92,12 @@ class Query:
         self._api_instance.v1beta2_queries_id_delete(self._id)
 
     def cancel(self):
+        """
+        Method to cancel the query.
+
+        Raises:
+        ApiException: If an error occurs during the API call.
+        """
         try:
             self._cancel_response = self._api_instance.v1beta2_queries_id_cancel_post(
                 id=self._id
@@ -80,6 +110,18 @@ class Query:
             raise e
 
     def get(self, id):
+        """
+        Method to get the query with the given ID.
+
+        Parameters:
+        id: String - The ID of the query.
+
+        Returns:
+        Query: The current Query instance.
+
+        Raises:
+        ApiException: If an error occurs during the API call.
+        """
         self._id = id
         try:
             self._get_response = self._api_instance.v1beta2_queries_id_get(id=self._id)
@@ -93,6 +135,15 @@ class Query:
             raise e
 
     def list(self):
+        """
+         Method to get a list of all queries.
+
+        Returns:
+        List: A list of all queries.
+
+        Raises:
+        ApiException: If an error occurs during the API call.
+        """
         try:
             list_response = self._api_instance.v1beta2_queries_get()
             return list_response
@@ -104,6 +155,15 @@ class Query:
             raise e
 
     def analyze(self):
+        """
+         Method to analyze the SQL query.
+
+        Returns:
+        JSON: The result of the analysis.
+
+        Raises:
+        ApiException: If an error occurs during the API call or if no SQL is provided.
+        """
         if self._sql is None:
             raise ApiException("sql must be provided")
 
