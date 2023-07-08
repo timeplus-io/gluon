@@ -3,7 +3,6 @@ from timeplus import View
 
 def test_view(test_environment, test_stream):
     view_list = View(env=test_environment).list()
-    initial_count = len(view_list)
 
     view_name = "test_view"
 
@@ -16,17 +15,14 @@ def test_view(test_environment, test_stream):
     )
 
     view_list = View(env=test_environment).list()
-    new_count = len(view_list)
-
-    assert new_count == initial_count + 1
+    assert view_name in [q.name for q in view_list]
 
     # Clean up: delete the created view
     view.delete()
     test_stream.delete()
-    view_list = View(env=test_environment).list()
-    final_count = len(view_list)
 
-    assert final_count == initial_count
+    view_list = View(env=test_environment).list()
+    assert view_name not in [q.name for q in view_list]
 
 
 def test_materialized_view(test_environment, test_stream):
