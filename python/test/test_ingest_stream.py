@@ -1,4 +1,5 @@
 import json
+import time
 
 import pytest
 from timeplus import Stream, Query
@@ -12,7 +13,26 @@ def test_ingest(test_environment, test_stream):
     except Exception as e:
         pytest.fail(f"Ingest method failed with exception {e}")
 
-    test_stream.delete()
+    time.sleep(3)
+
+    query = (
+        Query(env=test_environment)
+        .sql(query="SELECT * FROM table(test_stream)")
+        .create()
+    )
+
+    results = []
+    for event in query.result():
+        if event.event == "message":
+            results.extend(json.loads(event.data))
+    print(results)
+    print(results[1][1])
+
+    assert len(results) > 1, "No data returned from the stream"
+    assert results[1][0] == 1, "Returned time does not match the ingested integer"
+    assert results[1][1] == 'efgh', "Returned data does not match the ingested string"
+
+    query.delete()
 
 
 def test_stream_ingest_lines(test_environment,test_stream):
@@ -32,7 +52,25 @@ def test_stream_ingest_lines(test_environment,test_stream):
     except Exception as e:
         pytest.fail(f"Ingest lines method failed with exception {e}")
 
-    stream.delete()
+    time.sleep(3)
+
+    query = (
+        Query(env=test_environment)
+        .sql(query="SELECT * FROM table(test_stream)")
+        .create()
+    )
+    results = []
+    for event in query.result():
+        if event.event == "message":
+            results.extend(json.loads(event.data))
+    print(results)
+    print(results[0][0])
+
+    assert len(results) > 1, "No data returned from the stream"
+    assert results[0][0] == '{"time":1,"data":"abcd"}', "Returned data does not match the ingested data"
+    assert results[1][0] == '{"time":2,"data":"xyz"}', "Returned data does not match the ingested data"
+
+    query.delete()
 
 
 def test_stream_ingest_raw(test_environment,test_stream):
@@ -56,7 +94,24 @@ def test_stream_ingest_raw(test_environment,test_stream):
     except Exception as e:
         pytest.fail(f"Ingest raw method failed with exception {e}")
 
-    stream.delete()
+    time.sleep(3)
+
+    query = (
+        Query(env=test_environment)
+        .sql(query="SELECT * FROM table(test_stream)")
+        .create()
+    )
+    results = []
+    for event in query.result():
+        if event.event == "message":
+            results.extend(json.loads(event.data))
+    print(results)
+    print(results[0][0])
+
+    assert results is not None, "No data returned from the stream"
+    assert results[0][0] == payload, "Returned data does not match the ingested data"
+
+    query.delete()
 
 
 def test_json_ingest(test_environment, test_stream):
@@ -71,5 +126,25 @@ def test_json_ingest(test_environment, test_stream):
     except Exception as e:
         pytest.fail(f"Ingest streaming method failed with exception {e}")
 
-    # Clean up: delete the created stream
-    test_stream.delete()
+    time.sleep(3)
+
+    query = (
+        Query(env=test_environment)
+        .sql(query="SELECT * FROM table(test_stream)")
+        .create()
+    )
+    results = []
+    for event in query.result():
+        if event.event == "message":
+            results.extend(json.loads(event.data))
+    print(results)
+    print(results[0][0])
+    print(results[0])
+
+    assert len(results) > 1, "No data returned from the stream"
+    assert results[1][0] == 2, "Returned data does not match the ingested data"
+    assert results[1][1] == 'hello', "Returned data does not match the ingested data"
+    assert results[2][0] == 1, "Returned data does not match the ingested data"
+    assert results[2][1] == 'world', "Returned data does not match the ingested data"
+
+    query.delete()
