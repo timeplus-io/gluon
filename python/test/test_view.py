@@ -19,7 +19,6 @@ def test_view(test_environment, test_stream):
 
     # Clean up: delete the created view
     view.delete()
-    test_stream.delete()
 
     view_list = View(env=test_environment).list()
     assert view_name not in [q.name for q in view_list]
@@ -42,7 +41,6 @@ def test_materialized_view(test_environment, test_stream):
 
     # Clean up: delete the created view
     view.delete()
-    test_stream.delete()
 
 
 def test_view_description(test_environment, test_stream):
@@ -63,7 +61,6 @@ def test_view_description(test_environment, test_stream):
 
     # Clean up: delete the created view
     view.delete()
-    test_stream.delete()
 
 
 def test_view_target_stream(test_environment, test_stream):
@@ -85,6 +82,5 @@ def test_view_target_stream(test_environment, test_stream):
 
     # Clean up: delete the created view
     view.delete()
-    test_stream.delete()
 
 
