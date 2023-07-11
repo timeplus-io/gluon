@@ -2,10 +2,15 @@ from timeplus import Stream
 
 
 def test_stream(test_environment):
-    stream_list = Stream(env=test_environment).list()
-    count = len(stream_list)
-
     name = "test_test_test"
+
+    # Create a new stream instance with the given name
+    stream = Stream(env=test_environment).name(name)
+
+    try:
+        stream.delete()
+    except Exception:
+        pass
 
     # create a new stream
     stream = (
@@ -17,11 +22,14 @@ def test_stream(test_environment):
     )
 
     stream_list = Stream(env=test_environment).list()
-    count1 = len(stream_list)
+    assert name in [q.name for q in stream_list]
 
-    assert count1 == count + 1
+    # Check the stream exists
+    assert Stream(env=test_environment).name(name).exist()
 
     stream.delete()
     stream_list = Stream(env=test_environment).list()
-    count2 = len(stream_list)
-    assert count2 == count
+    assert name not in [q.name for q in stream_list]
+
+    # Ensure stream doesn't exist anymore
+    assert not Stream(env=test_environment).name(name).exist()

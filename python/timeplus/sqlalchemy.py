@@ -63,7 +63,6 @@ class TimeplusTypeCompiler(compiler.GenericTypeCompiler):
 # the interface refer to
 # https://github.com/sqlalchemy/sqlalchemy/blob/main/lib/sqlalchemy/engine/interfaces.py#L640
 class TimeplusDialect(default.DefaultDialect):
-
     name = "timeplus"
     driver = "rest"
     scheme = "https"
@@ -242,7 +241,6 @@ class TimeplusDialect(default.DefaultDialect):
             if col.type.startswith(key):
                 return type_map[key]
         util.warn(
-            "Failed to map column {col.name} with raw type {col.type}".format(
-                col=col)
+            "Failed to map column {col.name} with raw type {col.type}".format(col=col)
         )
         return types.String

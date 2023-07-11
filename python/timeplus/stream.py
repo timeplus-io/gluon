@@ -7,6 +7,12 @@ from .error import TimeplusAPIError
 
 class Stream:
     def __init__(self, env):
+        """
+        Initializes the Stream object with the provided environment.
+
+        Args:
+        env: The environment in which the stream operates.
+        """
         self._env = env
         self._configuration = self._env._conf()
         self._api_instance = swagger_client.StreamsV1beta2Api(
@@ -25,10 +31,29 @@ class Stream:
         self._primary_key = None
 
     def name(self, stream_name):
+        """
+        Assigns a name to the stream.
+
+        Args:
+        stream_name (str): The name of the stream.
+
+        Returns:
+        Stream: The current stream object.
+        """
         self._name = stream_name
         return self
 
     def column(self, column_name, column_type):
+        """
+        Assigns a column name and type to the stream.
+
+        Args:
+        column_name (str): The name of the column.
+        column_type (str): The type of the column.
+
+        Returns:
+        Stream: The current stream object.
+        """
         if self._columns is None:
             self._columns = []
 
@@ -69,6 +94,15 @@ class Stream:
         return self
 
     def create(self):
+        """
+        Sends a request to the API to create the stream.
+
+        Returns:
+        Stream: The current stream object.
+
+        Raises:
+        ApiException: If an error occurs during the API call.
+        """
         body = {"columns": self._columns, "name": self._name}
 
         if self._event_time_cloumn:
@@ -106,6 +140,15 @@ class Stream:
             raise e
 
     def list(self):
+        """
+        Fetches a list of all streams from the API.
+
+        Returns:
+        List: A list of all streams.
+
+        Raises:
+        ApiException: If an error occurs during the API call.
+        """
         try:
             list_response = self._api_instance.v1beta2_streams_get()
             return list_response
@@ -117,10 +160,25 @@ class Stream:
             raise e
 
     def delete(self):
+        """
+        Sends a request to the API to delete the stream.
+
+        Raises:
+        ApiException: If an error occurs during the API call.
+        """
         self._api_instance.v1beta2_streams_name_delete(self._name)
 
     # TODO: bug https://github.com/timeplus-io/gluon/issues/70
     def get(self):
+        """
+        Retrieves the metadata of the stream from the API.
+
+        Returns:
+        Stream: The current stream object with its metadata.
+
+        Raises:
+        TimeplusAPIError: If the stream does not exist.
+        """
         streams = self.list()
         for s in streams:
             if s.name == self._name:
@@ -132,6 +190,18 @@ class Stream:
         return self._metadata
 
     def ingest(self, colums=None, rows=None, payload=None, format="compact"):
+        """
+        Sends a request to the API to ingest data into the stream.
+
+        Args:
+        columns (list, optional): The columns in the data.
+        rows (list, optional): The rows in the data.
+        payload (any, optional): The payload to be ingested.
+        format (str, optional): The format of the data. Defaults to "compact".
+
+        Raises:
+        ApiException: If an error occurs during the API call.
+        """
         if format == "compact":
             body = swagger_client.IngestData(colums, rows)
             try:
@@ -155,6 +225,12 @@ class Stream:
                 raise e
 
     def exist(self):
+        """
+        Checks if the stream exists.
+
+        Returns:
+        bool: True if the stream exists, False otherwise.
+        """
         streams = self.list()
         for s in streams:
             if s.name == self._name:

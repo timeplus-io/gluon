@@ -8,22 +8,41 @@ from timeplus.error import Error
 
 
 def check_closed(f):
-    """Decorator that checks if connection/cursor is closed."""
+    """Decorator that checks if connection/cursor is closed.
 
+        Parameters:
+        f: Function - Function to wrap around.
+
+        Returns:
+        Function: Wrapped function.
+    """
     def wrap(self, *args, **kwargs):
+        """Wrapper function to check if a connection or cursor is closed.
+        Throws an error if it is closed.
+        """
         if self.closed:
-            raise Error(
-                "{klass} already closed".format(klass=self.__class__.__name__)
-            )
+            raise Error("{klass} already closed".format(klass=self.__class__.__name__))
         return f(self, *args, **kwargs)
 
     return wrap
 
 
 def check_result(f):
-    """Decorator that checks if the cursor has results from `execute`."""
+    """
+    Decorator that checks if the cursor has results from `execute`.
+
+    Parameters:
+    f: Function - Function to wrap around.
+
+    Returns:
+    Function: Wrapped function.
+    """
 
     def wrap(self, *args, **kwargs):
+        """
+        Wrapper function to check if the cursor has results from `execute`.
+        Throws an error if no results are found.
+        """
         if self._results is None:
             raise Error("Called before `execute`")
         return f(self, *args, **kwargs)
@@ -44,6 +63,25 @@ def connect(
     ssl_client_cert=None,
     proxies=None,
 ):
+    """
+    Function to establish a connection with a server.
+
+    Parameters:
+    host: String - Server address. Default is "localhost".
+    port: Integer - Port to connect to. Default is 443.
+    scheme: String - Connection scheme. Default is "https".
+    path: String - Server path. Default is "".
+    user: String - Username for the connection. Default is None.
+    password: String - Password for the connection. Default is None.
+    context: String - Context for the connection. Default is None.
+    header: Boolean - Whether to include header in the connection request. Default is False.
+    ssl_verify_cert: Boolean - Whether to verify SSL certificate. Default is True.
+    ssl_client_cert: String - SSL client certificate. Default is None.
+    proxies: Dictionary - Dictionary of proxy servers. Default is None.
+
+    Returns:
+    Connection: A Connection object.
+    """
     address = f"{scheme}://{host}:{port}"
     apikey = password
     workspace = path
@@ -56,6 +94,14 @@ class Connection(object):
     def __init__(
         self, address="https://us.timeplus.cloud", apikey=None, workspace=None
     ):
+        """
+        Constructor for the Connection class.
+
+        Parameters:
+        address: String - Server address. Default is "https://us.timeplus.cloud".
+        apikey: String - API key for the connection. Default is None.
+        workspace: String - Workspace for the connection. Default is None.
+        """
         self.env = Environment().address(address).workspace(workspace).apikey(apikey)
         self.closed = False
         self.cursors = []
@@ -127,6 +173,12 @@ class Cursor(object):
     """Connection Cursor"""
 
     def __init__(self, env):
+        """
+        Constructor for the Cursor class.
+
+        Parameters:
+        env: Environment - The environment for the connection.
+        """
         self.env = env
         self.closed = False
         self.description = []
@@ -162,6 +214,13 @@ class Cursor(object):
 
     @check_closed
     def execute(self, operation, parameters=None):
+        """
+        Prepare and execute a database operation (query or command).
+
+        Parameters:
+        operation: String - SQL query or command.
+        parameters: Dict - Parameters to insert into the query.
+        """
         sql = apply_parameters(operation, parameters)
         analyze_result = Query(env=self.env).sql(query=sql).analyze()
 
@@ -250,7 +309,9 @@ class Cursor(object):
         return
 
     def _stream_query_iter(self):
-        field_names = [re.sub(r'[^a-zA-Z0-9]', '', field["name"]) for field in self.header]
+        field_names = [
+            re.sub(r"[^a-zA-Z0-9]", "", field["name"]) for field in self.header
+        ]
         keys = " ".join(field_names)
         for event in self.query.result():
             if event.event == "message":
@@ -266,12 +327,20 @@ def apply_parameters(operation, parameters):
     if not parameters:
         return operation
 
-    escaped_parameters = {key: escape(value)
-                          for key, value in parameters.items()}
+    escaped_parameters = {key: escape(value) for key, value in parameters.items()}
     return operation % escaped_parameters
 
 
 def escape(value):
+    """
+    Function to escape values for a SQL query.
+
+    Parameters:
+    value: various types - The value to escape.
+
+    Returns:
+    String: The escaped value.
+    """
     if value == "*":
         return value
     elif isinstance(value, str):
