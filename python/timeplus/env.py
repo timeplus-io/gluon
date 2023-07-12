@@ -37,15 +37,20 @@ class Environment:
         Returns:
         Environment: The current Environment instance.
         """
-        if len(name) != WORKSPACE_LEN:
-            raise ValueError(
-                f"Did you set the workspace name? Please set the workspace ID (usually {WORKSPACE_LEN} characters long)")
-        self._workspace = name
-        if not self._address:
-            self._configuration.host = f"https//us.timeplus.cloud/{self._workspace}/api"
-        else:
+        if self._address == "https://dev.timeplus.cloud":
+            self._workspace = name
             self._configuration.host = f"{self._address}/{self._workspace}/api"
-        return self
+            return self
+        else:
+            if len(name) != WORKSPACE_LEN:
+                raise ValueError(
+                    f"Did you set the workspace name? Please set the workspace ID (usually {WORKSPACE_LEN} characters long)")
+            self._workspace = name
+            if not self._address:
+                self._configuration.host = f"https//us.timeplus.cloud/{self._workspace}/api"
+            else:
+                self._configuration.host = f"{self._address}/{self._workspace}/api"
+            return self
 
     def address(self, url):
         """
