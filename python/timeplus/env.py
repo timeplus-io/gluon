@@ -2,7 +2,7 @@ import swagger_client
 
 WORKSPACE_LEN = 8
 APIKEY_LEN = 60
-
+DEV_ADDRESS = "https://dev.timeplus.cloud"
 
 class Environment:
     def __init__(self):
@@ -21,7 +21,6 @@ class Environment:
         Returns:
         Environment: The current Environment instance.
         """
-        print(f"api key is {key}")
         if len(key) != APIKEY_LEN:
             raise ValueError(f"The apikey should be {APIKEY_LEN} characters")
         self._configuration.api_key["X-Api-Key"] = key
@@ -37,7 +36,7 @@ class Environment:
         Returns:
         Environment: The current Environment instance.
         """
-        if self._address == "https://dev.timeplus.cloud":
+        if DEV_ADDRESS in self._address:
             self._workspace = name
             self._configuration.host = f"{self._address}/{self._workspace}/api"
             return self
@@ -46,10 +45,7 @@ class Environment:
                 raise ValueError(
                     f"Did you set the workspace name? Please set the workspace ID (usually {WORKSPACE_LEN} characters long)")
             self._workspace = name
-            if not self._address:
-                self._configuration.host = f"https//us.timeplus.cloud/{self._workspace}/api"
-            else:
-                self._configuration.host = f"{self._address}/{self._workspace}/api"
+            self._configuration.host = f"{self._address}/{self._workspace}/api"
             return self
 
     def address(self, url):

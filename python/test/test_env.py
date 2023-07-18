@@ -8,15 +8,15 @@ APIKEY_LEN = 60
 
 @pytest.fixture()
 def test_env():
-    api_key = "n7SlbrE0xmEjsP2_lr9AC-NQoOTI6xVlGzB76KrjoiHWWNrTNiEbViEFfeGx"
-    api_address = "https://us.timeplus.cloud"
-    workspace = "r3eeg2mf"
+    api_key = os.environ.get("TIMEPLUS_API_KEY")
+    api_address = os.environ.get("TIMEPLUS_HOST")
+    workspace = os.environ.get("TIMEPLUS_WORKSPACE")
     return Environment().address(api_address).apikey(api_key).workspace(workspace)
 
 
 def test_apikey_with_valid_key(test_env):
     env = test_env
-    assert env._configuration.api_key["X-Api-Key"] == "n7SlbrE0xmEjsP2_lr9AC-NQoOTI6xVlGzB76KrjoiHWWNrTNiEbViEFfeGx"
+    assert env._configuration.api_key["X-Api-Key"] == os.environ.get("TIMEPLUS_API_KEY")
 
 
 def test_apikey_with_invalid_key():
@@ -27,7 +27,7 @@ def test_apikey_with_invalid_key():
 
 def test_workspace_with_valid_name(test_env):
     env = test_env
-    assert env._workspace == "r3eeg2mf"
+    assert env._workspace == os.environ.get("TIMEPLUS_WORKSPACE")
 
 
 def test_workspace_with_invalid_name():
