@@ -36,17 +36,9 @@ class Environment:
         Returns:
         Environment: The current Environment instance.
         """
-        if DEV_ADDRESS in self._address:
-            self._workspace = name
-            self._configuration.host = f"{self._address}/{self._workspace}/api"
-            return self
-        else:
-            if len(name) != WORKSPACE_LEN:
-                raise ValueError(
-                    f"Did you set the workspace name? Please set the workspace ID (usually {WORKSPACE_LEN} characters long)")
-            self._workspace = name
-            self._configuration.host = f"{self._address}/{self._workspace}/api"
-            return self
+        self._workspace = name
+        self._configuration.host = f"{self._address}/{self._workspace}/api"
+        return self
 
     def address(self, url):
         """
