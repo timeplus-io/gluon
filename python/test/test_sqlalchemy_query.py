@@ -1,5 +1,5 @@
 from sqlalchemy import text, select, MetaData, Table
-
+from timeplus import View
 
 def test_driver_sql(engine):
     with engine.connect() as conn:
@@ -64,10 +64,26 @@ def test_view_names(engine):
         assert "car_info" in views
 
 
-# def test_materialized_view_names(engine):
-#     with engine.connect() as conn:
-#         mvs = engine.dialect.get_materialized_view_names(conn)
-#         assert "example_mv" in mvs
+def test_materialized_view_names(engine,test_environment):
+    view_name = "example_mv"
+    view = View(env=test_environment).name(view_name)
+
+    try:
+        view.delete()
+    except Exception:
+        pass
+
+    view = (
+        View(env=test_environment)
+        .name(view_name)
+        .query("select * from test_stream")
+        .materialized(True)
+        .create()
+    )
+
+    with engine.connect() as conn:
+        mvs = engine.dialect.get_materialized_view_names(conn)
+        assert "example_mv" in mvs
 
 
 def test_view_reflection(engine):
