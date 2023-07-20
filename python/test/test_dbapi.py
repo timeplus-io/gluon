@@ -8,7 +8,7 @@ def test_dbapi_table():
     workspace = os.environ.get("TIMEPLUS_WORKSPACE")
     conn = connect(host=api_address, password=api_key, path=workspace)
 
-    cusor = conn.execute("select * from table(car_live_data) limit 5")
+    cusor = conn.execute("select * from table(car_live_data)")
     next_result = cusor.next()
     row1 = cusor.fetchone()
     rows = cusor.fetchmany(3)
