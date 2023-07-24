@@ -86,6 +86,8 @@ def test_materialized_view_names(engine,test_environment):
         mvs = engine.dialect.get_materialized_view_names(conn)
         assert "example_mv" in mvs
 
+    view.delete()
+
 
 def test_view_reflection(engine):
     metadata_obj = MetaData()
