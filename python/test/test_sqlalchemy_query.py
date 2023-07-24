@@ -1,6 +1,7 @@
 from sqlalchemy import text, select, MetaData, Table
 from timeplus import View
 
+
 def test_driver_sql(engine):
     with engine.connect() as conn:
         result = conn.exec_driver_sql(
@@ -91,7 +92,7 @@ def test_view_reflection(engine):
     car_view = Table("car_live_data", metadata_obj, autoload_with=engine)
     assert car_view is not None
     column_names = [c.name for c in car_view.columns]
-    assert "speed_kmh" in column_names  # replace "username" with your expected column name in the view
+    assert "speed_kmh" in column_names
 
 
 def test_table_reflection(engine):
@@ -99,7 +100,7 @@ def test_table_reflection(engine):
     car_table = Table("car_live_data", metadata_obj, autoload_with=engine)
     assert car_table is not None
     column_names = [c.name for c in car_table.columns]
-    assert "cid" in column_names  # assuming that the "cid" column should exist in the table
+    assert "cid" in column_names
 
 
 def test_select_query(engine):

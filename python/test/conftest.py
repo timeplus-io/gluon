@@ -4,7 +4,7 @@ conftest.py
 
 import pytest
 import os
-import random
+from timeplus.dbapi import connect
 
 from timeplus import Environment
 from timeplus import Stream
@@ -61,3 +61,13 @@ def engine():
         f"timeplus://:{api_key}@{api_address}:{port}/{workspace}")
 
     return engine
+
+
+@pytest.fixture
+def conn():
+    api_key = os.environ.get("TIMEPLUS_API_KEY")
+    api_address = "dev.timeplus.cloud"
+    workspace = os.environ.get("TIMEPLUS_WORKSPACE")
+
+    conn = connect(host=api_address, password=api_key, path=workspace)
+    return conn

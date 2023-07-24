@@ -1,13 +1,4 @@
-import os
-from timeplus.dbapi import connect
-
-
-def test_dbapi_table():
-    api_key = os.environ.get("TIMEPLUS_API_KEY")
-    api_address = "dev.timeplus.cloud"
-    workspace = os.environ.get("TIMEPLUS_WORKSPACE")
-    conn = connect(host=api_address, password=api_key, path=workspace)
-
+def test_dbapi_table(conn):
     cusor = conn.execute("select * from table(car_live_data)")
     next_result = cusor.next()
     row1 = cusor.fetchone()
@@ -21,12 +12,7 @@ def test_dbapi_table():
     assert len(query_result) == 1
 
 
-def test_dbapi_live():
-    api_key = os.environ.get("TIMEPLUS_API_KEY")
-    api_address = "dev.timeplus.cloud"
-    workspace = os.environ.get("TIMEPLUS_WORKSPACE")
-    conn = connect(host=api_address, password=api_key, path=workspace)
-
+def test_dbapi_live(conn):
     cusor = conn.execute("select * from car_live_data")
     next_result = cusor.next()
     row1 = cusor.fetchone()
