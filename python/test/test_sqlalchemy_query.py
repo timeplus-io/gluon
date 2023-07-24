@@ -65,7 +65,7 @@ def test_view_names(engine):
         assert "car_info" in views
 
 
-def test_materialized_view_names(engine,test_environment):
+def test_materialized_view_names(engine,test_environment,test_stream):
     view_name = "example_mv"
     view = View(env=test_environment).name(view_name)
 
