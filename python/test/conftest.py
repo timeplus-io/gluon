@@ -18,9 +18,10 @@ registry.register("timeplus", "timeplus.sqlalchemy", "TimeplusDialect")
 def test_environment():
     api_key = os.environ.get("TIMEPLUS_API_KEY")
     api_address = os.environ.get("TIMEPLUS_HOST")
-    worksapce = os.environ.get("TIMEPLUS_WORKSPACE")
+    workspace = os.environ.get("TIMEPLUS_WORKSPACE")
+    print(f"api address:{api_address}, workspace:{workspace}")
 
-    return Environment().address(api_address).apikey(api_key).workspace(worksapce)
+    return Environment().address(api_address).apikey(api_key).workspace(workspace)
 
 
 @pytest.fixture
