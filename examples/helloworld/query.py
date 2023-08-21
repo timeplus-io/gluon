@@ -24,6 +24,7 @@ try:
         .create()
     )
 
+
     pprint(f"query with metadata {json.dumps(query.metadata())}")
 
     # query header is the colume definitions of query result table

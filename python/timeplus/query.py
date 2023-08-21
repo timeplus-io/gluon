@@ -21,8 +21,8 @@ class Query:
             swagger_client.ApiClient(self._configuration)
         )
         self._create_response = None
-        self._id = None
         self._batching_policy = None
+        self._metadata = {}
 
     def sql(self, query):
         """
@@ -37,10 +37,18 @@ class Query:
         self._sql = query
         return self
 
-    # refer to https://docs.timeplus.com/rest.html#tag/Queries-v1beta2/paths/~1v1beta2~1queries/post
-    # count : The max result count per batch
-    # time_ms : The max interval per batch in milliseconds
     def batching_policy(self, count, time_ms):
+        """
+        Method to set the batching policy query.
+        refer to https://docs.timeplus.com/rest.html#tag/Queries-v1beta2/paths/~1v1beta2~1queries/post
+
+        Parameters:
+        count: integer - The max result count per batch
+        time_ms: interger - The max interval per batch in milliseconds
+
+        Returns:
+        Query: The current Query instance.
+        """
         self._batching_policy = swagger_client.models.BatchingPolicy(
             count=count, time_ms=time_ms
         )
@@ -67,7 +75,6 @@ class Query:
             self._events = _sse_client.events()
             self._query = next(self._events)
             self._metadata = json.loads(self._query.data)
-            self._id = self._metadata["id"]
             return self
         except ApiException as e:
             pprint(
@@ -79,8 +86,19 @@ class Query:
     def metadata(self):
         return self._metadata
 
-    def id(self):
-        return self._id
+    def id(self, *args):
+        if len(args) == 0:  # get id
+            if "id" not in self._metadata:
+                raise ApiException("id is not provided")
+            return self._metadata["id"]
+        elif len(args) == 1:  # set id
+            new_value = args[0]
+            self._metadata["id"] = new_value
+            return self
+        else:
+            raise ApiException("id() accepts at most 1 argument")
+
+        return self._metadata["id"]
 
     def header(self):
         return self._metadata["result"]["header"]
@@ -89,7 +107,7 @@ class Query:
         return self._events
 
     def delete(self):
-        self._api_instance.v1beta2_queries_id_delete(self._id)
+        self._api_instance.v1beta2_queries_id_delete(self.id())
 
     def cancel(self):
         """
@@ -100,7 +118,7 @@ class Query:
         """
         try:
             self._cancel_response = self._api_instance.v1beta2_queries_id_cancel_post(
-                id=self._id
+                id=self.id()
             )
         except ApiException as e:
             pprint(
@@ -109,7 +127,7 @@ class Query:
             )
             raise e
 
-    def get(self, id):
+    def get(self):
         """
         Method to get the query with the given ID.
 
@@ -122,9 +140,8 @@ class Query:
         Raises:
         ApiException: If an error occurs during the API call.
         """
-        self._id = id
         try:
-            self._get_response = self._api_instance.v1beta2_queries_id_get(id=self._id)
+            self._get_response = self._api_instance.v1beta2_queries_id_get(id=self.id())
             self._metadata = self._get_response
             return self
         except ApiException as e:

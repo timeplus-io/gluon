@@ -103,6 +103,13 @@ class Stream:
         Raises:
         ApiException: If an error occurs during the API call.
         """
+
+        if not self._columns:
+            raise ApiException("columns is required to create stream")
+
+        if not self._name:
+            raise ApiException("name is required to create stream")
+
         body = {"columns": self._columns, "name": self._name}
 
         if self._event_time_cloumn:

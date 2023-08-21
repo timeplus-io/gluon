@@ -10,12 +10,13 @@ from timeplus.error import Error
 def check_closed(f):
     """Decorator that checks if connection/cursor is closed.
 
-        Parameters:
-        f: Function - Function to wrap around.
+    Parameters:
+    f: Function - Function to wrap around.
 
-        Returns:
-        Function: Wrapped function.
+    Returns:
+    Function: Wrapped function.
     """
+
     def wrap(self, *args, **kwargs):
         """Wrapper function to check if a connection or cursor is closed.
         Throws an error if it is closed.

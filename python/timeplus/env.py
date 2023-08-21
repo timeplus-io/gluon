@@ -4,6 +4,7 @@ WORKSPACE_LEN = 8
 APIKEY_LEN = 60
 DEV_ADDRESS = "https://dev.timeplus.cloud"
 
+
 class Environment:
     def __init__(self):
         """Constructor"""

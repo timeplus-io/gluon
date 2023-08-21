@@ -6,6 +6,7 @@ from timeplus.type import Type  # noqa: F401
 from timeplus.stream import Stream  # noqa: F401
 from timeplus.view import View  # noqa: F401
 
+from timeplus.source import Source  # noqa: F401
 from timeplus.dbapi import connect  # noqa: F401
 
 from timeplus.error import (
