@@ -197,7 +197,7 @@ class Source:
                 "Exception when calling SourcesV1beta2Api->v1beta2_sources_id_get: %s\n"
                 % e
             )
-            raise TimeplusAPIError(f"no such source with id {source_id}")
+            raise TimeplusAPIError(f"no such source with id {self.id()}")
 
     def metadata(self):
         """
