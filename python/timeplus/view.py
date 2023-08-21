@@ -101,6 +101,13 @@ class View:
         Raises:
         ApiException: If an error occurs during the API call.
         """
+
+        if not self._query:
+            raise ApiException("query sql is required to create view")
+
+        if not self._name:
+            raise ApiException("name is required to create view")
+
         body = {"name": self._name, "query": self._query}
 
         if self._materialized:

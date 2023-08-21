@@ -22,7 +22,7 @@ class Source:
         self._description = None
         self._stream = None
         self._properties = None
-        self._metadata = None
+        self._metadata = {}
 
     def name(self, source_name):
         """
@@ -89,6 +89,20 @@ class Source:
         self._properties = source_properties
         return self
 
+    def id(self, *args):
+        if len(args) == 0:  # get id
+            if "id" not in self._metadata:
+                raise ApiException("id is not provided")
+            return self._metadata["id"]
+        elif len(args) == 1:  # set id
+            new_value = args[0]
+            self._metadata["id"] = new_value
+            return self
+        else:
+            raise ApiException("id() accepts at most 1 argument")
+
+        return self._metadata["id"]
+
     def create(self):
         """
         Sends a request to the API to create the source.
@@ -99,33 +113,40 @@ class Source:
         Raises:
         ApiException: If an error occurs during the API call.
         """
-        body = {
-            # "name": self._name,
-            # "type": self._type,
-            # "stream": self._stream,
-            # "properties": self._properties
-        }
+        body = {}
 
         if self._name:
             body["name"] = self._name
+        else:
+            raise ApiException("name is required to create source")
 
         if self._type:
             body["type"] = self._type
+        else:
+            raise ApiException("type is required to create source")
 
         if self._stream:
             body["stream"] = self._stream
+        else:
+            raise ApiException("stream is required to create source")
 
         if self._properties:
             body["properties"] = self._properties
+        else:
+            raise ApiException("properties is required to create source")
 
         if self._description:
             body["description"] = self._description
 
         try:
-            self._metadata = self._api_instance.v1beta2_sources_post(body)
+            resp = self._api_instance.v1beta2_sources_post(body)
+            self._metadata = resp.to_dict()  # return dict of the response object
             return self
         except ApiException as e:
-            print("Exception when calling SourcesV1beta2Api->v1beta2_sources_post: %s\n" % e)
+            print(
+                "Exception when calling SourcesV1beta2Api->v1beta2_sources_post: %s\n"
+                % e
+            )
             raise e
 
     def list(self):
@@ -142,27 +163,24 @@ class Source:
             list_response = self._api_instance.v1beta2_sources_get()
             return list_response
         except ApiException as e:
-            print("Exception when calling SourcesV1beta2Api->v1beta2_sources_get: %s\n" % e)
+            print(
+                "Exception when calling SourcesV1beta2Api->v1beta2_sources_get: %s\n"
+                % e
+            )
             raise e
 
-    def delete(self, source_id):
+    def delete(self):
         """
         Sends a request to the API to delete the source.
-
-        Args:
-        source_id (str): The id of the source to delete.
 
         Raises:
         ApiException: If an error occurs during the API call.
         """
-        self._api_instance.v1beta2_sources_id_delete(source_id)
+        self._api_instance.v1beta2_sources_id_delete(self.id())
 
-    def get(self, source_id):
+    def get(self):
         """
         Retrieves the metadata of the source from the API.
-
-        Args:
-        source_id (str): The id of the source to retrieve.
 
         Returns:
         Source: The current source object with its metadata.
@@ -171,10 +189,14 @@ class Source:
         TimeplusAPIError: If the source does not exist.
         """
         try:
-            self._metadata = self._api_instance.v1beta2_sources_id_get(source_id)
+            resp = self._api_instance.v1beta2_sources_id_get(self.id())
+            self._metadata = resp.to_dict()
             return self
         except ApiException as e:
-            print("Exception when calling SourcesV1beta2Api->v1beta2_sources_id_get: %s\n" % e)
+            print(
+                "Exception when calling SourcesV1beta2Api->v1beta2_sources_id_get: %s\n"
+                % e
+            )
             raise TimeplusAPIError(f"no such source with id {source_id}")
 
     def metadata(self):
@@ -186,31 +208,27 @@ class Source:
         """
         return self._metadata
 
-    def update(self, source_id, body):
+    def update(self, body):
         """
         Update the specific source with the given ID.
 
         Args:
-        source_id (str): The id of the source to update.
         body (dict): A dictionary containing the parameters to update.
 
         Raises:
         ApiException: If an error occurs during the API call.
         """
-        self._api_instance.v1beta2_sources_id_put(source_id, body)
+        self._api_instance.v1beta2_sources_id_put(self.id(), body)
 
-    def exist(self, source_id):
+    def exist(self):
         """
         Checks if the source exists.
-
-        Args:
-        source_id (str): The id of the source to check.
 
         Returns:
         bool: True if the source exists, False otherwise.
         """
         try:
-            self._api_instance.v1beta2_sources_id_get(source_id)
+            self._api_instance.v1beta2_sources_id_get(self.id())
             return True
         except ApiException:
             return False

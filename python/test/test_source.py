@@ -1,3 +1,4 @@
+import pytest
 from timeplus import Source, Stream
 
 
@@ -36,19 +37,18 @@ def test_source_generator(test_environment):
     )
 
     source_list = Source(env=test_environment).list()
-    source_id = source.metadata().id
+    source_id = source.id()
     assert source_name in [q.name for q in source_list]
 
-    assert Source(env=test_environment).name(source_name).exist(source_id)
+    assert Source(env=test_environment).id(source_id).exist()
 
-    assert Source(env=test_environment).name(source_name).exist(source_id)
-    source.delete(source_id)
+    source.delete()
     stream.delete()
 
     source_list = Source(env=test_environment).list()
     assert source_name not in [s.name for s in source_list]
 
-    assert not Source(env=test_environment).name(source_name).exist(source_id)
+    assert not Source(env=test_environment).id(source_id).exist()
 
 
 def test_source_kafka(test_environment):
@@ -72,24 +72,24 @@ def test_source_kafka(test_environment):
     source_type = "kafka"
     source_stream = "test_kafka"
     source_properties = {
-    "data_type": "text",
-    "offset": "latest",
-    "sasl": "none",
-    "username": "",
-    "password": "",
-    "auto_field_extraction": True,
-    "schema_registry_address": "",
-    "schema_registry_api_key": "",
-    "schema_registry_api_secret": "",
-    "protobuf_message": "",
-    "protobuf_schema": "",
-    "group": "",
-    "brokers": "kafka.user-gang:9092",
-    "topic": "car_live_data",
-    "tls": {
-      "disable": True,
-      "skip_verify_server": True
-    }
+        "data_type": "text",
+        "offset": "latest",
+        "sasl": "none",
+        "username": "",
+        "password": "",
+        "auto_field_extraction": True,
+        "schema_registry_address": "",
+        "schema_registry_api_key": "",
+        "schema_registry_api_secret": "",
+        "protobuf_message": "",
+        "protobuf_schema": "",
+        "group": "",
+        "brokers": "kafka.user-gang:9092",
+        "topic": "car_live_data",
+        "tls": {
+            "disable": True,
+            "skip_verify_server": True
+        }
     }
     source_description = ""
     source = (
@@ -103,16 +103,15 @@ def test_source_kafka(test_environment):
     )
 
     source_list = Source(env=test_environment).list()
-    source_id = source.metadata().id
+    source_id = source.id()
     assert source_name in [q.name for q in source_list]
 
-    assert Source(env=test_environment).name(source_name).exist(source_id)
+    assert Source(env=test_environment).id(source_id).exist()
 
-    assert Source(env=test_environment).name(source_name).exist(source_id)
-    source.delete(source_id)
+    source.delete()
     stream.delete()
 
     source_list = Source(env=test_environment).list()
     assert source_name not in [s.name for s in source_list]
 
-    assert not Source(env=test_environment).name(source_name).exist(source_id)
+    assert not Source(env=test_environment).id(source_id).exist()
