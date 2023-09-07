@@ -232,3 +232,29 @@ class Source:
             return True
         except ApiException:
             return False
+
+    def start(self):
+        """
+        start the source
+
+        Returns:
+        Source: The current source object.
+        """
+        try:
+            self._api_instance.v1beta2_sources_id_start_post(self.id())
+            return self
+        except ApiException:
+            return False
+
+    def stop(self):
+        """
+        stop the source
+
+        Returns:
+        Source: The current source object.
+        """
+        try:
+            self._api_instance.v1beta2_sources_id_stop_post(self.id())
+            return self
+        except ApiException:
+            return False
