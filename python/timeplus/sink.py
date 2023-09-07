@@ -129,12 +129,12 @@ class Sink:
         if self._query:
             body["query"] = self._query
         else:
-            raise ApiException("query is required to create source")
+            raise ApiException("query is required to create sink")
 
         if self._properties:
             body["properties"] = self._properties
         else:
-            raise ApiException("properties is required to create source")
+            raise ApiException("properties is required to create sink")
 
         if self._description:
             body["description"] = self._description
@@ -165,7 +165,7 @@ class Sink:
             return list_response
         except ApiException as e:
             print(
-                "Exception when calling SourcesV1beta2Api->v1beta2_sources_get: %s\n"
+                "Exception when calling SinksV1beta2Api->v1beta2_sinks_get: %s\n"
                 % e
             )
             raise e
@@ -181,13 +181,13 @@ class Sink:
 
     def get(self):
         """
-        Retrieves the metadata of the source from the API.
+        Retrieves the metadata of the sink from the API.
 
         Returns:
-        Source: The current source object with its metadata.
+        Sink: The current sink object with its metadata.
 
         Raises:
-        TimeplusAPIError: If the source does not exist.
+        TimeplusAPIError: If the sink does not exist.
         """
         try:
             resp = self._api_instance.v1beta2_sinks_id_get(self.id())
@@ -195,23 +195,23 @@ class Sink:
             return self
         except ApiException as e:
             print(
-                "Exception when calling SourcesV1beta2Api->v1beta2_sources_id_get: %s\n"
+                "Exception when calling SinksV1beta2Api->v1beta2_sinks_id_get: %s\n"
                 % e
             )
-            raise TimeplusAPIError(f"no such source with id {self.id()}")
+            raise TimeplusAPIError(f"no such sink with id {self.id()}")
 
     def metadata(self):
         """
-        Returns the metadata of the source.
+        Returns the metadata of the sink.
 
         Returns:
-        Any: The metadata of the source.
+        Any: The metadata of the sink.
         """
         return self._metadata
 
     def update(self):
         """
-        Update the specific source with the given ID.
+        Update the specific sink with the given ID.
 
         Args:
         body (dict): A dictionary containing the parameters to update.
@@ -241,7 +241,7 @@ class Sink:
         if self._description:
             body["description"] = self._description
 
-        self._api_instance.v1beta2_sources_id_put(self.id(), body)
+        self._api_instance.v1beta2_sinks_id_put(self.id(), body)
 
     def exist(self):
         """

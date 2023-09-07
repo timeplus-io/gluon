@@ -17,6 +17,10 @@ def test_view(test_environment, test_stream):
     view_list = View(env=test_environment).list()
     assert view_name in [q.name for q in view_list]
 
+    get_view = View(env=test_environment).name(view_name).get()
+    assert get_view.metadata().name == view_name
+
+
     # Clean up: delete the created view
     view.delete()
 
@@ -37,7 +41,7 @@ def test_materialized_view(test_environment, test_stream):
     )
 
     # Check that the view was created
-    assert view.exist() == True
+    assert view.exist()
 
     # Clean up: delete the created view
     view.delete()
@@ -56,7 +60,7 @@ def test_view_description(test_environment, test_stream):
     )
 
     # Check that the view was created and description is correct
-    assert view.exist() == True
+    assert view.exist()
     assert view.metadata().description == "This is a test view"
 
     # Clean up: delete the created view
