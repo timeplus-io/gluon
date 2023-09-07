@@ -31,35 +31,35 @@ class TestQueriesV1beta2Api(unittest.TestCase):
     def test_v1beta2_format_post(self):
         """Test case for v1beta2_format_post
 
-        format a query.  # noqa: E501
+        format a query  # noqa: E501
         """
         pass
 
     def test_v1beta2_queries_get(self):
         """Test case for v1beta2_queries_get
 
-        list queries.  # noqa: E501
+        list queries  # noqa: E501
         """
         pass
 
     def test_v1beta2_queries_id_cancel_post(self):
         """Test case for v1beta2_queries_id_cancel_post
 
-        cancel a query.  # noqa: E501
+        cancel a query  # noqa: E501
         """
         pass
 
     def test_v1beta2_queries_id_delete(self):
         """Test case for v1beta2_queries_id_delete
 
-        delete a query.  # noqa: E501
+        delete a query  # noqa: E501
         """
         pass
 
     def test_v1beta2_queries_id_get(self):
         """Test case for v1beta2_queries_id_get
 
-        get a query.  # noqa: E501
+        get a query  # noqa: E501
         """
         pass
 
@@ -73,7 +73,7 @@ class TestQueriesV1beta2Api(unittest.TestCase):
     def test_v1beta2_queries_post(self):
         """Test case for v1beta2_queries_post
 
-        execute a query and return the results.  # noqa: E501
+        execute a query and return the results  # noqa: E501
         """
         pass
 

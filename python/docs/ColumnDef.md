@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**compression_codec** | **str** |  | [optional] 
+**codec** | **str** |  | [optional] 
 **default** | **str** |  | [optional] 
 **name** | **str** |  | 
 **skipping_index_expression** | **str** |  | [optional] 

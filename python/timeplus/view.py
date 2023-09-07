@@ -167,12 +167,17 @@ class View:
         Raises:
         TimeplusAPIError: If the view does not exist.
         """
-        views = self.list()
-        for s in views:
-            if s.name == self._name:
-                self._metadata = s
-                return self
-        raise TimeplusAPIError(f"no such view {self._name}")
+        try:
+            resp = self._api_instance.v1beta2_views_name_get(self._name)
+            self._metadata = resp
+            return self
+        except ApiException as e:
+            print(
+                "Exception when calling ViewsV1beta2Api->v1beta2_views_name_get: %s\n"
+                % e
+            )
+            raise TimeplusAPIError(f"no such view with id {self._name}")
+
 
     def metadata(self):
         """

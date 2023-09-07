@@ -28,80 +28,66 @@ class TestSourcesV1beta2Api(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_v1beta2_source_infer_post(self):
-        """Test case for v1beta2_source_infer_post
-
-        infer schema from an existing event  # noqa: E501
-        """
-        pass
-
-    def test_v1beta2_source_match_post(self):
-        """Test case for v1beta2_source_match_post
-
-        return streams match provided events  # noqa: E501
-        """
-        pass
-
     def test_v1beta2_source_preview_post(self):
         """Test case for v1beta2_source_preview_post
 
-        preview a source.  # noqa: E501
-        """
-        pass
-
-    def test_v1beta2_source_upload_post(self):
-        """Test case for v1beta2_source_upload_post
-
-        upload a file  # noqa: E501
+        preview a source  # noqa: E501
         """
         pass
 
     def test_v1beta2_sources_get(self):
         """Test case for v1beta2_sources_get
 
-        list sources.  # noqa: E501
+        list sources  # noqa: E501
         """
         pass
 
     def test_v1beta2_sources_id_delete(self):
         """Test case for v1beta2_sources_id_delete
 
-        delete a source.  # noqa: E501
+        delete a source  # noqa: E501
         """
         pass
 
     def test_v1beta2_sources_id_get(self):
         """Test case for v1beta2_sources_id_get
 
-        get a source.  # noqa: E501
+        get a source  # noqa: E501
         """
         pass
 
     def test_v1beta2_sources_id_put(self):
         """Test case for v1beta2_sources_id_put
 
-        Update a source.  # noqa: E501
+        update a source  # noqa: E501
         """
         pass
 
     def test_v1beta2_sources_id_start_post(self):
         """Test case for v1beta2_sources_id_start_post
 
-        start a source.  # noqa: E501
+        start a source  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_sources_id_stats_get(self):
+        """Test case for v1beta2_sources_id_stats_get
+
+        get the stats of a source  # noqa: E501
         """
         pass
 
     def test_v1beta2_sources_id_stop_post(self):
         """Test case for v1beta2_sources_id_stop_post
 
-        stop a source.  # noqa: E501
+        stop a source  # noqa: E501
         """
         pass
 
     def test_v1beta2_sources_post(self):
         """Test case for v1beta2_sources_post
 
-        create a source.  # noqa: E501
+        create a source  # noqa: E501
         """
         pass
 

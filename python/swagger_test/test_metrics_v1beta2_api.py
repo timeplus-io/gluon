@@ -31,14 +31,7 @@ class TestMetricsV1beta2Api(unittest.TestCase):
     def test_v1beta2_global_metrics_get(self):
         """Test case for v1beta2_global_metrics_get
 
-        query global metrics.  # noqa: E501
-        """
-        pass
-
-    def test_v1beta2_resource_metrics_get(self):
-        """Test case for v1beta2_resource_metrics_get
-
-        query resource metrics.  # noqa: E501
+        query global metrics  # noqa: E501
         """
         pass
 

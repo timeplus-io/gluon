@@ -27,7 +27,7 @@ class Stream:
         self._logstore_retention_ms = None
         self._ttl_expression = None
         self._description = None
-        self._mode = None
+        self._mode = "append"
         self._primary_key = None
 
     def name(self, stream_name):
@@ -186,12 +186,22 @@ class Stream:
         Raises:
         TimeplusAPIError: If the stream does not exist.
         """
-        streams = self.list()
-        for s in streams:
-            if s.name == self._name:
-                self._metadata = s
-                return self
-        raise TimeplusAPIError(f"not such stream {self._name}")
+        # streams = self.list()
+        # for s in streams:
+        #     if s.name == self._name:
+        #         self._metadata = s
+        #         return self
+        # raise TimeplusAPIError(f"not such stream {self._name}")
+        try:
+            resp = self._api_instance.v1beta2_streams_name_get(self._name)
+            self._metadata = resp
+            return self
+        except ApiException as e:
+            print(
+                "Exception when calling StreamsV1beta2Api->v1beta2_streams_name_get: %s\n"
+                % e
+            )
+            raise TimeplusAPIError(f"no such stream with id {self._name}")
 
     def metadata(self):
         return self._metadata

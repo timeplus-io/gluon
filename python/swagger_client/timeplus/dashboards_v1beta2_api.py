@@ -33,7 +33,7 @@ class DashboardsV1beta2Api(object):
         self.api_client = api_client
 
     def v1beta2_dashboards_get(self, **kwargs):  # noqa: E501
-        """list dashboards.  # noqa: E501
+        """list dashboards  # noqa: E501
 
         Get all dashboards.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -54,7 +54,7 @@ class DashboardsV1beta2Api(object):
             return data
 
     def v1beta2_dashboards_get_with_http_info(self, **kwargs):  # noqa: E501
-        """list dashboards.  # noqa: E501
+        """list dashboards  # noqa: E501
 
         Get all dashboards.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -120,7 +120,7 @@ class DashboardsV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_dashboards_id_delete(self, id, **kwargs):  # noqa: E501
-        """delete a dashboard.  # noqa: E501
+        """delete a dashboard  # noqa: E501
 
         Delete the dashboard with the given ID.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -142,7 +142,7 @@ class DashboardsV1beta2Api(object):
             return data
 
     def v1beta2_dashboards_id_delete_with_http_info(self, id, **kwargs):  # noqa: E501
-        """delete a dashboard.  # noqa: E501
+        """delete a dashboard  # noqa: E501
 
         Delete the dashboard with the given ID.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -215,7 +215,7 @@ class DashboardsV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_dashboards_id_get(self, id, **kwargs):  # noqa: E501
-        """get a dashboard.  # noqa: E501
+        """get a dashboard  # noqa: E501
 
         get a dashboard.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -237,7 +237,7 @@ class DashboardsV1beta2Api(object):
             return data
 
     def v1beta2_dashboards_id_get_with_http_info(self, id, **kwargs):  # noqa: E501
-        """get a dashboard.  # noqa: E501
+        """get a dashboard  # noqa: E501
 
         get a dashboard.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -310,7 +310,7 @@ class DashboardsV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_dashboards_id_put(self, body, id, **kwargs):  # noqa: E501
-        """Update a dashboard.  # noqa: E501
+        """update a dashboard  # noqa: E501
 
         Update the specific dashboard with the given ID.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -333,7 +333,7 @@ class DashboardsV1beta2Api(object):
             return data
 
     def v1beta2_dashboards_id_put_with_http_info(self, body, id, **kwargs):  # noqa: E501
-        """Update a dashboard.  # noqa: E501
+        """update a dashboard  # noqa: E501
 
         Update the specific dashboard with the given ID.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -417,9 +417,9 @@ class DashboardsV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_dashboards_post(self, body, **kwargs):  # noqa: E501
-        """create a dashboard.  # noqa: E501
+        """create a dashboard  # noqa: E501
 
-        create a dashboard.  # noqa: E501
+        Create a dashboard.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_dashboards_post(body, async_req=True)
@@ -439,9 +439,9 @@ class DashboardsV1beta2Api(object):
             return data
 
     def v1beta2_dashboards_post_with_http_info(self, body, **kwargs):  # noqa: E501
-        """create a dashboard.  # noqa: E501
+        """create a dashboard  # noqa: E501
 
-        create a dashboard.  # noqa: E501
+        Create a dashboard.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_dashboards_post_with_http_info(body, async_req=True)

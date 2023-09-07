@@ -28,7 +28,7 @@ class ColumnDef(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'compression_codec': 'str',
+        'codec': 'str',
         'default': 'str',
         'name': 'str',
         'skipping_index_expression': 'str',
@@ -37,7 +37,7 @@ class ColumnDef(object):
     }
 
     attribute_map = {
-        'compression_codec': 'compression_codec',
+        'codec': 'codec',
         'default': 'default',
         'name': 'name',
         'skipping_index_expression': 'skipping_index_expression',
@@ -45,17 +45,17 @@ class ColumnDef(object):
         'type': 'type'
     }
 
-    def __init__(self, compression_codec=None, default=None, name=None, skipping_index_expression=None, ttl_expression=None, type=None):  # noqa: E501
+    def __init__(self, codec=None, default=None, name=None, skipping_index_expression=None, ttl_expression=None, type=None):  # noqa: E501
         """ColumnDef - a model defined in Swagger"""  # noqa: E501
-        self._compression_codec = None
+        self._codec = None
         self._default = None
         self._name = None
         self._skipping_index_expression = None
         self._ttl_expression = None
         self._type = None
         self.discriminator = None
-        if compression_codec is not None:
-            self.compression_codec = compression_codec
+        if codec is not None:
+            self.codec = codec
         if default is not None:
             self.default = default
         self.name = name
@@ -66,25 +66,25 @@ class ColumnDef(object):
         self.type = type
 
     @property
-    def compression_codec(self):
-        """Gets the compression_codec of this ColumnDef.  # noqa: E501
+    def codec(self):
+        """Gets the codec of this ColumnDef.  # noqa: E501
 
 
-        :return: The compression_codec of this ColumnDef.  # noqa: E501
+        :return: The codec of this ColumnDef.  # noqa: E501
         :rtype: str
         """
-        return self._compression_codec
+        return self._codec
 
-    @compression_codec.setter
-    def compression_codec(self, compression_codec):
-        """Sets the compression_codec of this ColumnDef.
+    @codec.setter
+    def codec(self, codec):
+        """Sets the codec of this ColumnDef.
 
 
-        :param compression_codec: The compression_codec of this ColumnDef.  # noqa: E501
+        :param codec: The codec of this ColumnDef.  # noqa: E501
         :type: str
         """
 
-        self._compression_codec = compression_codec
+        self._codec = codec
 
     @property
     def default(self):

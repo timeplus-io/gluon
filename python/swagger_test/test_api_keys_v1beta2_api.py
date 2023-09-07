@@ -31,21 +31,21 @@ class TestAPIKeysV1beta2Api(unittest.TestCase):
     def test_v1beta2_auth_api_keys_get(self):
         """Test case for v1beta2_auth_api_keys_get
 
-        List API keys  # noqa: E501
+        list API keys  # noqa: E501
         """
         pass
 
     def test_v1beta2_auth_api_keys_id_delete(self):
         """Test case for v1beta2_auth_api_keys_id_delete
 
-        Delete an API key  # noqa: E501
+        delete an API key  # noqa: E501
         """
         pass
 
     def test_v1beta2_auth_api_keys_post(self):
         """Test case for v1beta2_auth_api_keys_post
 
-        Create an API key  # noqa: E501
+        create an API key  # noqa: E501
         """
         pass
 

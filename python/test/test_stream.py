@@ -24,6 +24,9 @@ def test_stream(test_environment):
     stream_list = Stream(env=test_environment).list()
     assert name in [q.name for q in stream_list]
 
+    get_stream = Stream(env=test_environment).name(name).get()
+    assert get_stream.metadata().name == name
+
     # Check the stream exists
     assert Stream(env=test_environment).name(name).exist()
 

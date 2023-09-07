@@ -33,9 +33,9 @@ class MetricsV1beta2Api(object):
         self.api_client = api_client
 
     def v1beta2_global_metrics_get(self, **kwargs):  # noqa: E501
-        """query global metrics.  # noqa: E501
+        """query global metrics  # noqa: E501
 
-        query global metrics..  # noqa: E501
+        query global metrics.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_global_metrics_get(async_req=True)
@@ -54,9 +54,9 @@ class MetricsV1beta2Api(object):
             return data
 
     def v1beta2_global_metrics_get_with_http_info(self, **kwargs):  # noqa: E501
-        """query global metrics.  # noqa: E501
+        """query global metrics  # noqa: E501
 
-        query global metrics..  # noqa: E501
+        query global metrics.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_global_metrics_get_with_http_info(async_req=True)
@@ -112,118 +112,6 @@ class MetricsV1beta2Api(object):
             post_params=form_params,
             files=local_var_files,
             response_type='GlobalMetricsResult',  # noqa: E501
-            auth_settings=auth_settings,
-            async_req=params.get('async_req'),
-            _return_http_data_only=params.get('_return_http_data_only'),
-            _preload_content=params.get('_preload_content', True),
-            _request_timeout=params.get('_request_timeout'),
-            collection_formats=collection_formats)
-
-    def v1beta2_resource_metrics_get(self, metrics_type, resource_ids, time_range, **kwargs):  # noqa: E501
-        """query resource metrics.  # noqa: E501
-
-        query resource metrics..  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_resource_metrics_get(metrics_type, resource_ids, time_range, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str metrics_type: (required)
-        :param list[str] resource_ids: (required)
-        :param int time_range: (required)
-        :return: ResourceMetricsResult
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        kwargs['_return_http_data_only'] = True
-        if kwargs.get('async_req'):
-            return self.v1beta2_resource_metrics_get_with_http_info(metrics_type, resource_ids, time_range, **kwargs)  # noqa: E501
-        else:
-            (data) = self.v1beta2_resource_metrics_get_with_http_info(metrics_type, resource_ids, time_range, **kwargs)  # noqa: E501
-            return data
-
-    def v1beta2_resource_metrics_get_with_http_info(self, metrics_type, resource_ids, time_range, **kwargs):  # noqa: E501
-        """query resource metrics.  # noqa: E501
-
-        query resource metrics..  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_resource_metrics_get_with_http_info(metrics_type, resource_ids, time_range, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str metrics_type: (required)
-        :param list[str] resource_ids: (required)
-        :param int time_range: (required)
-        :return: ResourceMetricsResult
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-
-        all_params = ['metrics_type', 'resource_ids', 'time_range']  # noqa: E501
-        all_params.append('async_req')
-        all_params.append('_return_http_data_only')
-        all_params.append('_preload_content')
-        all_params.append('_request_timeout')
-
-        params = locals()
-        for key, val in six.iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method v1beta2_resource_metrics_get" % key
-                )
-            params[key] = val
-        del params['kwargs']
-        # verify the required parameter 'metrics_type' is set
-        if ('metrics_type' not in params or
-                params['metrics_type'] is None):
-            raise ValueError("Missing the required parameter `metrics_type` when calling `v1beta2_resource_metrics_get`")  # noqa: E501
-        # verify the required parameter 'resource_ids' is set
-        if ('resource_ids' not in params or
-                params['resource_ids'] is None):
-            raise ValueError("Missing the required parameter `resource_ids` when calling `v1beta2_resource_metrics_get`")  # noqa: E501
-        # verify the required parameter 'time_range' is set
-        if ('time_range' not in params or
-                params['time_range'] is None):
-            raise ValueError("Missing the required parameter `time_range` when calling `v1beta2_resource_metrics_get`")  # noqa: E501
-
-        collection_formats = {}
-
-        path_params = {}
-
-        query_params = []
-        if 'metrics_type' in params:
-            query_params.append(('metrics_type', params['metrics_type']))  # noqa: E501
-        if 'resource_ids' in params:
-            query_params.append(('resource_ids[]', params['resource_ids']))  # noqa: E501
-            collection_formats['resource_ids[]'] = 'csv'  # noqa: E501
-        if 'time_range' in params:
-            query_params.append(('time_range', params['time_range']))  # noqa: E501
-
-        header_params = {}
-
-        form_params = []
-        local_var_files = {}
-
-        body_params = None
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
-
-        # Authentication setting
-        auth_settings = ['ApiKeyAuth']  # noqa: E501
-
-        return self.api_client.call_api(
-            '/v1beta2/resource-metrics', 'GET',
-            path_params,
-            query_params,
-            header_params,
-            body=body_params,
-            post_params=form_params,
-            files=local_var_files,
-            response_type='ResourceMetricsResult',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),

@@ -96,14 +96,12 @@ class UDF(object):
             self.last_updated_at = last_updated_at
         if last_updated_by is not None:
             self.last_updated_by = last_updated_by
-        if name is not None:
-            self.name = name
+        self.name = name
         if return_type is not None:
             self.return_type = return_type
         if source is not None:
             self.source = source
-        if type is not None:
-            self.type = type
+        self.type = type
         if url is not None:
             self.url = url
 
@@ -155,6 +153,7 @@ class UDF(object):
     def auth_method(self):
         """Gets the auth_method of this UDF.  # noqa: E501
 
+        Only valid when `type` is `remote`. This field is used to set the authentication method for remote UDF. It can be either `auth_header` or `none`. When `auth_header` is set, you can configure `auth_context` to specify the HTTP header that be sent the remote URL  # noqa: E501
 
         :return: The auth_method of this UDF.  # noqa: E501
         :rtype: str
@@ -165,6 +164,7 @@ class UDF(object):
     def auth_method(self, auth_method):
         """Sets the auth_method of this UDF.
 
+        Only valid when `type` is `remote`. This field is used to set the authentication method for remote UDF. It can be either `auth_header` or `none`. When `auth_header` is set, you can configure `auth_context` to specify the HTTP header that be sent the remote URL  # noqa: E501
 
         :param auth_method: The auth_method of this UDF.  # noqa: E501
         :type: str
@@ -239,7 +239,7 @@ class UDF(object):
     def is_aggregation(self):
         """Gets the is_aggregation of this UDF.  # noqa: E501
 
-        Whether it is an aggregation function. Only valid when type is 'javascript'  # noqa: E501
+        Only valid when type is 'javascript'. Whether it is an aggregation function.  # noqa: E501
 
         :return: The is_aggregation of this UDF.  # noqa: E501
         :rtype: bool
@@ -250,7 +250,7 @@ class UDF(object):
     def is_aggregation(self, is_aggregation):
         """Sets the is_aggregation of this UDF.
 
-        Whether it is an aggregation function. Only valid when type is 'javascript'  # noqa: E501
+        Only valid when type is 'javascript'. Whether it is an aggregation function.  # noqa: E501
 
         :param is_aggregation: The is_aggregation of this UDF.  # noqa: E501
         :type: bool
@@ -318,6 +318,8 @@ class UDF(object):
         :param name: The name of this UDF.  # noqa: E501
         :type: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
@@ -348,7 +350,7 @@ class UDF(object):
     def source(self):
         """Gets the source of this UDF.  # noqa: E501
 
-        The source code of the UDA. There are functions to be defined:  * main function: with the same name as UDA. Timeplus calls this function for each input row. The main function can return two types of result: object or simple data type    - If it returns an object, the object is like {“emit”: true, “result”: …}. ‘Emit’ (boolean) property tells Timeplus whether or not the result should emit. ‘result’ is the current aggregate result, if ‘emit’ is false, the result will be ignored by Timeplus. Timeplus will convert the ‘result’ property of v8 to the data types defined when creating UDA.    - If it returns a simple data type, Timeplus considers the return data as the result to be emitted immediately. It converts the return data to the corresponding data type and Timeplus emits the aggregating result.    - Once UDA tells Timeplus to emit the data, UDA takes the full responsibility to clear the internal state, prepare and restart a new aggregating window, et al.  * state function: which returns the serialized state of all internal states of UDA in string. The UDA takes the responsibility therefore Timeplus can choose to persist the internal state of UDA for query recovery.  * init function: the input of this function is the string of serialized state of the internal states UDA. Timeplus calls this function when it wants to recover the aggregation function with the persisted internal state.  # noqa: E501
+        Only valid when type is 'javascript' The source code of the UDA. There are functions to be defined:  * main function: with the same name as UDA. Timeplus calls this function for each input row. The main function can return two types of result: object or simple data type    - If it returns an object, the object is like {“emit”: true, “result”: …}. ‘Emit’ (boolean) property tells Timeplus whether or not the result should emit. ‘result’ is the current aggregate result, if ‘emit’ is false, the result will be ignored by Timeplus. Timeplus will convert the ‘result’ property of v8 to the data types defined when creating UDA.    - If it returns a simple data type, Timeplus considers the return data as the result to be emitted immediately. It converts the return data to the corresponding data type and Timeplus emits the aggregating result.    - Once UDA tells Timeplus to emit the data, UDA takes the full responsibility to clear the internal state, prepare and restart a new aggregating window, et al.  * state function: which returns the serialized state of all internal states of UDA in string. The UDA takes the responsibility therefore Timeplus can choose to persist the internal state of UDA for query recovery.  * init function: the input of this function is the string of serialized state of the internal states UDA. Timeplus calls this function when it wants to recover the aggregation function with the persisted internal state.  # noqa: E501
 
         :return: The source of this UDF.  # noqa: E501
         :rtype: str
@@ -359,7 +361,7 @@ class UDF(object):
     def source(self, source):
         """Sets the source of this UDF.
 
-        The source code of the UDA. There are functions to be defined:  * main function: with the same name as UDA. Timeplus calls this function for each input row. The main function can return two types of result: object or simple data type    - If it returns an object, the object is like {“emit”: true, “result”: …}. ‘Emit’ (boolean) property tells Timeplus whether or not the result should emit. ‘result’ is the current aggregate result, if ‘emit’ is false, the result will be ignored by Timeplus. Timeplus will convert the ‘result’ property of v8 to the data types defined when creating UDA.    - If it returns a simple data type, Timeplus considers the return data as the result to be emitted immediately. It converts the return data to the corresponding data type and Timeplus emits the aggregating result.    - Once UDA tells Timeplus to emit the data, UDA takes the full responsibility to clear the internal state, prepare and restart a new aggregating window, et al.  * state function: which returns the serialized state of all internal states of UDA in string. The UDA takes the responsibility therefore Timeplus can choose to persist the internal state of UDA for query recovery.  * init function: the input of this function is the string of serialized state of the internal states UDA. Timeplus calls this function when it wants to recover the aggregation function with the persisted internal state.  # noqa: E501
+        Only valid when type is 'javascript' The source code of the UDA. There are functions to be defined:  * main function: with the same name as UDA. Timeplus calls this function for each input row. The main function can return two types of result: object or simple data type    - If it returns an object, the object is like {“emit”: true, “result”: …}. ‘Emit’ (boolean) property tells Timeplus whether or not the result should emit. ‘result’ is the current aggregate result, if ‘emit’ is false, the result will be ignored by Timeplus. Timeplus will convert the ‘result’ property of v8 to the data types defined when creating UDA.    - If it returns a simple data type, Timeplus considers the return data as the result to be emitted immediately. It converts the return data to the corresponding data type and Timeplus emits the aggregating result.    - Once UDA tells Timeplus to emit the data, UDA takes the full responsibility to clear the internal state, prepare and restart a new aggregating window, et al.  * state function: which returns the serialized state of all internal states of UDA in string. The UDA takes the responsibility therefore Timeplus can choose to persist the internal state of UDA for query recovery.  * init function: the input of this function is the string of serialized state of the internal states UDA. Timeplus calls this function when it wants to recover the aggregation function with the persisted internal state.  # noqa: E501
 
         :param source: The source of this UDF.  # noqa: E501
         :type: str
@@ -387,6 +389,8 @@ class UDF(object):
         :param type: The type of this UDF.  # noqa: E501
         :type: str
         """
+        if type is None:
+            raise ValueError("Invalid value for `type`, must not be `None`")  # noqa: E501
 
         self._type = type
 
@@ -394,6 +398,7 @@ class UDF(object):
     def url(self):
         """Gets the url of this UDF.  # noqa: E501
 
+        Only valid when `type` is `remote`.  # noqa: E501
 
         :return: The url of this UDF.  # noqa: E501
         :rtype: str
@@ -404,6 +409,7 @@ class UDF(object):
     def url(self, url):
         """Sets the url of this UDF.
 
+        Only valid when `type` is `remote`.  # noqa: E501
 
         :param url: The url of this UDF.  # noqa: E501
         :type: str

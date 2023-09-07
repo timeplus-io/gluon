@@ -33,7 +33,7 @@ class QueriesV1beta2Api(object):
         self.api_client = api_client
 
     def v1beta2_format_post(self, body, **kwargs):  # noqa: E501
-        """format a query.  # noqa: E501
+        """format a query  # noqa: E501
 
         Format the given query and make it easy to read.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -55,7 +55,7 @@ class QueriesV1beta2Api(object):
             return data
 
     def v1beta2_format_post_with_http_info(self, body, **kwargs):  # noqa: E501
-        """format a query.  # noqa: E501
+        """format a query  # noqa: E501
 
         Format the given query and make it easy to read.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -106,7 +106,7 @@ class QueriesV1beta2Api(object):
             body_params = params['body']
         # HTTP header `Accept`
         header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json', 'text/event-stream'])  # noqa: E501
+            ['application/json'])  # noqa: E501
 
         # HTTP header `Content-Type`
         header_params['Content-Type'] = self.api_client.select_header_content_type(  # noqa: E501
@@ -132,7 +132,7 @@ class QueriesV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_queries_get(self, **kwargs):  # noqa: E501
-        """list queries.  # noqa: E501
+        """list queries  # noqa: E501
 
         Get all queries.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -154,7 +154,7 @@ class QueriesV1beta2Api(object):
             return data
 
     def v1beta2_queries_get_with_http_info(self, **kwargs):  # noqa: E501
-        """list queries.  # noqa: E501
+        """list queries  # noqa: E501
 
         Get all queries.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -223,7 +223,7 @@ class QueriesV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_queries_id_cancel_post(self, id, **kwargs):  # noqa: E501
-        """cancel a query.  # noqa: E501
+        """cancel a query  # noqa: E501
 
         Cancel the query with the given ID. If given query is not running, the request will do nothing. Otherwise, the query will be canceled and the `status` will be set to `canceled`  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -245,7 +245,7 @@ class QueriesV1beta2Api(object):
             return data
 
     def v1beta2_queries_id_cancel_post_with_http_info(self, id, **kwargs):  # noqa: E501
-        """cancel a query.  # noqa: E501
+        """cancel a query  # noqa: E501
 
         Cancel the query with the given ID. If given query is not running, the request will do nothing. Otherwise, the query will be canceled and the `status` will be set to `canceled`  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -318,7 +318,7 @@ class QueriesV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_queries_id_delete(self, id, **kwargs):  # noqa: E501
-        """delete a query.  # noqa: E501
+        """delete a query  # noqa: E501
 
         Delete the query with the given ID.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -340,7 +340,7 @@ class QueriesV1beta2Api(object):
             return data
 
     def v1beta2_queries_id_delete_with_http_info(self, id, **kwargs):  # noqa: E501
-        """delete a query.  # noqa: E501
+        """delete a query  # noqa: E501
 
         Delete the query with the given ID.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -413,7 +413,7 @@ class QueriesV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_queries_id_get(self, id, **kwargs):  # noqa: E501
-        """get a query.  # noqa: E501
+        """get a query  # noqa: E501
 
         Get the query with the given ID.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -435,7 +435,7 @@ class QueriesV1beta2Api(object):
             return data
 
     def v1beta2_queries_id_get_with_http_info(self, id, **kwargs):  # noqa: E501
-        """get a query.  # noqa: E501
+        """get a query  # noqa: E501
 
         Get the query with the given ID.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -603,7 +603,7 @@ class QueriesV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_queries_post(self, body, **kwargs):  # noqa: E501
-        """execute a query and return the results.  # noqa: E501
+        """execute a query and return the results  # noqa: E501
 
         Execute a query and return the results. * If the request fails, the response content type will be `application/json`. Please refer to the failure codes in Responses section below. * If the query is executed successfully, the response content type will be `text/event-stream`. **For SSE** There are 3 types of data that will be sent to SSE channel 1. Query (type `query`): The first event of the result will ALWAYS be this type. 2. Metrics (type `metrics`): The query metrics in JSON. They will be sent every 1 seconds. 3. Data (the type is empty): The query result.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -625,7 +625,7 @@ class QueriesV1beta2Api(object):
             return data
 
     def v1beta2_queries_post_with_http_info(self, body, **kwargs):  # noqa: E501
-        """execute a query and return the results.  # noqa: E501
+        """execute a query and return the results  # noqa: E501
 
         Execute a query and return the results. * If the request fails, the response content type will be `application/json`. Please refer to the failure codes in Responses section below. * If the query is executed successfully, the response content type will be `text/event-stream`. **For SSE** There are 3 types of data that will be sent to SSE channel 1. Query (type `query`): The first event of the result will ALWAYS be this type. 2. Metrics (type `metrics`): The query metrics in JSON. They will be sent every 1 seconds. 3. Data (the type is empty): The query result.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an

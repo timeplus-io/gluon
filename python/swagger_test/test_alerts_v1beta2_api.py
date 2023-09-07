@@ -28,10 +28,59 @@ class TestAlertsV1beta2Api(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_v1beta2_alerts_get(self):
+        """Test case for v1beta2_alerts_get
+
+        list alerts  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_alerts_id_delete(self):
+        """Test case for v1beta2_alerts_id_delete
+
+        delete an alert  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_alerts_id_get(self):
+        """Test case for v1beta2_alerts_id_get
+
+        get an alert  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_alerts_id_put(self):
+        """Test case for v1beta2_alerts_id_put
+
+        update an alert  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_alerts_id_resolve_post(self):
+        """Test case for v1beta2_alerts_id_resolve_post
+
+        resolve a triggered alert  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_alerts_id_start_post(self):
+        """Test case for v1beta2_alerts_id_start_post
+
+        start an alert  # noqa: E501
+        """
+        pass
+
     def test_v1beta2_alerts_id_stop_post(self):
         """Test case for v1beta2_alerts_id_stop_post
 
-        stop an alert.  # noqa: E501
+        stop an alert  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_alerts_post(self):
+        """Test case for v1beta2_alerts_post
+
+        create an alert  # noqa: E501
         """
         pass
 

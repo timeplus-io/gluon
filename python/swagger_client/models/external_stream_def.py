@@ -28,55 +28,28 @@ class ExternalStreamDef(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'column': 'ColumnDef',
         'description': 'str',
         'name': 'str',
         'settings': 'list[StreamSetting]'
     }
 
     attribute_map = {
-        'column': 'column',
         'description': 'description',
         'name': 'name',
         'settings': 'settings'
     }
 
-    def __init__(self, column=None, description=None, name=None, settings=None):  # noqa: E501
+    def __init__(self, description=None, name=None, settings=None):  # noqa: E501
         """ExternalStreamDef - a model defined in Swagger"""  # noqa: E501
-        self._column = None
         self._description = None
         self._name = None
         self._settings = None
         self.discriminator = None
-        if column is not None:
-            self.column = column
         if description is not None:
             self.description = description
-        if name is not None:
-            self.name = name
+        self.name = name
         if settings is not None:
             self.settings = settings
-
-    @property
-    def column(self):
-        """Gets the column of this ExternalStreamDef.  # noqa: E501
-
-
-        :return: The column of this ExternalStreamDef.  # noqa: E501
-        :rtype: ColumnDef
-        """
-        return self._column
-
-    @column.setter
-    def column(self, column):
-        """Sets the column of this ExternalStreamDef.
-
-
-        :param column: The column of this ExternalStreamDef.  # noqa: E501
-        :type: ColumnDef
-        """
-
-        self._column = column
 
     @property
     def description(self):
@@ -117,6 +90,8 @@ class ExternalStreamDef(object):
         :param name: The name of this ExternalStreamDef.  # noqa: E501
         :type: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 

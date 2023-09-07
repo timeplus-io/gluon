@@ -4,16 +4,16 @@ All URIs are relative to *//us.timeplus.cloud/{workspace-id}/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**v1beta2_auth_api_keys_get**](APIKeysV1beta2Api.md#v1beta2_auth_api_keys_get) | **GET** /v1beta2/auth/api_keys | List API keys
-[**v1beta2_auth_api_keys_id_delete**](APIKeysV1beta2Api.md#v1beta2_auth_api_keys_id_delete) | **DELETE** /v1beta2/auth/api_keys/{id} | Delete an API key
-[**v1beta2_auth_api_keys_post**](APIKeysV1beta2Api.md#v1beta2_auth_api_keys_post) | **POST** /v1beta2/auth/api_keys | Create an API key
+[**v1beta2_auth_api_keys_get**](APIKeysV1beta2Api.md#v1beta2_auth_api_keys_get) | **GET** /v1beta2/auth/api_keys | list API keys
+[**v1beta2_auth_api_keys_id_delete**](APIKeysV1beta2Api.md#v1beta2_auth_api_keys_id_delete) | **DELETE** /v1beta2/auth/api_keys/{id} | delete an API key
+[**v1beta2_auth_api_keys_post**](APIKeysV1beta2Api.md#v1beta2_auth_api_keys_post) | **POST** /v1beta2/auth/api_keys | create an API key
 
 # **v1beta2_auth_api_keys_get**
 > list[APIKey] v1beta2_auth_api_keys_get()
 
-List API keys
+list API keys
 
-list all API keys created by current user
+Get all API keys created by current user
 
 ### Example
 ```python
@@ -33,7 +33,7 @@ configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 api_instance = swagger_client.APIKeysV1beta2Api(swagger_client.ApiClient(configuration))
 
 try:
-    # List API keys
+    # list API keys
     api_response = api_instance.v1beta2_auth_api_keys_get()
     pprint(api_response)
 except ApiException as e:
@@ -61,9 +61,9 @@ This endpoint does not need any parameter.
 # **v1beta2_auth_api_keys_id_delete**
 > v1beta2_auth_api_keys_id_delete(id)
 
-Delete an API key
+delete an API key
 
-delete the API key with the specified ID
+Delete the API key with the givin ID
 
 ### Example
 ```python
@@ -84,7 +84,7 @@ api_instance = swagger_client.APIKeysV1beta2Api(swagger_client.ApiClient(configu
 id = 'id_example' # str | API key ID
 
 try:
-    # Delete an API key
+    # delete an API key
     api_instance.v1beta2_auth_api_keys_id_delete(id)
 except ApiException as e:
     print("Exception when calling APIKeysV1beta2Api->v1beta2_auth_api_keys_id_delete: %s\n" % e)
@@ -114,9 +114,9 @@ void (empty response body)
 # **v1beta2_auth_api_keys_post**
 > CreateAPIKeyResponse v1beta2_auth_api_keys_post(body=body)
 
-Create an API key
+create an API key
 
-create a new API key with optional expiration, the created API key represents the owner thus has the same permissions as the owner
+Create a new API key with optional expiration, the created API key represents the owner thus has the same permissions as the owner
 
 ### Example
 ```python
@@ -137,7 +137,7 @@ api_instance = swagger_client.APIKeysV1beta2Api(swagger_client.ApiClient(configu
 body = swagger_client.CreateAPIKeyRequest() # CreateAPIKeyRequest | API Key parameters (optional)
 
 try:
-    # Create an API key
+    # create an API key
     api_response = api_instance.v1beta2_auth_api_keys_post(body=body)
     pprint(api_response)
 except ApiException as e:

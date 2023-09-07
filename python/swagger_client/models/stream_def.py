@@ -203,7 +203,7 @@ class StreamDef(object):
     def logstore_retention_bytes(self):
         """Gets the logstore_retention_bytes of this StreamDef.  # noqa: E501
 
-        The max size a stream can grow. Defaulted to 10 GiB  # noqa: E501
+        The max size a stream can grow. Any non-positive value means unlimited size. Defaulted to 10 GiB.  # noqa: E501
 
         :return: The logstore_retention_bytes of this StreamDef.  # noqa: E501
         :rtype: int
@@ -214,7 +214,7 @@ class StreamDef(object):
     def logstore_retention_bytes(self, logstore_retention_bytes):
         """Sets the logstore_retention_bytes of this StreamDef.
 
-        The max size a stream can grow. Defaulted to 10 GiB  # noqa: E501
+        The max size a stream can grow. Any non-positive value means unlimited size. Defaulted to 10 GiB.  # noqa: E501
 
         :param logstore_retention_bytes: The logstore_retention_bytes of this StreamDef.  # noqa: E501
         :type: int
@@ -226,7 +226,7 @@ class StreamDef(object):
     def logstore_retention_ms(self):
         """Gets the logstore_retention_ms of this StreamDef.  # noqa: E501
 
-        The max time the data can be retained in the stream. Defaulted to 7 days  # noqa: E501
+        The max time the data can be retained in the stream. Any non-positive value means unlimited time. Defaulted to 7 days.  # noqa: E501
 
         :return: The logstore_retention_ms of this StreamDef.  # noqa: E501
         :rtype: int
@@ -237,7 +237,7 @@ class StreamDef(object):
     def logstore_retention_ms(self, logstore_retention_ms):
         """Sets the logstore_retention_ms of this StreamDef.
 
-        The max time the data can be retained in the stream. Defaulted to 7 days  # noqa: E501
+        The max time the data can be retained in the stream. Any non-positive value means unlimited time. Defaulted to 7 days.  # noqa: E501
 
         :param logstore_retention_ms: The logstore_retention_ms of this StreamDef.  # noqa: E501
         :type: int
@@ -249,7 +249,7 @@ class StreamDef(object):
     def mode(self):
         """Gets the mode of this StreamDef.  # noqa: E501
 
-        Storage mode of stream. Possible values: `append`, `changelog`, `changelog_kv`, `versioned_kv`  # noqa: E501
+        Storage mode of stream. Defaulted to `append`.  # noqa: E501
 
         :return: The mode of this StreamDef.  # noqa: E501
         :rtype: str
@@ -260,11 +260,17 @@ class StreamDef(object):
     def mode(self, mode):
         """Sets the mode of this StreamDef.
 
-        Storage mode of stream. Possible values: `append`, `changelog`, `changelog_kv`, `versioned_kv`  # noqa: E501
+        Storage mode of stream. Defaulted to `append`.  # noqa: E501
 
         :param mode: The mode of this StreamDef.  # noqa: E501
         :type: str
         """
+        allowed_values = ["append", "changelog", "changelog_kv", "versioned_kv"]  # noqa: E501
+        if mode not in allowed_values:
+            raise ValueError(
+                "Invalid value for `mode` ({0}), must be one of {1}"  # noqa: E501
+                .format(mode, allowed_values)
+            )
 
         self._mode = mode
 
@@ -360,7 +366,7 @@ class StreamDef(object):
     def primary_key(self):
         """Gets the primary_key of this StreamDef.  # noqa: E501
 
-        Expression of primary key, required in `changelog_kv`` and `versioned_kv`` mode  # noqa: E501
+        Expression of primary key, required in `changelog_kv` and `versioned_kv` mode  # noqa: E501
 
         :return: The primary_key of this StreamDef.  # noqa: E501
         :rtype: str
@@ -371,7 +377,7 @@ class StreamDef(object):
     def primary_key(self, primary_key):
         """Sets the primary_key of this StreamDef.
 
-        Expression of primary key, required in `changelog_kv`` and `versioned_kv`` mode  # noqa: E501
+        Expression of primary key, required in `changelog_kv` and `versioned_kv` mode  # noqa: E501
 
         :param primary_key: The primary_key of this StreamDef.  # noqa: E501
         :type: str

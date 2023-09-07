@@ -33,9 +33,9 @@ class UDFsV1beta2Api(object):
         self.api_client = api_client
 
     def v1beta2_udfs_get(self, **kwargs):  # noqa: E501
-        """list udf.  # noqa: E501
+        """list user-defined functions  # noqa: E501
 
-        Get all udf.  # noqa: E501
+        Get all user-defined functions.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_get(async_req=True)
@@ -54,9 +54,9 @@ class UDFsV1beta2Api(object):
             return data
 
     def v1beta2_udfs_get_with_http_info(self, **kwargs):  # noqa: E501
-        """list udf.  # noqa: E501
+        """list user-defined functions  # noqa: E501
 
-        Get all udf.  # noqa: E501
+        Get all user-defined functions.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_get_with_http_info(async_req=True)
@@ -120,16 +120,16 @@ class UDFsV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_udfs_name_delete(self, name, **kwargs):  # noqa: E501
-        """delete a udf.  # noqa: E501
+        """delete an user-defined function  # noqa: E501
 
-        Delete the udf with the given name.  # noqa: E501
+        Delete the user-defined function with the given name.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_name_delete(name, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param str name: udf name (required)
+        :param str name: user-defined function name (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -142,16 +142,16 @@ class UDFsV1beta2Api(object):
             return data
 
     def v1beta2_udfs_name_delete_with_http_info(self, name, **kwargs):  # noqa: E501
-        """delete a udf.  # noqa: E501
+        """delete an user-defined function  # noqa: E501
 
-        Delete the udf with the given name.  # noqa: E501
+        Delete the user-defined function with the given name.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_name_delete_with_http_info(name, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param str name: udf name (required)
+        :param str name: user-defined function name (required)
         :return: None
                  If the method is called asynchronously,
                  returns the request thread.
@@ -215,16 +215,16 @@ class UDFsV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_udfs_name_get(self, name, **kwargs):  # noqa: E501
-        """get a udf.  # noqa: E501
+        """get an user-defined function  # noqa: E501
 
-        get the udf with the given name.  # noqa: E501
+        get the user-defined function with the given name.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_name_get(name, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param str name: udf name (required)
+        :param str name: user-defined function name (required)
         :return: UDF
                  If the method is called asynchronously,
                  returns the request thread.
@@ -237,16 +237,16 @@ class UDFsV1beta2Api(object):
             return data
 
     def v1beta2_udfs_name_get_with_http_info(self, name, **kwargs):  # noqa: E501
-        """get a udf.  # noqa: E501
+        """get an user-defined function  # noqa: E501
 
-        get the udf with the given name.  # noqa: E501
+        get the user-defined function with the given name.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_name_get_with_http_info(name, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param str name: udf name (required)
+        :param str name: user-defined function name (required)
         :return: UDF
                  If the method is called asynchronously,
                  returns the request thread.
@@ -310,16 +310,16 @@ class UDFsV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_udfs_name_put(self, body, **kwargs):  # noqa: E501
-        """update a udf.  # noqa: E501
+        """update an user-defined function  # noqa: E501
 
-        Update a udf.  # noqa: E501
+        Update the specific user-defined function with the given name.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_name_put(body, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param UDF body: update udf request parameters (required)
+        :param UDF body: update UDF request parameters (required)
         :return: UDF
                  If the method is called asynchronously,
                  returns the request thread.
@@ -332,16 +332,16 @@ class UDFsV1beta2Api(object):
             return data
 
     def v1beta2_udfs_name_put_with_http_info(self, body, **kwargs):  # noqa: E501
-        """update a udf.  # noqa: E501
+        """update an user-defined function  # noqa: E501
 
-        Update a udf.  # noqa: E501
+        Update the specific user-defined function with the given name.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_name_put_with_http_info(body, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param UDF body: update udf request parameters (required)
+        :param UDF body: update UDF request parameters (required)
         :return: UDF
                  If the method is called asynchronously,
                  returns the request thread.
@@ -409,16 +409,16 @@ class UDFsV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_udfs_post(self, body, **kwargs):  # noqa: E501
-        """create a udf.  # noqa: E501
+        """create an user-defined function  # noqa: E501
 
-        Create a udf.  # noqa: E501
+        Create an user-defined function.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_post(body, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param UDF body: create udf request parameters (required)
+        :param UDF body: create UDF request parameters (required)
         :return: UDF
                  If the method is called asynchronously,
                  returns the request thread.
@@ -431,16 +431,16 @@ class UDFsV1beta2Api(object):
             return data
 
     def v1beta2_udfs_post_with_http_info(self, body, **kwargs):  # noqa: E501
-        """create a udf.  # noqa: E501
+        """create an user-defined function  # noqa: E501
 
-        Create a udf.  # noqa: E501
+        Create an user-defined function.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_udfs_post_with_http_info(body, async_req=True)
         >>> result = thread.get()
 
         :param async_req bool
-        :param UDF body: create udf request parameters (required)
+        :param UDF body: create UDF request parameters (required)
         :return: UDF
                  If the method is called asynchronously,
                  returns the request thread.

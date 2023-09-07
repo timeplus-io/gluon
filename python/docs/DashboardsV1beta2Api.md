@@ -4,16 +4,16 @@ All URIs are relative to *//us.timeplus.cloud/{workspace-id}/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**v1beta2_dashboards_get**](DashboardsV1beta2Api.md#v1beta2_dashboards_get) | **GET** /v1beta2/dashboards | list dashboards.
-[**v1beta2_dashboards_id_delete**](DashboardsV1beta2Api.md#v1beta2_dashboards_id_delete) | **DELETE** /v1beta2/dashboards/{id} | delete a dashboard.
-[**v1beta2_dashboards_id_get**](DashboardsV1beta2Api.md#v1beta2_dashboards_id_get) | **GET** /v1beta2/dashboards/{id} | get a dashboard.
-[**v1beta2_dashboards_id_put**](DashboardsV1beta2Api.md#v1beta2_dashboards_id_put) | **PUT** /v1beta2/dashboards/{id} | Update a dashboard.
-[**v1beta2_dashboards_post**](DashboardsV1beta2Api.md#v1beta2_dashboards_post) | **POST** /v1beta2/dashboards | create a dashboard.
+[**v1beta2_dashboards_get**](DashboardsV1beta2Api.md#v1beta2_dashboards_get) | **GET** /v1beta2/dashboards | list dashboards
+[**v1beta2_dashboards_id_delete**](DashboardsV1beta2Api.md#v1beta2_dashboards_id_delete) | **DELETE** /v1beta2/dashboards/{id} | delete a dashboard
+[**v1beta2_dashboards_id_get**](DashboardsV1beta2Api.md#v1beta2_dashboards_id_get) | **GET** /v1beta2/dashboards/{id} | get a dashboard
+[**v1beta2_dashboards_id_put**](DashboardsV1beta2Api.md#v1beta2_dashboards_id_put) | **PUT** /v1beta2/dashboards/{id} | update a dashboard
+[**v1beta2_dashboards_post**](DashboardsV1beta2Api.md#v1beta2_dashboards_post) | **POST** /v1beta2/dashboards | create a dashboard
 
 # **v1beta2_dashboards_get**
 > list[DashboardDashboard] v1beta2_dashboards_get()
 
-list dashboards.
+list dashboards
 
 Get all dashboards.
 
@@ -35,7 +35,7 @@ configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 api_instance = swagger_client.DashboardsV1beta2Api(swagger_client.ApiClient(configuration))
 
 try:
-    # list dashboards.
+    # list dashboards
     api_response = api_instance.v1beta2_dashboards_get()
     pprint(api_response)
 except ApiException as e:
@@ -63,7 +63,7 @@ This endpoint does not need any parameter.
 # **v1beta2_dashboards_id_delete**
 > v1beta2_dashboards_id_delete(id)
 
-delete a dashboard.
+delete a dashboard
 
 Delete the dashboard with the given ID.
 
@@ -86,7 +86,7 @@ api_instance = swagger_client.DashboardsV1beta2Api(swagger_client.ApiClient(conf
 id = 'id_example' # str | dashboard ID
 
 try:
-    # delete a dashboard.
+    # delete a dashboard
     api_instance.v1beta2_dashboards_id_delete(id)
 except ApiException as e:
     print("Exception when calling DashboardsV1beta2Api->v1beta2_dashboards_id_delete: %s\n" % e)
@@ -116,7 +116,7 @@ void (empty response body)
 # **v1beta2_dashboards_id_get**
 > DashboardDashboard v1beta2_dashboards_id_get(id)
 
-get a dashboard.
+get a dashboard
 
 get a dashboard.
 
@@ -139,7 +139,7 @@ api_instance = swagger_client.DashboardsV1beta2Api(swagger_client.ApiClient(conf
 id = 'id_example' # str | dashboard ID
 
 try:
-    # get a dashboard.
+    # get a dashboard
     api_response = api_instance.v1beta2_dashboards_id_get(id)
     pprint(api_response)
 except ApiException as e:
@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 # **v1beta2_dashboards_id_put**
 > DashboardDashboard v1beta2_dashboards_id_put(body, id)
 
-Update a dashboard.
+update a dashboard
 
 Update the specific dashboard with the given ID.
 
@@ -194,7 +194,7 @@ body = swagger_client.UpdateDashboardRequest() # UpdateDashboardRequest | update
 id = 'id_example' # str | dashboard ID
 
 try:
-    # Update a dashboard.
+    # update a dashboard
     api_response = api_instance.v1beta2_dashboards_id_put(body, id)
     pprint(api_response)
 except ApiException as e:
@@ -226,9 +226,9 @@ Name | Type | Description  | Notes
 # **v1beta2_dashboards_post**
 > DashboardDashboard v1beta2_dashboards_post(body)
 
-create a dashboard.
+create a dashboard
 
-create a dashboard.
+Create a dashboard.
 
 ### Example
 ```python
@@ -249,7 +249,7 @@ api_instance = swagger_client.DashboardsV1beta2Api(swagger_client.ApiClient(conf
 body = swagger_client.CreateDashboardRequest() # CreateDashboardRequest | dashboard request parameters
 
 try:
-    # create a dashboard.
+    # create a dashboard
     api_response = api_instance.v1beta2_dashboards_post(body)
     pprint(api_response)
 except ApiException as e:

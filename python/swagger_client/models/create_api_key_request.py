@@ -49,7 +49,8 @@ class CreateAPIKeyRequest(object):
             self.expire_at = expire_at
         if expire_in is not None:
             self.expire_in = expire_in
-        self.name = name
+        if name is not None:
+            self.name = name
 
     @property
     def expire_at(self):
@@ -101,7 +102,7 @@ class CreateAPIKeyRequest(object):
     def name(self):
         """Gets the name of this CreateAPIKeyRequest.  # noqa: E501
 
-        the name of the API key  # noqa: E501
+        the name of the API key. * If name is speicfied, the masked API key will be appended to the end of the name (e.g. `myAPIKey (vthm****OjXG)`). * If name is not speicfied, the masked API key will be used as the name (e.g. `vthm****OjXG`).  # noqa: E501
 
         :return: The name of this CreateAPIKeyRequest.  # noqa: E501
         :rtype: str
@@ -112,13 +113,11 @@ class CreateAPIKeyRequest(object):
     def name(self, name):
         """Sets the name of this CreateAPIKeyRequest.
 
-        the name of the API key  # noqa: E501
+        the name of the API key. * If name is speicfied, the masked API key will be appended to the end of the name (e.g. `myAPIKey (vthm****OjXG)`). * If name is not speicfied, the masked API key will be used as the name (e.g. `vthm****OjXG`).  # noqa: E501
 
         :param name: The name of this CreateAPIKeyRequest.  # noqa: E501
         :type: str
         """
-        if name is None:
-            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 

@@ -31,35 +31,35 @@ class TestDashboardsV1beta2Api(unittest.TestCase):
     def test_v1beta2_dashboards_get(self):
         """Test case for v1beta2_dashboards_get
 
-        list dashboards.  # noqa: E501
+        list dashboards  # noqa: E501
         """
         pass
 
     def test_v1beta2_dashboards_id_delete(self):
         """Test case for v1beta2_dashboards_id_delete
 
-        delete a dashboard.  # noqa: E501
+        delete a dashboard  # noqa: E501
         """
         pass
 
     def test_v1beta2_dashboards_id_get(self):
         """Test case for v1beta2_dashboards_id_get
 
-        get a dashboard.  # noqa: E501
+        get a dashboard  # noqa: E501
         """
         pass
 
     def test_v1beta2_dashboards_id_put(self):
         """Test case for v1beta2_dashboards_id_put
 
-        Update a dashboard.  # noqa: E501
+        update a dashboard  # noqa: E501
         """
         pass
 
     def test_v1beta2_dashboards_post(self):
         """Test case for v1beta2_dashboards_post
 
-        create a dashboard.  # noqa: E501
+        create a dashboard  # noqa: E501
         """
         pass
 

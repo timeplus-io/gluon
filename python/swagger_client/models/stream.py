@@ -41,7 +41,9 @@ class Stream(object):
         'mode': 'str',
         'name': 'str',
         'primary_key': 'str',
-        'ttl': 'str'
+        'settings': 'list[StreamSetting]',
+        'ttl': 'str',
+        'ttl_expression': 'str'
     }
 
     attribute_map = {
@@ -58,10 +60,12 @@ class Stream(object):
         'mode': 'mode',
         'name': 'name',
         'primary_key': 'primary_key',
-        'ttl': 'ttl'
+        'settings': 'settings',
+        'ttl': 'ttl',
+        'ttl_expression': 'ttl_expression'
     }
 
-    def __init__(self, columns=None, created_at=None, created_by=None, description=None, engine=None, is_external=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, mode=None, name=None, primary_key=None, ttl=None):  # noqa: E501
+    def __init__(self, columns=None, created_at=None, created_by=None, description=None, engine=None, is_external=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, mode=None, name=None, primary_key=None, settings=None, ttl=None, ttl_expression=None):  # noqa: E501
         """Stream - a model defined in Swagger"""  # noqa: E501
         self._columns = None
         self._created_at = None
@@ -76,7 +80,9 @@ class Stream(object):
         self._mode = None
         self._name = None
         self._primary_key = None
+        self._settings = None
         self._ttl = None
+        self._ttl_expression = None
         self.discriminator = None
         self.columns = columns
         if created_at is not None:
@@ -96,7 +102,10 @@ class Stream(object):
         self.name = name
         if primary_key is not None:
             self.primary_key = primary_key
+        if settings is not None:
+            self.settings = settings
         self.ttl = ttl
+        self.ttl_expression = ttl_expression
 
     @property
     def columns(self):
@@ -278,6 +287,7 @@ class Stream(object):
     def logstore_retention_bytes(self):
         """Gets the logstore_retention_bytes of this Stream.  # noqa: E501
 
+        The max size a stream can grow. Any non-positive value means unlimited size.  # noqa: E501
 
         :return: The logstore_retention_bytes of this Stream.  # noqa: E501
         :rtype: int
@@ -288,6 +298,7 @@ class Stream(object):
     def logstore_retention_bytes(self, logstore_retention_bytes):
         """Sets the logstore_retention_bytes of this Stream.
 
+        The max size a stream can grow. Any non-positive value means unlimited size.  # noqa: E501
 
         :param logstore_retention_bytes: The logstore_retention_bytes of this Stream.  # noqa: E501
         :type: int
@@ -301,6 +312,7 @@ class Stream(object):
     def logstore_retention_ms(self):
         """Gets the logstore_retention_ms of this Stream.  # noqa: E501
 
+        The max time the data can be retained in the stream. Any non-positive value means unlimited time.  # noqa: E501
 
         :return: The logstore_retention_ms of this Stream.  # noqa: E501
         :rtype: int
@@ -311,6 +323,7 @@ class Stream(object):
     def logstore_retention_ms(self, logstore_retention_ms):
         """Sets the logstore_retention_ms of this Stream.
 
+        The max time the data can be retained in the stream. Any non-positive value means unlimited time.  # noqa: E501
 
         :param logstore_retention_ms: The logstore_retention_ms of this Stream.  # noqa: E501
         :type: int
@@ -324,7 +337,7 @@ class Stream(object):
     def mode(self):
         """Gets the mode of this Stream.  # noqa: E501
 
-        Storage mode of stream. Possible values: `append`, `changelog`, `changelog_kv`, `versioned_kv`  # noqa: E501
+        Storage mode of stream. Defaulted to `append`.  # noqa: E501
 
         :return: The mode of this Stream.  # noqa: E501
         :rtype: str
@@ -335,13 +348,19 @@ class Stream(object):
     def mode(self, mode):
         """Sets the mode of this Stream.
 
-        Storage mode of stream. Possible values: `append`, `changelog`, `changelog_kv`, `versioned_kv`  # noqa: E501
+        Storage mode of stream. Defaulted to `append`.  # noqa: E501
 
         :param mode: The mode of this Stream.  # noqa: E501
         :type: str
         """
         if mode is None:
             raise ValueError("Invalid value for `mode`, must not be `None`")  # noqa: E501
+        # allowed_values = ["append", "changelog", "changelog_kv", "versioned_kv"]  # noqa: E501
+        # # if mode not in allowed_values:
+        #     raise ValueError(
+        #         "Invalid value for `mode` ({0}), must be one of {1}"  # noqa: E501
+        #         .format(mode, allowed_values)
+        #     )
 
         self._mode = mode
 
@@ -372,7 +391,7 @@ class Stream(object):
     def primary_key(self):
         """Gets the primary_key of this Stream.  # noqa: E501
 
-        Expression of primary key, required in `changelog_kv`` and `versioned_kv`` mode  # noqa: E501
+        Expression of primary key, required in `changelog_kv` and `versioned_kv` mode  # noqa: E501
 
         :return: The primary_key of this Stream.  # noqa: E501
         :rtype: str
@@ -383,7 +402,7 @@ class Stream(object):
     def primary_key(self, primary_key):
         """Sets the primary_key of this Stream.
 
-        Expression of primary key, required in `changelog_kv`` and `versioned_kv`` mode  # noqa: E501
+        Expression of primary key, required in `changelog_kv` and `versioned_kv` mode  # noqa: E501
 
         :param primary_key: The primary_key of this Stream.  # noqa: E501
         :type: str
@@ -392,10 +411,33 @@ class Stream(object):
         self._primary_key = primary_key
 
     @property
+    def settings(self):
+        """Gets the settings of this Stream.  # noqa: E501
+
+        Only available for external stream.  # noqa: E501
+
+        :return: The settings of this Stream.  # noqa: E501
+        :rtype: list[StreamSetting]
+        """
+        return self._settings
+
+    @settings.setter
+    def settings(self, settings):
+        """Sets the settings of this Stream.
+
+        Only available for external stream.  # noqa: E501
+
+        :param settings: The settings of this Stream.  # noqa: E501
+        :type: list[StreamSetting]
+        """
+
+        self._settings = settings
+
+    @property
     def ttl(self):
         """Gets the ttl of this Stream.  # noqa: E501
 
-        ORDER_BY     string        `json:\"order_by_expression\"` PATTITION_BY string        `json:\"partition_by_expression\"`  # noqa: E501
+        Deprecated. Use `ttl_expression` instaed  # noqa: E501
 
         :return: The ttl of this Stream.  # noqa: E501
         :rtype: str
@@ -406,7 +448,7 @@ class Stream(object):
     def ttl(self, ttl):
         """Sets the ttl of this Stream.
 
-        ORDER_BY     string        `json:\"order_by_expression\"` PATTITION_BY string        `json:\"partition_by_expression\"`  # noqa: E501
+        Deprecated. Use `ttl_expression` instaed  # noqa: E501
 
         :param ttl: The ttl of this Stream.  # noqa: E501
         :type: str
@@ -415,6 +457,31 @@ class Stream(object):
             raise ValueError("Invalid value for `ttl`, must not be `None`")  # noqa: E501
 
         self._ttl = ttl
+
+    @property
+    def ttl_expression(self):
+        """Gets the ttl_expression of this Stream.  # noqa: E501
+
+        ORDER_BY     string        `json:\"order_by_expression\"` PATTITION_BY string        `json:\"partition_by_expression\"`  # noqa: E501
+
+        :return: The ttl_expression of this Stream.  # noqa: E501
+        :rtype: str
+        """
+        return self._ttl_expression
+
+    @ttl_expression.setter
+    def ttl_expression(self, ttl_expression):
+        """Sets the ttl_expression of this Stream.
+
+        ORDER_BY     string        `json:\"order_by_expression\"` PATTITION_BY string        `json:\"partition_by_expression\"`  # noqa: E501
+
+        :param ttl_expression: The ttl_expression of this Stream.  # noqa: E501
+        :type: str
+        """
+        if ttl_expression is None:
+            raise ValueError("Invalid value for `ttl_expression`, must not be `None`")  # noqa: E501
+
+        self._ttl_expression = ttl_expression
 
     def to_dict(self):
         """Returns the model properties as a dict"""

@@ -98,8 +98,7 @@ class Query(object):
             self.created_at = created_at
         if created_by is not None:
             self.created_by = created_by
-        if description is not None:
-            self.description = description
+        self.description = description
         self.duration = duration
         self.end_time = end_time
         self.id = id
@@ -108,11 +107,11 @@ class Query(object):
         if last_updated_by is not None:
             self.last_updated_by = last_updated_by
         self.message = message
-        if name is not None:
-            self.name = name
+        self.name = name
         self.response_time = response_time
         self.result = result
-        self.sinks = sinks
+        if sinks is not None:
+            self.sinks = sinks
         self.sql = sql
         self.start_time = start_time
         self.status = status
@@ -203,6 +202,8 @@ class Query(object):
         :param description: The description of this Query.  # noqa: E501
         :type: str
         """
+        if description is None:
+            raise ValueError("Invalid value for `description`, must not be `None`")  # noqa: E501
 
         self._description = description
 
@@ -358,6 +359,8 @@ class Query(object):
         :param name: The name of this Query.  # noqa: E501
         :type: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
@@ -411,6 +414,7 @@ class Query(object):
     def sinks(self):
         """Gets the sinks of this Query.  # noqa: E501
 
+        deprecated  # noqa: E501
 
         :return: The sinks of this Query.  # noqa: E501
         :rtype: dict(str, SinkStat)
@@ -421,12 +425,11 @@ class Query(object):
     def sinks(self, sinks):
         """Sets the sinks of this Query.
 
+        deprecated  # noqa: E501
 
         :param sinks: The sinks of this Query.  # noqa: E501
         :type: dict(str, SinkStat)
         """
-        if sinks is None:
-            raise ValueError("Invalid value for `sinks`, must not be `None`")  # noqa: E501
 
         self._sinks = sinks
 
@@ -496,6 +499,12 @@ class Query(object):
         """
         if status is None:
             raise ValueError("Invalid value for `status`, must not be `None`")  # noqa: E501
+        allowed_values = ["init", "running", "finished", "canceled", "failed"]  # noqa: E501
+        if status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `status` ({0}), must be one of {1}"  # noqa: E501
+                .format(status, allowed_values)
+            )
 
         self._status = status
 

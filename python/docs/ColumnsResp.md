@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**codec** | **str** |  | [optional] 
 **default** | **str** |  | [optional] 
 **name** | **str** |  | [optional] 
 **nullable** | **bool** |  | [optional] 

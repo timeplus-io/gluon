@@ -33,9 +33,9 @@ class APIKeysV1beta2Api(object):
         self.api_client = api_client
 
     def v1beta2_auth_api_keys_get(self, **kwargs):  # noqa: E501
-        """List API keys  # noqa: E501
+        """list API keys  # noqa: E501
 
-        list all API keys created by current user  # noqa: E501
+        Get all API keys created by current user  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_auth_api_keys_get(async_req=True)
@@ -54,9 +54,9 @@ class APIKeysV1beta2Api(object):
             return data
 
     def v1beta2_auth_api_keys_get_with_http_info(self, **kwargs):  # noqa: E501
-        """List API keys  # noqa: E501
+        """list API keys  # noqa: E501
 
-        list all API keys created by current user  # noqa: E501
+        Get all API keys created by current user  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_auth_api_keys_get_with_http_info(async_req=True)
@@ -120,9 +120,9 @@ class APIKeysV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_auth_api_keys_id_delete(self, id, **kwargs):  # noqa: E501
-        """Delete an API key  # noqa: E501
+        """delete an API key  # noqa: E501
 
-        delete the API key with the specified ID  # noqa: E501
+        Delete the API key with the givin ID  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_auth_api_keys_id_delete(id, async_req=True)
@@ -142,9 +142,9 @@ class APIKeysV1beta2Api(object):
             return data
 
     def v1beta2_auth_api_keys_id_delete_with_http_info(self, id, **kwargs):  # noqa: E501
-        """Delete an API key  # noqa: E501
+        """delete an API key  # noqa: E501
 
-        delete the API key with the specified ID  # noqa: E501
+        Delete the API key with the givin ID  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_auth_api_keys_id_delete_with_http_info(id, async_req=True)
@@ -215,9 +215,9 @@ class APIKeysV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_auth_api_keys_post(self, **kwargs):  # noqa: E501
-        """Create an API key  # noqa: E501
+        """create an API key  # noqa: E501
 
-        create a new API key with optional expiration, the created API key represents the owner thus has the same permissions as the owner  # noqa: E501
+        Create a new API key with optional expiration, the created API key represents the owner thus has the same permissions as the owner  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_auth_api_keys_post(async_req=True)
@@ -237,9 +237,9 @@ class APIKeysV1beta2Api(object):
             return data
 
     def v1beta2_auth_api_keys_post_with_http_info(self, **kwargs):  # noqa: E501
-        """Create an API key  # noqa: E501
+        """create an API key  # noqa: E501
 
-        create a new API key with optional expiration, the created API key represents the owner thus has the same permissions as the owner  # noqa: E501
+        Create a new API key with optional expiration, the created API key represents the owner thus has the same permissions as the owner  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_auth_api_keys_post_with_http_info(async_req=True)
