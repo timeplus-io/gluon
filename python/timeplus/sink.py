@@ -17,10 +17,6 @@ class Sink:
             swagger_client.ApiClient(self._configuration)
         )
 
-        self._internal_api_instance = swagger_client.SinksInternalApi(
-            swagger_client.ApiClient(self._configuration)
-        )
-
         self._name = None
         self._type = None
         self._description = None
@@ -270,7 +266,7 @@ class Sink:
 
         # this should not use internal API
         try:
-            self._internal_api_instance.api_internal_tenants_tenant_sinks_id_start_post(self.id())
+            self._api_instance.v1beta2_sinks_id_start_post(self.id())
             return self
         except ApiException:
             return False

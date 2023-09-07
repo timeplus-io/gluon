@@ -27,7 +27,7 @@ class Stream:
         self._logstore_retention_ms = None
         self._ttl_expression = None
         self._description = None
-        self._mode = None
+        self._mode = "append"
         self._primary_key = None
 
     def name(self, stream_name):

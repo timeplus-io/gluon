@@ -1,0 +1,58 @@
+# swagger_client.SubscriptionV1beta2Api
+
+All URIs are relative to *//us.timeplus.cloud/{workspace-id}/api*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**v1beta2_subscription_get**](SubscriptionV1beta2Api.md#v1beta2_subscription_get) | **GET** /v1beta2/subscription | get current subscription
+
+# **v1beta2_subscription_get**
+> Subscription v1beta2_subscription_get()
+
+get current subscription
+
+Get the status of current subscription.
+
+### Example
+```python
+from __future__ import print_function
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: ApiKeyAuth
+configuration = swagger_client.Configuration()
+configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.SubscriptionV1beta2Api(swagger_client.ApiClient(configuration))
+
+try:
+    # get current subscription
+    api_response = api_instance.v1beta2_subscription_get()
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling SubscriptionV1beta2Api->v1beta2_subscription_get: %s\n" % e)
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**Subscription**](Subscription.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

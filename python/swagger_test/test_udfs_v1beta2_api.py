@@ -31,35 +31,35 @@ class TestUDFsV1beta2Api(unittest.TestCase):
     def test_v1beta2_udfs_get(self):
         """Test case for v1beta2_udfs_get
 
-        list udf.  # noqa: E501
+        list user-defined functions  # noqa: E501
         """
         pass
 
     def test_v1beta2_udfs_name_delete(self):
         """Test case for v1beta2_udfs_name_delete
 
-        delete a udf.  # noqa: E501
+        delete an user-defined function  # noqa: E501
         """
         pass
 
     def test_v1beta2_udfs_name_get(self):
         """Test case for v1beta2_udfs_name_get
 
-        get a udf.  # noqa: E501
+        get an user-defined function  # noqa: E501
         """
         pass
 
     def test_v1beta2_udfs_name_put(self):
         """Test case for v1beta2_udfs_name_put
 
-        update a udf.  # noqa: E501
+        update an user-defined function  # noqa: E501
         """
         pass
 
     def test_v1beta2_udfs_post(self):
         """Test case for v1beta2_udfs_post
 
-        create a udf.  # noqa: E501
+        create an user-defined function  # noqa: E501
         """
         pass
 

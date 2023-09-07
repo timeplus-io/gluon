@@ -38,28 +38,49 @@ class TestSinksV1beta2Api(unittest.TestCase):
     def test_v1beta2_sinks_id_delete(self):
         """Test case for v1beta2_sinks_id_delete
 
-        delete a sink.  # noqa: E501
+        delete a sink  # noqa: E501
         """
         pass
 
     def test_v1beta2_sinks_id_get(self):
         """Test case for v1beta2_sinks_id_get
 
-        get a sink.  # noqa: E501
+        get a sink  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_sinks_id_put(self):
+        """Test case for v1beta2_sinks_id_put
+
+        update a sink  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_sinks_id_start_post(self):
+        """Test case for v1beta2_sinks_id_start_post
+
+        start a sink  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_sinks_id_stats_get(self):
+        """Test case for v1beta2_sinks_id_stats_get
+
+        get the stats of a sink  # noqa: E501
         """
         pass
 
     def test_v1beta2_sinks_id_stop_post(self):
         """Test case for v1beta2_sinks_id_stop_post
 
-        stop a sink.  # noqa: E501
+        stop a sink  # noqa: E501
         """
         pass
 
     def test_v1beta2_sinks_post(self):
         """Test case for v1beta2_sinks_post
 
-        create a sink.  # noqa: E501
+        create a sink  # noqa: E501
         """
         pass
 

@@ -28,6 +28,7 @@ class ColumnsResp(object):
                             and the value is json key in definition.
     """
     swagger_types = {
+        'codec': 'str',
         'default': 'str',
         'name': 'str',
         'nullable': 'bool',
@@ -35,19 +36,23 @@ class ColumnsResp(object):
     }
 
     attribute_map = {
+        'codec': 'codec',
         'default': 'default',
         'name': 'name',
         'nullable': 'nullable',
         'type': 'type'
     }
 
-    def __init__(self, default=None, name=None, nullable=None, type=None):  # noqa: E501
+    def __init__(self, codec=None, default=None, name=None, nullable=None, type=None):  # noqa: E501
         """ColumnsResp - a model defined in Swagger"""  # noqa: E501
+        self._codec = None
         self._default = None
         self._name = None
         self._nullable = None
         self._type = None
         self.discriminator = None
+        if codec is not None:
+            self.codec = codec
         if default is not None:
             self.default = default
         if name is not None:
@@ -56,6 +61,27 @@ class ColumnsResp(object):
             self.nullable = nullable
         if type is not None:
             self.type = type
+
+    @property
+    def codec(self):
+        """Gets the codec of this ColumnsResp.  # noqa: E501
+
+
+        :return: The codec of this ColumnsResp.  # noqa: E501
+        :rtype: str
+        """
+        return self._codec
+
+    @codec.setter
+    def codec(self, codec):
+        """Sets the codec of this ColumnsResp.
+
+
+        :param codec: The codec of this ColumnsResp.  # noqa: E501
+        :type: str
+        """
+
+        self._codec = codec
 
     @property
     def default(self):

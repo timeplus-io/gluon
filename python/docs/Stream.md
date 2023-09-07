@@ -11,12 +11,14 @@ Name | Type | Description | Notes
 **is_external** | **bool** |  | 
 **last_updated_at** | **str** |  | [optional] 
 **last_updated_by** | [**Owner**](Owner.md) |  | [optional] 
-**logstore_retention_bytes** | **int** |  | 
-**logstore_retention_ms** | **int** |  | 
-**mode** | **str** | Storage mode of stream. Possible values: &#x60;append&#x60;, &#x60;changelog&#x60;, &#x60;changelog_kv&#x60;, &#x60;versioned_kv&#x60; | 
+**logstore_retention_bytes** | **int** | The max size a stream can grow. Any non-positive value means unlimited size. | 
+**logstore_retention_ms** | **int** | The max time the data can be retained in the stream. Any non-positive value means unlimited time. | 
+**mode** | **str** | Storage mode of stream. Defaulted to &#x60;append&#x60;. | 
 **name** | **str** |  | 
-**primary_key** | **str** | Expression of primary key, required in &#x60;changelog_kv&#x60;&#x60; and &#x60;versioned_kv&#x60;&#x60; mode | [optional] 
-**ttl** | **str** | ORDER_BY     string        &#x60;json:\&quot;order_by_expression\&quot;&#x60; PATTITION_BY string        &#x60;json:\&quot;partition_by_expression\&quot;&#x60; | 
+**primary_key** | **str** | Expression of primary key, required in &#x60;changelog_kv&#x60; and &#x60;versioned_kv&#x60; mode | [optional] 
+**settings** | [**list[StreamSetting]**](StreamSetting.md) | Only available for external stream. | [optional] 
+**ttl** | **str** | Deprecated. Use &#x60;ttl_expression&#x60; instaed | 
+**ttl_expression** | **str** | ORDER_BY     string        &#x60;json:\&quot;order_by_expression\&quot;&#x60; PATTITION_BY string        &#x60;json:\&quot;partition_by_expression\&quot;&#x60; | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

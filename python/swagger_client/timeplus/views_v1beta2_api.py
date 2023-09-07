@@ -33,7 +33,7 @@ class ViewsV1beta2Api(object):
         self.api_client = api_client
 
     def v1beta2_views_get(self, **kwargs):  # noqa: E501
-        """list views.  # noqa: E501
+        """list views  # noqa: E501
 
         Get all views.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -54,7 +54,7 @@ class ViewsV1beta2Api(object):
             return data
 
     def v1beta2_views_get_with_http_info(self, **kwargs):  # noqa: E501
-        """list views.  # noqa: E501
+        """list views  # noqa: E501
 
         Get all views.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -120,7 +120,7 @@ class ViewsV1beta2Api(object):
             collection_formats=collection_formats)
 
     def v1beta2_views_name_delete(self, name, **kwargs):  # noqa: E501
-        """delete a view.  # noqa: E501
+        """delete a view  # noqa: E501
 
         Delete the view with the given name.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -142,7 +142,7 @@ class ViewsV1beta2Api(object):
             return data
 
     def v1beta2_views_name_delete_with_http_info(self, name, **kwargs):  # noqa: E501
-        """delete a view.  # noqa: E501
+        """delete a view  # noqa: E501
 
         Delete the view with the given name.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -214,8 +214,103 @@ class ViewsV1beta2Api(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
+    def v1beta2_views_name_get(self, name, **kwargs):  # noqa: E501
+        """get a view  # noqa: E501
+
+        Get a view with the given name.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.v1beta2_views_name_get(name, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str name: view name (required)
+        :return: View
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.v1beta2_views_name_get_with_http_info(name, **kwargs)  # noqa: E501
+        else:
+            (data) = self.v1beta2_views_name_get_with_http_info(name, **kwargs)  # noqa: E501
+            return data
+
+    def v1beta2_views_name_get_with_http_info(self, name, **kwargs):  # noqa: E501
+        """get a view  # noqa: E501
+
+        Get a view with the given name.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.v1beta2_views_name_get_with_http_info(name, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str name: view name (required)
+        :return: View
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['name']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method v1beta2_views_name_get" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'name' is set
+        if ('name' not in params or
+                params['name'] is None):
+            raise ValueError("Missing the required parameter `name` when calling `v1beta2_views_name_get`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'name' in params:
+            path_params['name'] = params['name']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['ApiKeyAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/v1beta2/views/{name}', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='View',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
     def v1beta2_views_name_patch(self, body, name, **kwargs):  # noqa: E501
-        """Update a view.  # noqa: E501
+        """update a view  # noqa: E501
 
         Update the specific view with the given name. Updating the query of a materialized view is not allowed  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -238,7 +333,7 @@ class ViewsV1beta2Api(object):
             return data
 
     def v1beta2_views_name_patch_with_http_info(self, body, name, **kwargs):  # noqa: E501
-        """Update a view.  # noqa: E501
+        """update a view  # noqa: E501
 
         Update the specific view with the given name. Updating the query of a materialized view is not allowed  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
@@ -321,10 +416,105 @@ class ViewsV1beta2Api(object):
             _request_timeout=params.get('_request_timeout'),
             collection_formats=collection_formats)
 
-    def v1beta2_views_post(self, body, **kwargs):  # noqa: E501
-        """create a view.  # noqa: E501
+    def v1beta2_views_name_stats_get(self, name, **kwargs):  # noqa: E501
+        """get the stats of a view  # noqa: E501
 
-        Create a view.  # noqa: E501
+        Get the stats of a view with the given name.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.v1beta2_views_name_stats_get(name, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str name: view name (required)
+        :return: StreamStats
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+        kwargs['_return_http_data_only'] = True
+        if kwargs.get('async_req'):
+            return self.v1beta2_views_name_stats_get_with_http_info(name, **kwargs)  # noqa: E501
+        else:
+            (data) = self.v1beta2_views_name_stats_get_with_http_info(name, **kwargs)  # noqa: E501
+            return data
+
+    def v1beta2_views_name_stats_get_with_http_info(self, name, **kwargs):  # noqa: E501
+        """get the stats of a view  # noqa: E501
+
+        Get the stats of a view with the given name.  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+        >>> thread = api.v1beta2_views_name_stats_get_with_http_info(name, async_req=True)
+        >>> result = thread.get()
+
+        :param async_req bool
+        :param str name: view name (required)
+        :return: StreamStats
+                 If the method is called asynchronously,
+                 returns the request thread.
+        """
+
+        all_params = ['name']  # noqa: E501
+        all_params.append('async_req')
+        all_params.append('_return_http_data_only')
+        all_params.append('_preload_content')
+        all_params.append('_request_timeout')
+
+        params = locals()
+        for key, val in six.iteritems(params['kwargs']):
+            if key not in all_params:
+                raise TypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method v1beta2_views_name_stats_get" % key
+                )
+            params[key] = val
+        del params['kwargs']
+        # verify the required parameter 'name' is set
+        if ('name' not in params or
+                params['name'] is None):
+            raise ValueError("Missing the required parameter `name` when calling `v1beta2_views_name_stats_get`")  # noqa: E501
+
+        collection_formats = {}
+
+        path_params = {}
+        if 'name' in params:
+            path_params['name'] = params['name']  # noqa: E501
+
+        query_params = []
+
+        header_params = {}
+
+        form_params = []
+        local_var_files = {}
+
+        body_params = None
+        # HTTP header `Accept`
+        header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json'])  # noqa: E501
+
+        # Authentication setting
+        auth_settings = ['ApiKeyAuth']  # noqa: E501
+
+        return self.api_client.call_api(
+            '/v1beta2/views/{name}/stats', 'GET',
+            path_params,
+            query_params,
+            header_params,
+            body=body_params,
+            post_params=form_params,
+            files=local_var_files,
+            response_type='StreamStats',  # noqa: E501
+            auth_settings=auth_settings,
+            async_req=params.get('async_req'),
+            _return_http_data_only=params.get('_return_http_data_only'),
+            _preload_content=params.get('_preload_content', True),
+            _request_timeout=params.get('_request_timeout'),
+            collection_formats=collection_formats)
+
+    def v1beta2_views_post(self, body, **kwargs):  # noqa: E501
+        """create a view  # noqa: E501
+
+        Create a view. There are two different types of the view, please refer to the documentation of [view](https://docs.timeplus.com/view) for more details.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_views_post(body, async_req=True)
@@ -344,9 +534,9 @@ class ViewsV1beta2Api(object):
             return data
 
     def v1beta2_views_post_with_http_info(self, body, **kwargs):  # noqa: E501
-        """create a view.  # noqa: E501
+        """create a view  # noqa: E501
 
-        Create a view.  # noqa: E501
+        Create a view. There are two different types of the view, please refer to the documentation of [view](https://docs.timeplus.com/view) for more details.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_views_post_with_http_info(body, async_req=True)
@@ -413,196 +603,6 @@ class ViewsV1beta2Api(object):
             post_params=form_params,
             files=local_var_files,
             response_type='View',  # noqa: E501
-            auth_settings=auth_settings,
-            async_req=params.get('async_req'),
-            _return_http_data_only=params.get('_return_http_data_only'),
-            _preload_content=params.get('_preload_content', True),
-            _request_timeout=params.get('_request_timeout'),
-            collection_formats=collection_formats)
-
-    def v1beta2_viewsname_get(self, name, **kwargs):  # noqa: E501
-        """get a view.  # noqa: E501
-
-        Get a view with the given name.  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_viewsname_get(name, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str name: view name (required)
-        :return: View
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        kwargs['_return_http_data_only'] = True
-        if kwargs.get('async_req'):
-            return self.v1beta2_viewsname_get_with_http_info(name, **kwargs)  # noqa: E501
-        else:
-            (data) = self.v1beta2_viewsname_get_with_http_info(name, **kwargs)  # noqa: E501
-            return data
-
-    def v1beta2_viewsname_get_with_http_info(self, name, **kwargs):  # noqa: E501
-        """get a view.  # noqa: E501
-
-        Get a view with the given name.  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_viewsname_get_with_http_info(name, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str name: view name (required)
-        :return: View
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-
-        all_params = ['name']  # noqa: E501
-        all_params.append('async_req')
-        all_params.append('_return_http_data_only')
-        all_params.append('_preload_content')
-        all_params.append('_request_timeout')
-
-        params = locals()
-        for key, val in six.iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method v1beta2_viewsname_get" % key
-                )
-            params[key] = val
-        del params['kwargs']
-        # verify the required parameter 'name' is set
-        if ('name' not in params or
-                params['name'] is None):
-            raise ValueError("Missing the required parameter `name` when calling `v1beta2_viewsname_get`")  # noqa: E501
-
-        collection_formats = {}
-
-        path_params = {}
-        if 'name' in params:
-            path_params['name'] = params['name']  # noqa: E501
-
-        query_params = []
-
-        header_params = {}
-
-        form_params = []
-        local_var_files = {}
-
-        body_params = None
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
-
-        # Authentication setting
-        auth_settings = ['ApiKeyAuth']  # noqa: E501
-
-        return self.api_client.call_api(
-            '/v1beta2/views/:name', 'GET',
-            path_params,
-            query_params,
-            header_params,
-            body=body_params,
-            post_params=form_params,
-            files=local_var_files,
-            response_type='View',  # noqa: E501
-            auth_settings=auth_settings,
-            async_req=params.get('async_req'),
-            _return_http_data_only=params.get('_return_http_data_only'),
-            _preload_content=params.get('_preload_content', True),
-            _request_timeout=params.get('_request_timeout'),
-            collection_formats=collection_formats)
-
-    def v1beta2_viewsname_stats_get(self, name, **kwargs):  # noqa: E501
-        """get the stats of a view.  # noqa: E501
-
-        Get the stats of a view with the given name.  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_viewsname_stats_get(name, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str name: view name (required)
-        :return: StreamStats
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-        kwargs['_return_http_data_only'] = True
-        if kwargs.get('async_req'):
-            return self.v1beta2_viewsname_stats_get_with_http_info(name, **kwargs)  # noqa: E501
-        else:
-            (data) = self.v1beta2_viewsname_stats_get_with_http_info(name, **kwargs)  # noqa: E501
-            return data
-
-    def v1beta2_viewsname_stats_get_with_http_info(self, name, **kwargs):  # noqa: E501
-        """get the stats of a view.  # noqa: E501
-
-        Get the stats of a view with the given name.  # noqa: E501
-        This method makes a synchronous HTTP request by default. To make an
-        asynchronous HTTP request, please pass async_req=True
-        >>> thread = api.v1beta2_viewsname_stats_get_with_http_info(name, async_req=True)
-        >>> result = thread.get()
-
-        :param async_req bool
-        :param str name: view name (required)
-        :return: StreamStats
-                 If the method is called asynchronously,
-                 returns the request thread.
-        """
-
-        all_params = ['name']  # noqa: E501
-        all_params.append('async_req')
-        all_params.append('_return_http_data_only')
-        all_params.append('_preload_content')
-        all_params.append('_request_timeout')
-
-        params = locals()
-        for key, val in six.iteritems(params['kwargs']):
-            if key not in all_params:
-                raise TypeError(
-                    "Got an unexpected keyword argument '%s'"
-                    " to method v1beta2_viewsname_stats_get" % key
-                )
-            params[key] = val
-        del params['kwargs']
-        # verify the required parameter 'name' is set
-        if ('name' not in params or
-                params['name'] is None):
-            raise ValueError("Missing the required parameter `name` when calling `v1beta2_viewsname_stats_get`")  # noqa: E501
-
-        collection_formats = {}
-
-        path_params = {}
-        if 'name' in params:
-            path_params['name'] = params['name']  # noqa: E501
-
-        query_params = []
-
-        header_params = {}
-
-        form_params = []
-        local_var_files = {}
-
-        body_params = None
-        # HTTP header `Accept`
-        header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])  # noqa: E501
-
-        # Authentication setting
-        auth_settings = ['ApiKeyAuth']  # noqa: E501
-
-        return self.api_client.call_api(
-            '/v1beta2/views/:name/stats', 'GET',
-            path_params,
-            query_params,
-            header_params,
-            body=body_params,
-            post_params=form_params,
-            files=local_var_files,
-            response_type='StreamStats',  # noqa: E501
             auth_settings=auth_settings,
             async_req=params.get('async_req'),
             _return_http_data_only=params.get('_return_http_data_only'),

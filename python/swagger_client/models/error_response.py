@@ -29,23 +29,25 @@ class ErrorResponse(object):
     """
     swagger_types = {
         'code': 'int',
-        'message': 'str'
+        'message': 'str',
+        'system': 'str'
     }
 
     attribute_map = {
         'code': 'code',
-        'message': 'message'
+        'message': 'message',
+        'system': 'system'
     }
 
-    def __init__(self, code=None, message=None):  # noqa: E501
+    def __init__(self, code=None, message=None, system=None):  # noqa: E501
         """ErrorResponse - a model defined in Swagger"""  # noqa: E501
         self._code = None
         self._message = None
+        self._system = None
         self.discriminator = None
-        if code is not None:
-            self.code = code
-        if message is not None:
-            self.message = message
+        self.code = code
+        self.message = message
+        self.system = system
 
     @property
     def code(self):
@@ -65,6 +67,8 @@ class ErrorResponse(object):
         :param code: The code of this ErrorResponse.  # noqa: E501
         :type: int
         """
+        if code is None:
+            raise ValueError("Invalid value for `code`, must not be `None`")  # noqa: E501
 
         self._code = code
 
@@ -86,8 +90,39 @@ class ErrorResponse(object):
         :param message: The message of this ErrorResponse.  # noqa: E501
         :type: str
         """
+        if message is None:
+            raise ValueError("Invalid value for `message`, must not be `None`")  # noqa: E501
 
         self._message = message
+
+    @property
+    def system(self):
+        """Gets the system of this ErrorResponse.  # noqa: E501
+
+
+        :return: The system of this ErrorResponse.  # noqa: E501
+        :rtype: str
+        """
+        return self._system
+
+    @system.setter
+    def system(self, system):
+        """Sets the system of this ErrorResponse.
+
+
+        :param system: The system of this ErrorResponse.  # noqa: E501
+        :type: str
+        """
+        if system is None:
+            raise ValueError("Invalid value for `system`, must not be `None`")  # noqa: E501
+        allowed_values = ["proton", "neutron", "orbit"]  # noqa: E501
+        if system not in allowed_values:
+            raise ValueError(
+                "Invalid value for `system` ({0}), must be one of {1}"  # noqa: E501
+                .format(system, allowed_values)
+            )
+
+        self._system = system
 
     def to_dict(self):
         """Returns the model properties as a dict"""

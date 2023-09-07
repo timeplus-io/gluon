@@ -29,36 +29,51 @@ class CreateViewRequest(object):
     """
     swagger_types = {
         'description': 'str',
+        'logstore_retention_bytes': 'int',
+        'logstore_retention_ms': 'int',
         'materialized': 'bool',
         'name': 'str',
         'query': 'str',
-        'target_stream': 'str'
+        'target_stream': 'str',
+        'ttl_expression': 'str'
     }
 
     attribute_map = {
         'description': 'description',
+        'logstore_retention_bytes': 'logstore_retention_bytes',
+        'logstore_retention_ms': 'logstore_retention_ms',
         'materialized': 'materialized',
         'name': 'name',
         'query': 'query',
-        'target_stream': 'target_stream'
+        'target_stream': 'target_stream',
+        'ttl_expression': 'ttl_expression'
     }
 
-    def __init__(self, description=None, materialized=False, name=None, query=None, target_stream=None):  # noqa: E501
+    def __init__(self, description=None, logstore_retention_bytes=None, logstore_retention_ms=None, materialized=False, name=None, query=None, target_stream=None, ttl_expression=None):  # noqa: E501
         """CreateViewRequest - a model defined in Swagger"""  # noqa: E501
         self._description = None
+        self._logstore_retention_bytes = None
+        self._logstore_retention_ms = None
         self._materialized = None
         self._name = None
         self._query = None
         self._target_stream = None
+        self._ttl_expression = None
         self.discriminator = None
         if description is not None:
             self.description = description
+        if logstore_retention_bytes is not None:
+            self.logstore_retention_bytes = logstore_retention_bytes
+        if logstore_retention_ms is not None:
+            self.logstore_retention_ms = logstore_retention_ms
         if materialized is not None:
             self.materialized = materialized
         self.name = name
         self.query = query
         if target_stream is not None:
             self.target_stream = target_stream
+        if ttl_expression is not None:
+            self.ttl_expression = ttl_expression
 
     @property
     def description(self):
@@ -80,6 +95,52 @@ class CreateViewRequest(object):
         """
 
         self._description = description
+
+    @property
+    def logstore_retention_bytes(self):
+        """Gets the logstore_retention_bytes of this CreateViewRequest.  # noqa: E501
+
+        The max size a stream can grow. Any non-positive value means unlimited size. Defaulted to 10 GiB.  # noqa: E501
+
+        :return: The logstore_retention_bytes of this CreateViewRequest.  # noqa: E501
+        :rtype: int
+        """
+        return self._logstore_retention_bytes
+
+    @logstore_retention_bytes.setter
+    def logstore_retention_bytes(self, logstore_retention_bytes):
+        """Sets the logstore_retention_bytes of this CreateViewRequest.
+
+        The max size a stream can grow. Any non-positive value means unlimited size. Defaulted to 10 GiB.  # noqa: E501
+
+        :param logstore_retention_bytes: The logstore_retention_bytes of this CreateViewRequest.  # noqa: E501
+        :type: int
+        """
+
+        self._logstore_retention_bytes = logstore_retention_bytes
+
+    @property
+    def logstore_retention_ms(self):
+        """Gets the logstore_retention_ms of this CreateViewRequest.  # noqa: E501
+
+        The max time the data can be retained in the stream. Any non-positive value means unlimited time. Defaulted to 7 days.  # noqa: E501
+
+        :return: The logstore_retention_ms of this CreateViewRequest.  # noqa: E501
+        :rtype: int
+        """
+        return self._logstore_retention_ms
+
+    @logstore_retention_ms.setter
+    def logstore_retention_ms(self, logstore_retention_ms):
+        """Sets the logstore_retention_ms of this CreateViewRequest.
+
+        The max time the data can be retained in the stream. Any non-positive value means unlimited time. Defaulted to 7 days.  # noqa: E501
+
+        :param logstore_retention_ms: The logstore_retention_ms of this CreateViewRequest.  # noqa: E501
+        :type: int
+        """
+
+        self._logstore_retention_ms = logstore_retention_ms
 
     @property
     def materialized(self):
@@ -106,6 +167,7 @@ class CreateViewRequest(object):
     def name(self):
         """Gets the name of this CreateViewRequest.  # noqa: E501
 
+        View name should only contain a maximum of 64 letters, numbers, or _, and start with a letter  # noqa: E501
 
         :return: The name of this CreateViewRequest.  # noqa: E501
         :rtype: str
@@ -116,6 +178,7 @@ class CreateViewRequest(object):
     def name(self, name):
         """Sets the name of this CreateViewRequest.
 
+        View name should only contain a maximum of 64 letters, numbers, or _, and start with a letter  # noqa: E501
 
         :param name: The name of this CreateViewRequest.  # noqa: E501
         :type: str
@@ -170,6 +233,27 @@ class CreateViewRequest(object):
         """
 
         self._target_stream = target_stream
+
+    @property
+    def ttl_expression(self):
+        """Gets the ttl_expression of this CreateViewRequest.  # noqa: E501
+
+
+        :return: The ttl_expression of this CreateViewRequest.  # noqa: E501
+        :rtype: str
+        """
+        return self._ttl_expression
+
+    @ttl_expression.setter
+    def ttl_expression(self, ttl_expression):
+        """Sets the ttl_expression of this CreateViewRequest.
+
+
+        :param ttl_expression: The ttl_expression of this CreateViewRequest.  # noqa: E501
+        :type: str
+        """
+
+        self._ttl_expression = ttl_expression
 
     def to_dict(self):
         """Returns the model properties as a dict"""

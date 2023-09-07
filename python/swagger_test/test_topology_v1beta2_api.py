@@ -31,7 +31,7 @@ class TestTopologyV1beta2Api(unittest.TestCase):
     def test_v1beta2_topology_get(self):
         """Test case for v1beta2_topology_get
 
-        get topology graph.  # noqa: E501
+        get topology graph  # noqa: E501
         """
         pass
 

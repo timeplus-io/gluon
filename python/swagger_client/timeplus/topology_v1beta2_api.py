@@ -33,9 +33,9 @@ class TopologyV1beta2Api(object):
         self.api_client = api_client
 
     def v1beta2_topology_get(self, **kwargs):  # noqa: E501
-        """get topology graph.  # noqa: E501
+        """get topology graph  # noqa: E501
 
-        get topology graph.  # noqa: E501
+        Get topology graph of all existings resources.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_topology_get(async_req=True)
@@ -54,9 +54,9 @@ class TopologyV1beta2Api(object):
             return data
 
     def v1beta2_topology_get_with_http_info(self, **kwargs):  # noqa: E501
-        """get topology graph.  # noqa: E501
+        """get topology graph  # noqa: E501
 
-        get topology graph.  # noqa: E501
+        Get topology graph of all existings resources.  # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
         >>> thread = api.v1beta2_topology_get_with_http_info(async_req=True)

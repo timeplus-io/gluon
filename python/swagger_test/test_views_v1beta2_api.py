@@ -31,42 +31,42 @@ class TestViewsV1beta2Api(unittest.TestCase):
     def test_v1beta2_views_get(self):
         """Test case for v1beta2_views_get
 
-        list views.  # noqa: E501
+        list views  # noqa: E501
         """
         pass
 
     def test_v1beta2_views_name_delete(self):
         """Test case for v1beta2_views_name_delete
 
-        delete a view.  # noqa: E501
+        delete a view  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_views_name_get(self):
+        """Test case for v1beta2_views_name_get
+
+        get a view  # noqa: E501
         """
         pass
 
     def test_v1beta2_views_name_patch(self):
         """Test case for v1beta2_views_name_patch
 
-        Update a view.  # noqa: E501
+        update a view  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_views_name_stats_get(self):
+        """Test case for v1beta2_views_name_stats_get
+
+        get the stats of a view  # noqa: E501
         """
         pass
 
     def test_v1beta2_views_post(self):
         """Test case for v1beta2_views_post
 
-        create a view.  # noqa: E501
-        """
-        pass
-
-    def test_v1beta2_viewsname_get(self):
-        """Test case for v1beta2_viewsname_get
-
-        get a view.  # noqa: E501
-        """
-        pass
-
-    def test_v1beta2_viewsname_stats_get(self):
-        """Test case for v1beta2_viewsname_stats_get
-
-        get the stats of a view.  # noqa: E501
+        create a view  # noqa: E501
         """
         pass
 

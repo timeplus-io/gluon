@@ -4,19 +4,19 @@ All URIs are relative to *//us.timeplus.cloud/{workspace-id}/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**v1beta2_format_post**](QueriesV1beta2Api.md#v1beta2_format_post) | **POST** /v1beta2/format | format a query.
-[**v1beta2_queries_get**](QueriesV1beta2Api.md#v1beta2_queries_get) | **GET** /v1beta2/queries | list queries.
-[**v1beta2_queries_id_cancel_post**](QueriesV1beta2Api.md#v1beta2_queries_id_cancel_post) | **POST** /v1beta2/queries/{id}/cancel | cancel a query.
-[**v1beta2_queries_id_delete**](QueriesV1beta2Api.md#v1beta2_queries_id_delete) | **DELETE** /v1beta2/queries/{id} | delete a query.
-[**v1beta2_queries_id_get**](QueriesV1beta2Api.md#v1beta2_queries_id_get) | **GET** /v1beta2/queries/{id} | get a query.
+[**v1beta2_format_post**](QueriesV1beta2Api.md#v1beta2_format_post) | **POST** /v1beta2/format | format a query
+[**v1beta2_queries_get**](QueriesV1beta2Api.md#v1beta2_queries_get) | **GET** /v1beta2/queries | list queries
+[**v1beta2_queries_id_cancel_post**](QueriesV1beta2Api.md#v1beta2_queries_id_cancel_post) | **POST** /v1beta2/queries/{id}/cancel | cancel a query
+[**v1beta2_queries_id_delete**](QueriesV1beta2Api.md#v1beta2_queries_id_delete) | **DELETE** /v1beta2/queries/{id} | delete a query
+[**v1beta2_queries_id_get**](QueriesV1beta2Api.md#v1beta2_queries_id_get) | **GET** /v1beta2/queries/{id} | get a query
 [**v1beta2_queries_id_pipeline_get**](QueriesV1beta2Api.md#v1beta2_queries_id_pipeline_get) | **GET** /v1beta2/queries/{id}/pipeline | get the pipeline for a query
-[**v1beta2_queries_post**](QueriesV1beta2Api.md#v1beta2_queries_post) | **POST** /v1beta2/queries | execute a query and return the results.
+[**v1beta2_queries_post**](QueriesV1beta2Api.md#v1beta2_queries_post) | **POST** /v1beta2/queries | execute a query and return the results
 [**v1beta2_sqlanalyze_post**](QueriesV1beta2Api.md#v1beta2_sqlanalyze_post) | **POST** /v1beta2/sqlanalyze | analyze sql
 
 # **v1beta2_format_post**
 > FormatQueryResponse v1beta2_format_post(body)
 
-format a query.
+format a query
 
 Format the given query and make it easy to read.
 
@@ -39,7 +39,7 @@ api_instance = swagger_client.QueriesV1beta2Api(swagger_client.ApiClient(configu
 body = swagger_client.FormatQueryRequest() # FormatQueryRequest | the query SQL to be formatted
 
 try:
-    # format a query.
+    # format a query
     api_response = api_instance.v1beta2_format_post(body)
     pprint(api_response)
 except ApiException as e:
@@ -70,7 +70,7 @@ Name | Type | Description  | Notes
 # **v1beta2_queries_get**
 > list[Query] v1beta2_queries_get(tag=tag)
 
-list queries.
+list queries
 
 Get all queries.
 
@@ -93,7 +93,7 @@ api_instance = swagger_client.QueriesV1beta2Api(swagger_client.ApiClient(configu
 tag = 'tag_example' # str | filter by tag (optional)
 
 try:
-    # list queries.
+    # list queries
     api_response = api_instance.v1beta2_queries_get(tag=tag)
     pprint(api_response)
 except ApiException as e:
@@ -124,7 +124,7 @@ Name | Type | Description  | Notes
 # **v1beta2_queries_id_cancel_post**
 > v1beta2_queries_id_cancel_post(id)
 
-cancel a query.
+cancel a query
 
 Cancel the query with the given ID. If given query is not running, the request will do nothing. Otherwise, the query will be canceled and the `status` will be set to `canceled`
 
@@ -147,7 +147,7 @@ api_instance = swagger_client.QueriesV1beta2Api(swagger_client.ApiClient(configu
 id = 'id_example' # str | query ID
 
 try:
-    # cancel a query.
+    # cancel a query
     api_instance.v1beta2_queries_id_cancel_post(id)
 except ApiException as e:
     print("Exception when calling QueriesV1beta2Api->v1beta2_queries_id_cancel_post: %s\n" % e)
@@ -177,7 +177,7 @@ void (empty response body)
 # **v1beta2_queries_id_delete**
 > v1beta2_queries_id_delete(id)
 
-delete a query.
+delete a query
 
 Delete the query with the given ID.
 
@@ -200,7 +200,7 @@ api_instance = swagger_client.QueriesV1beta2Api(swagger_client.ApiClient(configu
 id = 'id_example' # str | query ID
 
 try:
-    # delete a query.
+    # delete a query
     api_instance.v1beta2_queries_id_delete(id)
 except ApiException as e:
     print("Exception when calling QueriesV1beta2Api->v1beta2_queries_id_delete: %s\n" % e)
@@ -230,7 +230,7 @@ void (empty response body)
 # **v1beta2_queries_id_get**
 > Query v1beta2_queries_id_get(id)
 
-get a query.
+get a query
 
 Get the query with the given ID.
 
@@ -253,7 +253,7 @@ api_instance = swagger_client.QueriesV1beta2Api(swagger_client.ApiClient(configu
 id = 'id_example' # str | query ID
 
 try:
-    # get a query.
+    # get a query
     api_response = api_instance.v1beta2_queries_id_get(id)
     pprint(api_response)
 except ApiException as e:
@@ -338,7 +338,7 @@ Name | Type | Description  | Notes
 # **v1beta2_queries_post**
 > Query v1beta2_queries_post(body)
 
-execute a query and return the results.
+execute a query and return the results
 
 Execute a query and return the results. * If the request fails, the response content type will be `application/json`. Please refer to the failure codes in Responses section below. * If the query is executed successfully, the response content type will be `text/event-stream`. **For SSE** There are 3 types of data that will be sent to SSE channel 1. Query (type `query`): The first event of the result will ALWAYS be this type. 2. Metrics (type `metrics`): The query metrics in JSON. They will be sent every 1 seconds. 3. Data (the type is empty): The query result.
 
@@ -361,7 +361,7 @@ api_instance = swagger_client.QueriesV1beta2Api(swagger_client.ApiClient(configu
 body = swagger_client.CreateQueryRequestV1Beta2() # CreateQueryRequestV1Beta2 | query request parameters
 
 try:
-    # execute a query and return the results.
+    # execute a query and return the results
     api_response = api_instance.v1beta2_queries_post(body)
     pprint(api_response)
 except ApiException as e:

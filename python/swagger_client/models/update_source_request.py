@@ -105,7 +105,7 @@ class UpdateSourceRequest(object):
     def properties(self):
         """Gets the properties of this UpdateSourceRequest.  # noqa: E501
 
-        Additional properties that required to read the data from source. Please refer to the documentation for this source type  # noqa: E501
+        Additional properties that required to read the data from source (e.g. broker url). Please refer to the documentation for this source type  # noqa: E501
 
         :return: The properties of this UpdateSourceRequest.  # noqa: E501
         :rtype: dict(str, object)
@@ -116,7 +116,7 @@ class UpdateSourceRequest(object):
     def properties(self, properties):
         """Sets the properties of this UpdateSourceRequest.
 
-        Additional properties that required to read the data from source. Please refer to the documentation for this source type  # noqa: E501
+        Additional properties that required to read the data from source (e.g. broker url). Please refer to the documentation for this source type  # noqa: E501
 
         :param properties: The properties of this UpdateSourceRequest.  # noqa: E501
         :type: dict(str, object)

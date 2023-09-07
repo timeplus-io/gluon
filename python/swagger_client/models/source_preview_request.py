@@ -54,13 +54,13 @@ class SourcePreviewRequest(object):
             self.size = size
         if timeout is not None:
             self.timeout = timeout
-        if type is not None:
-            self.type = type
+        self.type = type
 
     @property
     def properties(self):
         """Gets the properties of this SourcePreviewRequest.  # noqa: E501
 
+        See `CreateSourceRequest`  # noqa: E501
 
         :return: The properties of this SourcePreviewRequest.  # noqa: E501
         :rtype: dict(str, object)
@@ -71,6 +71,7 @@ class SourcePreviewRequest(object):
     def properties(self, properties):
         """Sets the properties of this SourcePreviewRequest.
 
+        See `CreateSourceRequest`  # noqa: E501
 
         :param properties: The properties of this SourcePreviewRequest.  # noqa: E501
         :type: dict(str, object)
@@ -82,6 +83,7 @@ class SourcePreviewRequest(object):
     def size(self):
         """Gets the size of this SourcePreviewRequest.  # noqa: E501
 
+        Number of preview events, works together with `Timeout`.  # noqa: E501
 
         :return: The size of this SourcePreviewRequest.  # noqa: E501
         :rtype: int
@@ -92,6 +94,7 @@ class SourcePreviewRequest(object):
     def size(self, size):
         """Sets the size of this SourcePreviewRequest.
 
+        Number of preview events, works together with `Timeout`.  # noqa: E501
 
         :param size: The size of this SourcePreviewRequest.  # noqa: E501
         :type: int
@@ -126,6 +129,7 @@ class SourcePreviewRequest(object):
     def type(self):
         """Gets the type of this SourcePreviewRequest.  # noqa: E501
 
+        See `CreateSourceRequest`  # noqa: E501
 
         :return: The type of this SourcePreviewRequest.  # noqa: E501
         :rtype: str
@@ -136,10 +140,13 @@ class SourcePreviewRequest(object):
     def type(self, type):
         """Sets the type of this SourcePreviewRequest.
 
+        See `CreateSourceRequest`  # noqa: E501
 
         :param type: The type of this SourcePreviewRequest.  # noqa: E501
         :type: str
         """
+        if type is None:
+            raise ValueError("Invalid value for `type`, must not be `None`")  # noqa: E501
 
         self._type = type
 

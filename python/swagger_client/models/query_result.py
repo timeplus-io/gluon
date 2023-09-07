@@ -50,6 +50,7 @@ class QueryResult(object):
     def data(self):
         """Gets the data of this QueryResult.  # noqa: E501
 
+        deprecated  # noqa: E501
 
         :return: The data of this QueryResult.  # noqa: E501
         :rtype: list[list[object]]
@@ -60,6 +61,7 @@ class QueryResult(object):
     def data(self, data):
         """Sets the data of this QueryResult.
 
+        deprecated  # noqa: E501
 
         :param data: The data of this QueryResult.  # noqa: E501
         :type: list[list[object]]

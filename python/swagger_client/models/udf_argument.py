@@ -42,10 +42,8 @@ class UDFArgument(object):
         self._name = None
         self._type = None
         self.discriminator = None
-        if name is not None:
-            self.name = name
-        if type is not None:
-            self.type = type
+        self.name = name
+        self.type = type
 
     @property
     def name(self):
@@ -65,6 +63,8 @@ class UDFArgument(object):
         :param name: The name of this UDFArgument.  # noqa: E501
         :type: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
@@ -86,6 +86,8 @@ class UDFArgument(object):
         :param type: The type of this UDFArgument.  # noqa: E501
         :type: str
         """
+        if type is None:
+            raise ValueError("Invalid value for `type`, must not be `None`")  # noqa: E501
 
         self._type = type
 

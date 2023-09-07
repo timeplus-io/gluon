@@ -40,7 +40,8 @@ class View(object):
         'name': 'str',
         'query': 'str',
         'target_stream': 'str',
-        'ttl': 'str'
+        'ttl': 'str',
+        'ttl_expression': 'str'
     }
 
     attribute_map = {
@@ -56,10 +57,11 @@ class View(object):
         'name': 'name',
         'query': 'query',
         'target_stream': 'target_stream',
-        'ttl': 'ttl'
+        'ttl': 'ttl',
+        'ttl_expression': 'ttl_expression'
     }
 
-    def __init__(self, columns=None, created_at=None, created_by=None, description=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, materialized=None, name=None, query=None, target_stream=None, ttl=None):  # noqa: E501
+    def __init__(self, columns=None, created_at=None, created_by=None, description=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, materialized=None, name=None, query=None, target_stream=None, ttl=None, ttl_expression=None):  # noqa: E501
         """View - a model defined in Swagger"""  # noqa: E501
         self._columns = None
         self._created_at = None
@@ -74,34 +76,32 @@ class View(object):
         self._query = None
         self._target_stream = None
         self._ttl = None
+        self._ttl_expression = None
         self.discriminator = None
         self.columns = columns
         if created_at is not None:
             self.created_at = created_at
         if created_by is not None:
             self.created_by = created_by
-        if description is not None:
-            self.description = description
+        self.description = description
         if last_updated_at is not None:
             self.last_updated_at = last_updated_at
         if last_updated_by is not None:
             self.last_updated_by = last_updated_by
         self.logstore_retention_bytes = logstore_retention_bytes
         self.logstore_retention_ms = logstore_retention_ms
-        if materialized is not None:
-            self.materialized = materialized
-        if name is not None:
-            self.name = name
-        if query is not None:
-            self.query = query
-        if target_stream is not None:
-            self.target_stream = target_stream
+        self.materialized = materialized
+        self.name = name
+        self.query = query
+        self.target_stream = target_stream
         self.ttl = ttl
+        self.ttl_expression = ttl_expression
 
     @property
     def columns(self):
         """Gets the columns of this View.  # noqa: E501
 
+        The columns in the view  # noqa: E501
 
         :return: The columns of this View.  # noqa: E501
         :rtype: list[ColumnsResp]
@@ -112,6 +112,7 @@ class View(object):
     def columns(self, columns):
         """Sets the columns of this View.
 
+        The columns in the view  # noqa: E501
 
         :param columns: The columns of this View.  # noqa: E501
         :type: list[ColumnsResp]
@@ -181,6 +182,8 @@ class View(object):
         :param description: The description of this View.  # noqa: E501
         :type: str
         """
+        if description is None:
+            raise ValueError("Invalid value for `description`, must not be `None`")  # noqa: E501
 
         self._description = description
 
@@ -230,6 +233,7 @@ class View(object):
     def logstore_retention_bytes(self):
         """Gets the logstore_retention_bytes of this View.  # noqa: E501
 
+        Only avaialable for materialized view. The max size a materialized view can grow. Any non-positive value means unlimited size.  # noqa: E501
 
         :return: The logstore_retention_bytes of this View.  # noqa: E501
         :rtype: int
@@ -240,6 +244,7 @@ class View(object):
     def logstore_retention_bytes(self, logstore_retention_bytes):
         """Sets the logstore_retention_bytes of this View.
 
+        Only avaialable for materialized view. The max size a materialized view can grow. Any non-positive value means unlimited size.  # noqa: E501
 
         :param logstore_retention_bytes: The logstore_retention_bytes of this View.  # noqa: E501
         :type: int
@@ -253,6 +258,7 @@ class View(object):
     def logstore_retention_ms(self):
         """Gets the logstore_retention_ms of this View.  # noqa: E501
 
+        Only avaialable for materialized view. The max time the data can be retained in the materialized view. Any non-positive value means unlimited time.  # noqa: E501
 
         :return: The logstore_retention_ms of this View.  # noqa: E501
         :rtype: int
@@ -263,6 +269,7 @@ class View(object):
     def logstore_retention_ms(self, logstore_retention_ms):
         """Sets the logstore_retention_ms of this View.
 
+        Only avaialable for materialized view. The max time the data can be retained in the materialized view. Any non-positive value means unlimited time.  # noqa: E501
 
         :param logstore_retention_ms: The logstore_retention_ms of this View.  # noqa: E501
         :type: int
@@ -290,6 +297,8 @@ class View(object):
         :param materialized: The materialized of this View.  # noqa: E501
         :type: bool
         """
+        if materialized is None:
+            raise ValueError("Invalid value for `materialized`, must not be `None`")  # noqa: E501
 
         self._materialized = materialized
 
@@ -311,6 +320,8 @@ class View(object):
         :param name: The name of this View.  # noqa: E501
         :type: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
@@ -332,6 +343,8 @@ class View(object):
         :param query: The query of this View.  # noqa: E501
         :type: str
         """
+        if query is None:
+            raise ValueError("Invalid value for `query`, must not be `None`")  # noqa: E501
 
         self._query = query
 
@@ -339,6 +352,7 @@ class View(object):
     def target_stream(self):
         """Gets the target_stream of this View.  # noqa: E501
 
+        This field is applicable for materialized view only.  # noqa: E501
 
         :return: The target_stream of this View.  # noqa: E501
         :rtype: str
@@ -349,10 +363,13 @@ class View(object):
     def target_stream(self, target_stream):
         """Sets the target_stream of this View.
 
+        This field is applicable for materialized view only.  # noqa: E501
 
         :param target_stream: The target_stream of this View.  # noqa: E501
         :type: str
         """
+        if target_stream is None:
+            raise ValueError("Invalid value for `target_stream`, must not be `None`")  # noqa: E501
 
         self._target_stream = target_stream
 
@@ -360,6 +377,7 @@ class View(object):
     def ttl(self):
         """Gets the ttl of this View.  # noqa: E501
 
+        Deprecated. Use `ttl_expression` instaed  # noqa: E501
 
         :return: The ttl of this View.  # noqa: E501
         :rtype: str
@@ -370,6 +388,7 @@ class View(object):
     def ttl(self, ttl):
         """Sets the ttl of this View.
 
+        Deprecated. Use `ttl_expression` instaed  # noqa: E501
 
         :param ttl: The ttl of this View.  # noqa: E501
         :type: str
@@ -378,6 +397,31 @@ class View(object):
             raise ValueError("Invalid value for `ttl`, must not be `None`")  # noqa: E501
 
         self._ttl = ttl
+
+    @property
+    def ttl_expression(self):
+        """Gets the ttl_expression of this View.  # noqa: E501
+
+        Only avaialable for materialized view  # noqa: E501
+
+        :return: The ttl_expression of this View.  # noqa: E501
+        :rtype: str
+        """
+        return self._ttl_expression
+
+    @ttl_expression.setter
+    def ttl_expression(self, ttl_expression):
+        """Sets the ttl_expression of this View.
+
+        Only avaialable for materialized view  # noqa: E501
+
+        :param ttl_expression: The ttl_expression of this View.  # noqa: E501
+        :type: str
+        """
+        if ttl_expression is None:
+            raise ValueError("Invalid value for `ttl_expression`, must not be `None`")  # noqa: E501
+
+        self._ttl_expression = ttl_expression
 
     def to_dict(self):
         """Returns the model properties as a dict"""

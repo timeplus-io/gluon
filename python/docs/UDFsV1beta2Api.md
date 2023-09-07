@@ -4,18 +4,18 @@ All URIs are relative to *//us.timeplus.cloud/{workspace-id}/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**v1beta2_udfs_get**](UDFsV1beta2Api.md#v1beta2_udfs_get) | **GET** /v1beta2/udfs | list udf.
-[**v1beta2_udfs_name_delete**](UDFsV1beta2Api.md#v1beta2_udfs_name_delete) | **DELETE** /v1beta2/udfs/{name} | delete a udf.
-[**v1beta2_udfs_name_get**](UDFsV1beta2Api.md#v1beta2_udfs_name_get) | **GET** /v1beta2/udfs/{name} | get a udf.
-[**v1beta2_udfs_name_put**](UDFsV1beta2Api.md#v1beta2_udfs_name_put) | **PUT** /v1beta2/udfs/{name} | update a udf.
-[**v1beta2_udfs_post**](UDFsV1beta2Api.md#v1beta2_udfs_post) | **POST** /v1beta2/udfs | create a udf.
+[**v1beta2_udfs_get**](UDFsV1beta2Api.md#v1beta2_udfs_get) | **GET** /v1beta2/udfs | list user-defined functions
+[**v1beta2_udfs_name_delete**](UDFsV1beta2Api.md#v1beta2_udfs_name_delete) | **DELETE** /v1beta2/udfs/{name} | delete an user-defined function
+[**v1beta2_udfs_name_get**](UDFsV1beta2Api.md#v1beta2_udfs_name_get) | **GET** /v1beta2/udfs/{name} | get an user-defined function
+[**v1beta2_udfs_name_put**](UDFsV1beta2Api.md#v1beta2_udfs_name_put) | **PUT** /v1beta2/udfs/{name} | update an user-defined function
+[**v1beta2_udfs_post**](UDFsV1beta2Api.md#v1beta2_udfs_post) | **POST** /v1beta2/udfs | create an user-defined function
 
 # **v1beta2_udfs_get**
 > list[UDF] v1beta2_udfs_get()
 
-list udf.
+list user-defined functions
 
-Get all udf.
+Get all user-defined functions.
 
 ### Example
 ```python
@@ -35,7 +35,7 @@ configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 api_instance = swagger_client.UDFsV1beta2Api(swagger_client.ApiClient(configuration))
 
 try:
-    # list udf.
+    # list user-defined functions
     api_response = api_instance.v1beta2_udfs_get()
     pprint(api_response)
 except ApiException as e:
@@ -63,9 +63,9 @@ This endpoint does not need any parameter.
 # **v1beta2_udfs_name_delete**
 > v1beta2_udfs_name_delete(name)
 
-delete a udf.
+delete an user-defined function
 
-Delete the udf with the given name.
+Delete the user-defined function with the given name.
 
 ### Example
 ```python
@@ -83,10 +83,10 @@ configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.UDFsV1beta2Api(swagger_client.ApiClient(configuration))
-name = 'name_example' # str | udf name
+name = 'name_example' # str | user-defined function name
 
 try:
-    # delete a udf.
+    # delete an user-defined function
     api_instance.v1beta2_udfs_name_delete(name)
 except ApiException as e:
     print("Exception when calling UDFsV1beta2Api->v1beta2_udfs_name_delete: %s\n" % e)
@@ -96,7 +96,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **str**| udf name | 
+ **name** | **str**| user-defined function name | 
 
 ### Return type
 
@@ -116,9 +116,9 @@ void (empty response body)
 # **v1beta2_udfs_name_get**
 > UDF v1beta2_udfs_name_get(name)
 
-get a udf.
+get an user-defined function
 
-get the udf with the given name.
+get the user-defined function with the given name.
 
 ### Example
 ```python
@@ -136,10 +136,10 @@ configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.UDFsV1beta2Api(swagger_client.ApiClient(configuration))
-name = 'name_example' # str | udf name
+name = 'name_example' # str | user-defined function name
 
 try:
-    # get a udf.
+    # get an user-defined function
     api_response = api_instance.v1beta2_udfs_name_get(name)
     pprint(api_response)
 except ApiException as e:
@@ -150,7 +150,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **str**| udf name | 
+ **name** | **str**| user-defined function name | 
 
 ### Return type
 
@@ -170,9 +170,9 @@ Name | Type | Description  | Notes
 # **v1beta2_udfs_name_put**
 > UDF v1beta2_udfs_name_put(body)
 
-update a udf.
+update an user-defined function
 
-Update a udf.
+Update the specific user-defined function with the given name.
 
 ### Example
 ```python
@@ -190,10 +190,10 @@ configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.UDFsV1beta2Api(swagger_client.ApiClient(configuration))
-body = swagger_client.UDF() # UDF | update udf request parameters
+body = swagger_client.UDF() # UDF | update UDF request parameters
 
 try:
-    # update a udf.
+    # update an user-defined function
     api_response = api_instance.v1beta2_udfs_name_put(body)
     pprint(api_response)
 except ApiException as e:
@@ -204,7 +204,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**UDF**](UDF.md)| update udf request parameters | 
+ **body** | [**UDF**](UDF.md)| update UDF request parameters | 
 
 ### Return type
 
@@ -224,9 +224,9 @@ Name | Type | Description  | Notes
 # **v1beta2_udfs_post**
 > UDF v1beta2_udfs_post(body)
 
-create a udf.
+create an user-defined function
 
-Create a udf.
+Create an user-defined function.
 
 ### Example
 ```python
@@ -244,10 +244,10 @@ configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.UDFsV1beta2Api(swagger_client.ApiClient(configuration))
-body = swagger_client.UDF() # UDF | create udf request parameters
+body = swagger_client.UDF() # UDF | create UDF request parameters
 
 try:
-    # create a udf.
+    # create an user-defined function
     api_response = api_instance.v1beta2_udfs_post(body)
     pprint(api_response)
 except ApiException as e:
@@ -258,7 +258,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**UDF**](UDF.md)| create udf request parameters | 
+ **body** | [**UDF**](UDF.md)| create UDF request parameters | 
 
 ### Return type
 

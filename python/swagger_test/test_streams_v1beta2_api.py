@@ -31,56 +31,56 @@ class TestStreamsV1beta2Api(unittest.TestCase):
     def test_v1beta2_streams_external_post(self):
         """Test case for v1beta2_streams_external_post
 
-        create an external stream.  # noqa: E501
+        create an external stream  # noqa: E501
         """
         pass
 
     def test_v1beta2_streams_get(self):
         """Test case for v1beta2_streams_get
 
-        list streams.  # noqa: E501
+        list streams  # noqa: E501
         """
         pass
 
     def test_v1beta2_streams_name_delete(self):
         """Test case for v1beta2_streams_name_delete
 
-        delete a stream.  # noqa: E501
+        delete a stream  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_streams_name_get(self):
+        """Test case for v1beta2_streams_name_get
+
+        get a stream  # noqa: E501
         """
         pass
 
     def test_v1beta2_streams_name_ingest_post(self):
         """Test case for v1beta2_streams_name_ingest_post
 
-        ingest data.  # noqa: E501
+        ingest data  # noqa: E501
         """
         pass
 
     def test_v1beta2_streams_name_patch(self):
         """Test case for v1beta2_streams_name_patch
 
-        Update a stream.  # noqa: E501
+        update a stream  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_streams_name_stats_get(self):
+        """Test case for v1beta2_streams_name_stats_get
+
+        get the stats of a stream  # noqa: E501
         """
         pass
 
     def test_v1beta2_streams_post(self):
         """Test case for v1beta2_streams_post
 
-        create a stream.  # noqa: E501
-        """
-        pass
-
-    def test_v1beta2_streamsname_get(self):
-        """Test case for v1beta2_streamsname_get
-
-        get a stream.  # noqa: E501
-        """
-        pass
-
-    def test_v1beta2_streamsname_stats_get(self):
-        """Test case for v1beta2_streamsname_stats_get
-
-        get the stats of a stream.  # noqa: E501
+        create a stream  # noqa: E501
         """
         pass
 

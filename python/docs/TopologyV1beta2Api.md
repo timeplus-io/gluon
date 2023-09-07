@@ -4,14 +4,14 @@ All URIs are relative to *//us.timeplus.cloud/{workspace-id}/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**v1beta2_topology_get**](TopologyV1beta2Api.md#v1beta2_topology_get) | **GET** /v1beta2/topology | get topology graph.
+[**v1beta2_topology_get**](TopologyV1beta2Api.md#v1beta2_topology_get) | **GET** /v1beta2/topology | get topology graph
 
 # **v1beta2_topology_get**
 > Graph v1beta2_topology_get()
 
-get topology graph.
+get topology graph
 
-get topology graph.
+Get topology graph of all existings resources.
 
 ### Example
 ```python
@@ -31,7 +31,7 @@ configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
 api_instance = swagger_client.TopologyV1beta2Api(swagger_client.ApiClient(configuration))
 
 try:
-    # get topology graph.
+    # get topology graph
     api_response = api_instance.v1beta2_topology_get()
     pprint(api_response)
 except ApiException as e:
