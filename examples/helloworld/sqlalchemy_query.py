@@ -69,7 +69,7 @@ car_table = Table(table_name, metadata_obj, autoload_with=engine)
 print(f"reflected table is {car_table}")
 print(f"cols is {[ (c.name, c.type) for c in car_table.columns]}")
 
-stmt = select(car_table).where(car_table.c.cid == "c00001")
+stmt = select(car_table).where(car_table.c.speed_kmh > 50)
 print(stmt)
 with engine.connect() as conn:
     count = 0

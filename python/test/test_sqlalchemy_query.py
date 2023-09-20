@@ -108,7 +108,7 @@ def test_table_reflection(engine):
 def test_select_query(engine):
     metadata_obj = MetaData()
     car_table = Table("car_live_data", metadata_obj, autoload_with=engine)
-    stmt = select(car_table).where(car_table.c.cid == "c00001")
+    stmt = select(car_table).where(car_table.c.speed_kmh > 50)
     with engine.connect() as conn:
         count = 0
         max = 3
