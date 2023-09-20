@@ -1,6 +1,6 @@
 # Timeplus Python Client
 
-[Timeplus](https://www.timeplus.com/) is a real-time streaming data analytic platform.  Timeplus python client provide the basic functionalities to interact with Timeplus cloud to create and manage the streaming analytic work loads.
+[Timeplus](https://www.timeplus.com/) is a real-time streaming data analytic platform.  Timeplus python client provides basic functionalities to interact with Timeplus cloud, to manage the streaming analytic work loads.
 
 
 ## Installation
@@ -93,6 +93,20 @@ with engine.connect() as conn:
 ## REST API
 
 Timeplus python client also provides resources wrapper which can be used to call the [Timeplus REST API](https://docs.timeplus.com/rest.html) through python object.
+
+here is a list of all supported resources
+
+| Resource              |  Supported Methods                                    |
+|-----------------------|--------------------------------------------|
+| [Stream](https://docs.timeplus.com/working-with-streams)| create,list,get,delete,ingest,exist        |
+| [Query](https://docs.timeplus.com/stream-query)| create,list,get,delete,cancel,analyze      |
+| [Source](https://docs.timeplus.com/source) | create,list,get,delete,start,stop          |
+| [Sink](https://docs.timeplus.com/destination)| create,list,get,delete,start,stop          |
+| [View](https://docs.timeplus.com/view)| create,list,get,delete,exist               |
+| [UDF](https://docs.timeplus.com/udf)|  list                                       |
+| [Alert](https://docs.timeplus.com/alert)| list                                       |
+| [Dashboard](https://docs.timeplus.com/viz#dashboard) | list                                       |
+
 
 ### query
 
@@ -278,3 +292,7 @@ payload = '{"a":1,"b":"world"}\n{"a":2,"b":"hello"}'
 stream.ingest(payload=payload, format="lines")
 
 ```
+
+## Examples
+
+More sample code can be found [here](../examples/helloworld/)
