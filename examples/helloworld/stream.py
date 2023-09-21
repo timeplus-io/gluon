@@ -25,6 +25,8 @@ try:
         .create()
     )
 
+    pprint(f'the type of stream metadata is {type(stream.metadata())}')
+
     stream_list = Stream(env=env).list()
     pprint(f"there are {len(stream_list)} streams after create")
     pprint(f"created stream is {stream.metadata()}; type is {type(stream.metadata())}")

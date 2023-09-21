@@ -84,6 +84,13 @@ class Query:
             raise e
 
     def metadata(self):
+        """
+        Retrieve the internal api object
+
+        Returns:
+        Dict: json object of API object query.
+        """
+
         return self._metadata
 
     def id(self, *args):
@@ -156,7 +163,7 @@ class Query:
          Method to get a list of all queries.
 
         Returns:
-        List: A list of all queries.
+        List(swagger_client.models.query.Query): A list of all queries.
 
         Raises:
         ApiException: If an error occurs during the API call.
@@ -173,7 +180,7 @@ class Query:
 
     def analyze(self):
         """
-         Method to analyze the SQL query.
+        Method to analyze the SQL query.
 
         Returns:
         JSON: The result of the analysis.

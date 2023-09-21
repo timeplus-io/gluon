@@ -155,7 +155,7 @@ class Sink:
         Fetches a list of all sink from the API.
 
         Returns:
-        List: A list of all sinks.
+        List(swagger_client.models.sink.Sink): A list of all sinks.
 
         Raises:
         ApiException: If an error occurs during the API call.
@@ -205,7 +205,7 @@ class Sink:
         Returns the metadata of the sink.
 
         Returns:
-        Any: The metadata of the sink.
+        swagger_client.models.stream.Sink: The metadata of the sink.
         """
         return self._metadata
 

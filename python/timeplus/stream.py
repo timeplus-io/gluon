@@ -186,12 +186,6 @@ class Stream:
         Raises:
         TimeplusAPIError: If the stream does not exist.
         """
-        # streams = self.list()
-        # for s in streams:
-        #     if s.name == self._name:
-        #         self._metadata = s
-        #         return self
-        # raise TimeplusAPIError(f"not such stream {self._name}")
         try:
             resp = self._api_instance.v1beta2_streams_name_get(self._name)
             self._metadata = resp
@@ -204,6 +198,13 @@ class Stream:
             raise TimeplusAPIError(f"no such stream with id {self._name}")
 
     def metadata(self):
+        """
+        Retrieve the internal api object swagger_client.models.stream.Stream
+
+        Returns:
+        swagger_client.models.stream.Stream: API object of the stream.
+        """
+
         return self._metadata
 
     def ingest(self, colums=None, rows=None, payload=None, format="compact"):
