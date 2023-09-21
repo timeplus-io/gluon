@@ -133,7 +133,7 @@ class View:
         Fetches a list of all views from the API.
 
         Returns:
-        List: A list of all views.
+        List(swagger_client.models.view.View): A list of all views.
 
         Raises:
         ApiException: If an error occurs during the API call.
@@ -178,13 +178,12 @@ class View:
             )
             raise TimeplusAPIError(f"no such view with id {self._name}")
 
-
     def metadata(self):
         """
         Returns the metadata of the view.
 
         Returns:
-        Any: The metadata of the view.
+        swagger_client.models.view.View: The api object of the view.
         """
         return self._metadata
 

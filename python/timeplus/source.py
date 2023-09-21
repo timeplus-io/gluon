@@ -154,7 +154,7 @@ class Source:
         Fetches a list of all sources from the API.
 
         Returns:
-        List: A list of all sources.
+        List(swagger_client.models.source.Source): A list of all sources.
 
         Raises:
         ApiException: If an error occurs during the API call.
@@ -204,7 +204,7 @@ class Source:
         Returns the metadata of the source.
 
         Returns:
-        Any: The metadata of the source.
+        swagger_client.models.source.Source: The metadata of the source.
         """
         return self._metadata
 
