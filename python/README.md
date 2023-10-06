@@ -5,11 +5,24 @@
 
 ## Installation
 
+Proton Python Driver currently supports the following versions of Python: 3.8, 3.9, and 3.10.
+
+### Installing with pip
+We recommend creating a virtual environment when installing Python dependencies. For more information on setting up a virtual environment, see the [Python documentation](https://docs.python.org/3.9/tutorial/venv.html)
+
+
 ```bash
 pip install timeplus
 ```
 
-## DB API
+## 3 API
+The `timeplus` python libary supports 3 API:
+
+* [DB API](#db-api) as defined in [Python Database API Specification v2.0](https://peps.python.org/pep-0249/).
+* [SQLAchamy](#sqlachamy)
+* [REST API](#rest-api)
+
+### DB API
 
 Timeplus python client support DB API defined in [Python Database API Specification v2.0](https://peps.python.org/pep-0249/).  
 
@@ -40,7 +53,7 @@ rows = cursor.fetchmany(3)
 Note, as the streaming query result is unbounded, the cursor will not end, fetch will be blocked is there is no new query result.
 
 
-## SQLAchamy
+### SQLAchamy
 
 Timeplus python client has implemeted a [SQLAlchemy](https://www.sqlalchemy.org/) dialect to run queries, so user can use it with SQLAlchemy API.
 
@@ -90,7 +103,7 @@ with engine.connect() as conn:
             break
 ```
 
-## REST API
+### REST API
 
 Timeplus python client also provides resources wrapper which can be used to call the [Timeplus REST API](https://docs.timeplus.com/rest.html) through python object.
 
@@ -108,7 +121,7 @@ here is a list of all supported resources
 | [Dashboard](https://docs.timeplus.com/viz#dashboard) | list                                       |
 
 
-### query
+#### query
 
 Run streaming query and fetch the query result with query metrics.
 
@@ -181,7 +194,7 @@ except Exception as e:
     traceback.print_exc()
 ```
 
-### stream
+#### stream
 
 Create/list/get/delete of streams
 
@@ -230,11 +243,11 @@ except Exception as e:
 
 ```
 
-### ingest
+#### ingest
 
 Ingest data into streams
 
-#### default ingest
+##### default ingest
 
 ```python
 stream = (
@@ -249,7 +262,7 @@ stream.ingest(["time", "data"], [[datetime.datetime.now(), "abcd"]])
 
 ```
 
-#### ingest json streams
+##### ingest json streams
 
 ```python
 stream = (
@@ -269,7 +282,7 @@ stream.ingest(payload=payload, format="streaming")
 
 ```
 
-#### ingest one raw event with multiple lines
+##### ingest one raw event with multiple lines
 
 ```python
 stream = Stream(env=env).name("test_ingest_raw").column("raw", "string").create()
@@ -283,7 +296,7 @@ stream.ingest(payload=payload, format="raw")
 
 ```
 
-#### ingest multiple lines json
+##### ingest multiple lines json
 
 ```python
 stream = Stream(env=env).name("test_ingest_lines").column("raw", "string").create()
