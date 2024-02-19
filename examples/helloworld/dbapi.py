@@ -6,23 +6,23 @@ api_address = "dev.timeplus.cloud"
 workspace = os.environ.get("TIMEPLUS_WORKSPACE")
 
 conn = connect(host=api_address, password=api_key, path=workspace)
-cusor = conn.execute("select * from table(car_live_data) limit 5")
+cursor = conn.execute("select * from table(car_live_data) limit 5")
 
-next = cusor.next()
+next = cursor.next()
 print(f"next is {next}")
 
-row1 = cusor.fetchone()
+row1 = cursor.fetchone()
 print(f"row one is {row1}")
 
-rows = cusor.fetchmany(3)
+rows = cursor.fetchmany(3)
 print("fetch multiple rows")
 for row in rows:
     print(row)
 
 # in case run following code, it will not stop due to streaming query
-# for row in cusor:
+# for row in cursor:
 #     pprint(row)
 
-cusor = conn.execute("select 1<>2")
-for row in cusor:
+cursor = conn.execute("select 1<>2")
+for row in cursor:
     print(row)
