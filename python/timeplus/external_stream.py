@@ -80,10 +80,13 @@ class ExternalStream:
         """
 
         if not self._columns:
-            raise ApiException("columns is required to create stream")
+            raise ApiException("columns is required to create external stream")
+
+        if not self._settings:
+            raise ApiException("settings is required to create external stream")
 
         if not self._name:
-            raise ApiException("name is required to create stream")
+            raise ApiException("name is required to create external stream")
 
         body = {"columns": self._columns, "name": self._name}
 
