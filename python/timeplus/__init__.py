@@ -4,6 +4,7 @@ from timeplus.env import Environment  # noqa: F401
 from timeplus.query import Query  # noqa: F401
 from timeplus.type import Type  # noqa: F401
 from timeplus.stream import Stream  # noqa: F401
+from timeplus.external_stream import ExternalStream  # noqa: F401
 from timeplus.view import View  # noqa: F401
 
 from timeplus.source import Source  # noqa: F401

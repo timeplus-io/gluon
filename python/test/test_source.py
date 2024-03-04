@@ -1,4 +1,3 @@
-import pytest
 from timeplus import Source, Stream
 
 

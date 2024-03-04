@@ -191,7 +191,7 @@ class Stream:
             self._metadata = resp
             return self
         except ApiException as e:
-            print(
+            pprint(
                 "Exception when calling StreamsV1beta2Api->v1beta2_streams_name_get: %s\n"
                 % e
             )
