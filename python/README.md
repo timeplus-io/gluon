@@ -41,7 +41,7 @@ conn = connect(host=api_address, password=api_key, path=workspace)
 cursor = conn.execute("select * from car_live_data")
 
 # get first result from the qeury
-next_result = cusor.next()
+next_result = cursor.next()
 
 # get next one result from the qeury
 row1 = cursor.fetchone()
