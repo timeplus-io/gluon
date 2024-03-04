@@ -96,12 +96,31 @@ definitions:
         description: The max interval per batch in milliseconds
         type: integer
     type: object
+  Build:
+    properties:
+      build_time:
+        example: "2023-09-05T14:06:20Z"
+        type: string
+      commit:
+        example: 02b8e47e
+        type: string
+      version:
+        example: v1.3.4
+        type: string
+    required:
+    - build_time
+    - commit
+    - version
+    type: object
   Column:
     properties:
       name:
         type: string
       type:
         type: string
+    required:
+    - name
+    - type
     type: object
   ColumnDef:
     properties:
@@ -138,6 +157,9 @@ definitions:
       type:
         example: int64
         type: string
+    required:
+    - name
+    - type
     type: object
   CreateAPIKeyRequest:
     properties:
@@ -292,10 +314,6 @@ definitions:
       query:
         example: select * from car_live_data where speed_kmh > 100
         type: string
-      sql:
-        description: Deprecated. Use `query` instead.
-        example: select * from car_live_data where speed_kmh > 100
-        type: string
       type:
         description: |-
           Available types: [`slack`, `http`, `kafka`, `redpanda`, `confluent_cloud`, `pulsar`, `timeplus`].
@@ -304,6 +322,7 @@ definitions:
         type: string
     required:
     - name
+    - query
     - type
     type: object
   CreateSourceRequest:
@@ -328,7 +347,7 @@ definitions:
         type: string
       type:
         description: |-
-          Available types: [`ably`, `stream_generator`, `kafka`, `redpanda`, `confluent_cloud`, `pulsar`].
+          Available types: [`ably`, `stream_generator`, `kafka`, `redpanda`, `confluent_cloud`, `pulsar`, `websocket`, `nats`, `nats_jetstream`].
           Additional configurations such as broker url and etc. should be passed through `properties`
         example: kafka
         type: string
@@ -417,8 +436,71 @@ definitions:
   Event:
     additionalProperties: {}
     type: object
+  EventInferRequest:
+    properties:
+      event:
+        $ref: '#/definitions/Event'
+        description: The event to be inferred
+    required:
+    - event
+    type: object
+  EventInferResponse:
+    properties:
+      inferred_columns:
+        items:
+          $ref: '#/definitions/ColumnDef'
+        type: array
+      recommeneded_columns:
+        items:
+          $ref: '#/definitions/ColumnDef'
+        type: array
+    required:
+    - inferred_columns
+    - recommeneded_columns
+    type: object
+  ExecuteQueryRequest:
+    properties:
+      sql:
+        type: string
+    required:
+    - sql
+    type: object
+  ExternalStream:
+    properties:
+      columns:
+        items:
+          $ref: '#/definitions/ColumnsResp'
+        type: array
+      created_at:
+        example: "2023-02-01 23:22:59"
+        type: string
+      created_by:
+        $ref: '#/definitions/Owner'
+      description:
+        example: my test stream
+        type: string
+      last_updated_at:
+        example: "2023-02-05 11:12:13"
+        type: string
+      last_updated_by:
+        $ref: '#/definitions/Owner'
+      name:
+        example: test_external_stream
+        type: string
+      settings:
+        items:
+          $ref: '#/definitions/ExternalStreamSetting'
+        type: array
+    required:
+    - description
+    - name
+    type: object
   ExternalStreamDef:
     properties:
+      columns:
+        items:
+          $ref: '#/definitions/ColumnDef'
+        type: array
       description:
         example: a sample kafka external stream
         type: string
@@ -427,10 +509,19 @@ definitions:
         type: string
       settings:
         items:
-          $ref: '#/definitions/StreamSetting'
+          $ref: '#/definitions/ExternalStreamSetting'
         type: array
     required:
+    - columns
     - name
+    - settings
+    type: object
+  ExternalStreamSetting:
+    properties:
+      key:
+        type: string
+      value:
+        type: string
     type: object
   FormatQueryRequest:
     properties:
@@ -466,6 +557,25 @@ definitions:
           $ref: '#/definitions/Node'
         type: array
     type: object
+  Info:
+    properties:
+      axion:
+        $ref: '#/definitions/Build'
+      neutron:
+        $ref: '#/definitions/Build'
+      orbit:
+        $ref: '#/definitions/Build'
+      product_name:
+        type: string
+      proton:
+        $ref: '#/definitions/Build'
+    required:
+    - axion
+    - neutron
+    - orbit
+    - product_name
+    - proton
+    type: object
   IngestData:
     properties:
       columns:
@@ -477,6 +587,9 @@ definitions:
           items: {}
           type: array
         type: array
+    required:
+    - columns
+    - data
     type: object
   Invitation:
     properties:
@@ -670,12 +783,6 @@ definitions:
     type: object
   QueryResult:
     properties:
-      data:
-        description: deprecated
-        items:
-          items: {}
-          type: array
-        type: array
       header:
         items:
           $ref: '#/definitions/Column'
@@ -785,6 +892,8 @@ definitions:
       name:
         example: write_to_kafka
         type: string
+      plan:
+        $ref: '#/definitions/SQLAnalyzeResult'
       properties:
         additionalProperties: {}
         type: object
@@ -971,6 +1080,7 @@ definitions:
         example: Stream
         type: string
       is_external:
+        description: Deprecated.
         example: false
         type: boolean
       last_updated_at:
@@ -1003,11 +1113,6 @@ definitions:
         description: Expression of primary key, required in `changelog_kv` and `versioned_kv`
           mode
         type: string
-      settings:
-        description: Only available for external stream.
-        items:
-          $ref: '#/definitions/StreamSetting'
-        type: array
       ttl:
         description: Deprecated. Use `ttl_expression` instaed
         example: to_datetime(_tp_time) + INTERVAL 7 DAY
@@ -1022,7 +1127,6 @@ definitions:
     - columns
     - description
     - engine
-    - is_external
     - logstore_retention_bytes
     - logstore_retention_ms
     - mode
@@ -1091,12 +1195,15 @@ definitions:
     required:
     - name
     type: object
-  StreamSetting:
+  StreamMatchRequest:
     properties:
-      key:
-        type: string
-      value:
-        type: string
+      events:
+        description: The events to be matched
+        items:
+          $ref: '#/definitions/Event'
+        type: array
+    required:
+    - events
     type: object
   StreamStats:
     properties:
@@ -1513,6 +1620,77 @@ definitions:
         description: e.g. `chart`, `markdown`
         type: string
     type: object
+  kafka.Common:
+    properties:
+      brokers:
+        description: 'TODO: Shall we accept []string instead of commas split string?
+          This is a breaking change so we may want to do it later'
+        type: string
+      dataType:
+        type: string
+      message:
+        type: string
+      password:
+        type: string
+      sasl:
+        type: string
+      schema:
+        description: Protobuf-related
+        type: string
+      tls:
+        properties:
+          disable:
+            type: boolean
+          skipVerifyServer:
+            type: boolean
+        type: object
+      username:
+        type: string
+    type: object
+  keygen.License:
+    properties:
+      created:
+        type: string
+      expiry:
+        type: string
+      key:
+        type: string
+      lastValidated:
+        type: string
+      metadata:
+        additionalProperties: true
+        type: object
+      name:
+        type: string
+      requireHeartbeat:
+        type: boolean
+      scheme:
+        type: string
+      updated:
+        type: string
+    type: object
+  license.License:
+    properties:
+      created_at:
+        example: "2023-02-01 23:22:59"
+        type: string
+      created_by:
+        $ref: '#/definitions/Owner'
+      data:
+        $ref: '#/definitions/keygen.License'
+      id:
+        type: string
+      is_trial:
+        type: boolean
+      last_updated_at:
+        example: "2023-02-05 11:12:13"
+        type: string
+      last_updated_by:
+        $ref: '#/definitions/Owner'
+    required:
+    - data
+    - id
+    type: object
   stats.Error:
     properties:
       message:
@@ -1538,6 +1716,11 @@ definitions:
     - time
     - value
     type: object
+  v1beta2.ListKafkaTopicRequest:
+    properties:
+      properties:
+        $ref: '#/definitions/kafka.Common'
+    type: object
   workspace.Settings:
     properties:
       enabled_user_tracking:
@@ -1553,6 +1736,50 @@ info:
   title: Timeplus
   version: v1
 paths:
+  /destroy:
+    post:
+      consumes:
+      - application/json
+      description: 'Completely delete the workspace. DANGEROUS: all data will be destroyed.'
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: delete the current workspace
+      tags:
+      - Workspaces v1beta2
+      x-internal: true
+  /info:
+    get:
+      description: Get the version information of all Timeplus components.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Info'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/Info'
+      security:
+      - ApiKeyAuth: []
+      summary: get the version information
+      tags:
+      - Misc
+      x-internal: true
   /v1beta2/alerts:
     get:
       consumes:
@@ -2075,6 +2302,127 @@ paths:
       summary: update a dashboard
       tags:
       - Dashboards v1beta2
+  /v1beta2/external_streams:
+    get:
+      consumes:
+      - application/json
+      description: Get all external streams.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ExternalStream'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list external streams
+      tags:
+      - External streams v1beta2
+    post:
+      consumes:
+      - application/json
+      description: Create an external stream.
+      parameters:
+      - description: create external stream request parameters
+        in: body
+        name: stream
+        required: true
+        schema:
+          $ref: '#/definitions/ExternalStreamDef'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/ExternalStreamDef'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create an external stream
+      tags:
+      - External streams v1beta2
+  /v1beta2/external_streams/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the external stream with the given name.
+      parameters:
+      - description: external stream name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: delete an external stream
+      tags:
+      - External streams v1beta2
+    get:
+      consumes:
+      - application/json
+      description: Get the external stream with the given name.
+      parameters:
+      - description: external stream name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ExternalStream'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get an external stream
+      tags:
+      - External streams v1beta2
   /v1beta2/format:
     post:
       consumes:
@@ -2226,6 +2574,145 @@ paths:
       summary: delete an invitation
       tags:
       - Invitations v1beta2
+  /v1beta2/licenses:
+    get:
+      consumes:
+      - application/json
+      description: list all lcenses
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            items:
+              $ref: '#/definitions/license.License'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list all lcenses
+      tags:
+      - License v1beta2
+    post:
+      consumes:
+      - application/json
+      description: upload and create a lcense.
+      parameters:
+      - description: encryption key for license file
+        in: formData
+        name: key
+        required: true
+        type: string
+      - description: license file
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/license.License'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: upload and create a lcense
+      tags:
+      - License v1beta2
+  /v1beta2/licenses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: remove a lcense by id
+      parameters:
+      - description: license ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/license.License'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: remove a lcense by id
+      tags:
+      - License v1beta2
+    get:
+      consumes:
+      - application/json
+      description: get a lcense by id
+      parameters:
+      - description: license ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/license.License'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get a lcense by id
+      tags:
+      - License v1beta2
   /v1beta2/queries:
     get:
       consumes:
@@ -2282,7 +2769,7 @@ paths:
       - text/event-stream
       responses:
         "200":
-          description: he query was successfully executed.
+          description: the query was successfully executed.
           schema:
             $ref: '#/definitions/Query'
         "400":
@@ -2429,6 +2916,43 @@ paths:
       summary: get the pipeline for a query
       tags:
       - Queries v1beta2
+  /v1beta2/queries/exec:
+    post:
+      consumes:
+      - application/json
+      description: Execute a DDL query. Currently only create external stream is supported.
+      parameters:
+      - description: query request parameters
+        in: body
+        name: query
+        required: true
+        schema:
+          $ref: '#/definitions/ExecuteQueryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: the query was successfully executed.
+          schema:
+            $ref: '#/definitions/Query'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: execute a DDL query
+      tags:
+      - Queries v1beta2
+      x-internal: true
   /v1beta2/savedqueries:
     get:
       description: Get all saved queries
@@ -2867,6 +3391,124 @@ paths:
       summary: stop a sink
       tags:
       - Sinks v1beta2
+  /v1beta2/source/infer:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint returns the inferred schema for this particular event.
+        The schema can be used to create a new stream to store events like this.
+      parameters:
+      - description: event used to infer schema
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/EventInferRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/EventInferResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: infer schema from an existing event
+      tags:
+      - Sources v1beta2
+      x-internal: true
+  /v1beta2/source/kafka/topics:
+    post:
+      consumes:
+      - application/json
+      description: The request payload of this endpoint is the subset of the payload
+        of create kafka source. Only certain `properties` is needed.
+      parameters:
+      - description: kakfa server properties
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1beta2.ListKafkaTopicRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list Kafka topics
+      tags:
+      - Sources v1beta2
+      x-internal: true
+  /v1beta2/source/match:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint can help you determine which stream(s) can be used
+        to store those events.
+      parameters:
+      - description: events to match
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/StreamMatchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: return streams that are compatible with provided events
+      tags:
+      - Sources v1beta2
+      x-internal: true
   /v1beta2/source/preview:
     post:
       consumes:
@@ -3472,42 +4114,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: get the stats of a stream
-      tags:
-      - Streams v1beta2
-  /v1beta2/streams/external:
-    post:
-      consumes:
-      - application/json
-      description: Create an external stream.
-      parameters:
-      - description: create external stream request parameters
-        in: body
-        name: stream
-        required: true
-        schema:
-          $ref: '#/definitions/ExternalStreamDef'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/ExternalStreamDef'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-      security:
-      - ApiKeyAuth: []
-      summary: create an external stream
       tags:
       - Streams v1beta2
   /v1beta2/subscription:

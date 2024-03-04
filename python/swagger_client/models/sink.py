@@ -36,6 +36,7 @@ class Sink(object):
         'last_updated_by': 'Owner',
         'message': 'str',
         'name': 'str',
+        'plan': 'SQLAnalyzeResult',
         'properties': 'dict(str, object)',
         'query': 'str',
         'status': 'str',
@@ -51,13 +52,14 @@ class Sink(object):
         'last_updated_by': 'last_updated_by',
         'message': 'message',
         'name': 'name',
+        'plan': 'plan',
         'properties': 'properties',
         'query': 'query',
         'status': 'status',
         'type': 'type'
     }
 
-    def __init__(self, created_at=None, created_by=None, description=None, id=None, last_updated_at=None, last_updated_by=None, message=None, name=None, properties=None, query=None, status=None, type=None):  # noqa: E501
+    def __init__(self, created_at=None, created_by=None, description=None, id=None, last_updated_at=None, last_updated_by=None, message=None, name=None, plan=None, properties=None, query=None, status=None, type=None):  # noqa: E501
         """Sink - a model defined in Swagger"""  # noqa: E501
         self._created_at = None
         self._created_by = None
@@ -67,6 +69,7 @@ class Sink(object):
         self._last_updated_by = None
         self._message = None
         self._name = None
+        self._plan = None
         self._properties = None
         self._query = None
         self._status = None
@@ -84,6 +87,8 @@ class Sink(object):
             self.last_updated_by = last_updated_by
         self.message = message
         self.name = name
+        if plan is not None:
+            self.plan = plan
         self.properties = properties
         self.query = query
         self.status = status
@@ -264,6 +269,27 @@ class Sink(object):
             raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
+
+    @property
+    def plan(self):
+        """Gets the plan of this Sink.  # noqa: E501
+
+
+        :return: The plan of this Sink.  # noqa: E501
+        :rtype: SQLAnalyzeResult
+        """
+        return self._plan
+
+    @plan.setter
+    def plan(self, plan):
+        """Sets the plan of this Sink.
+
+
+        :param plan: The plan of this Sink.  # noqa: E501
+        :type: SQLAnalyzeResult
+        """
+
+        self._plan = plan
 
     @property
     def properties(self):

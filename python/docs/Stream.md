@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **created_by** | [**Owner**](Owner.md) |  | [optional] 
 **description** | **str** |  | 
 **engine** | **str** |  | 
-**is_external** | **bool** |  | 
+**is_external** | **bool** | Deprecated. | [optional] 
 **last_updated_at** | **str** |  | [optional] 
 **last_updated_by** | [**Owner**](Owner.md) |  | [optional] 
 **logstore_retention_bytes** | **int** | The max size a stream can grow. Any non-positive value means unlimited size. | 
@@ -16,7 +16,6 @@ Name | Type | Description | Notes
 **mode** | **str** | Storage mode of stream. Defaulted to &#x60;append&#x60;. | 
 **name** | **str** |  | 
 **primary_key** | **str** | Expression of primary key, required in &#x60;changelog_kv&#x60; and &#x60;versioned_kv&#x60; mode | [optional] 
-**settings** | [**list[StreamSetting]**](StreamSetting.md) | Only available for external stream. | [optional] 
 **ttl** | **str** | Deprecated. Use &#x60;ttl_expression&#x60; instaed | 
 **ttl_expression** | **str** | ORDER_BY     string        &#x60;json:\&quot;order_by_expression\&quot;&#x60; PATTITION_BY string        &#x60;json:\&quot;partition_by_expression\&quot;&#x60; | 
 

@@ -5,6 +5,7 @@ All URIs are relative to *//us.timeplus.cloud/{workspace-id}/api*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**v1beta2_format_post**](QueriesV1beta2Api.md#v1beta2_format_post) | **POST** /v1beta2/format | format a query
+[**v1beta2_queries_exec_post**](QueriesV1beta2Api.md#v1beta2_queries_exec_post) | **POST** /v1beta2/queries/exec | execute a DDL query
 [**v1beta2_queries_get**](QueriesV1beta2Api.md#v1beta2_queries_get) | **GET** /v1beta2/queries | list queries
 [**v1beta2_queries_id_cancel_post**](QueriesV1beta2Api.md#v1beta2_queries_id_cancel_post) | **POST** /v1beta2/queries/{id}/cancel | cancel a query
 [**v1beta2_queries_id_delete**](QueriesV1beta2Api.md#v1beta2_queries_id_delete) | **DELETE** /v1beta2/queries/{id} | delete a query
@@ -55,6 +56,60 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**FormatQueryResponse**](FormatQueryResponse.md)
+
+### Authorization
+
+[ApiKeyAuth](../README.md#ApiKeyAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **v1beta2_queries_exec_post**
+> Query v1beta2_queries_exec_post(body)
+
+execute a DDL query
+
+Execute a DDL query. Currently only create external stream is supported.
+
+### Example
+```python
+from __future__ import print_function
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: ApiKeyAuth
+configuration = swagger_client.Configuration()
+configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.QueriesV1beta2Api(swagger_client.ApiClient(configuration))
+body = swagger_client.ExecuteQueryRequest() # ExecuteQueryRequest | query request parameters
+
+try:
+    # execute a DDL query
+    api_response = api_instance.v1beta2_queries_exec_post(body)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling QueriesV1beta2Api->v1beta2_queries_exec_post: %s\n" % e)
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | [**ExecuteQueryRequest**](ExecuteQueryRequest.md)| query request parameters | 
+
+### Return type
+
+[**Query**](Query.md)
 
 ### Authorization
 

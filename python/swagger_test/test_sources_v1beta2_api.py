@@ -28,6 +28,27 @@ class TestSourcesV1beta2Api(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_v1beta2_source_infer_post(self):
+        """Test case for v1beta2_source_infer_post
+
+        infer schema from an existing event  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_source_kafka_topics_post(self):
+        """Test case for v1beta2_source_kafka_topics_post
+
+        list Kafka topics  # noqa: E501
+        """
+        pass
+
+    def test_v1beta2_source_match_post(self):
+        """Test case for v1beta2_source_match_post
+
+        return streams that are compatible with provided events  # noqa: E501
+        """
+        pass
+
     def test_v1beta2_source_preview_post(self):
         """Test case for v1beta2_source_preview_post
 
