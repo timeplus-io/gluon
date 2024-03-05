@@ -18,8 +18,11 @@ from __future__ import absolute_import
 from swagger_client.timeplus.api_keys_v1beta2_api import APIKeysV1beta2Api
 from swagger_client.timeplus.alerts_v1beta2_api import AlertsV1beta2Api
 from swagger_client.timeplus.dashboards_v1beta2_api import DashboardsV1beta2Api
+from swagger_client.timeplus.external_streams_v1beta2_api import ExternalStreamsV1beta2Api
 from swagger_client.timeplus.invitations_v1beta2_api import InvitationsV1beta2Api
+from swagger_client.timeplus.license_v1beta2_api import LicenseV1beta2Api
 from swagger_client.timeplus.metrics_v1beta2_api import MetricsV1beta2Api
+from swagger_client.timeplus.misc_api import MiscApi
 from swagger_client.timeplus.queries_v1beta2_api import QueriesV1beta2Api
 from swagger_client.timeplus.saved_queries_v1beta2_api import SavedQueriesV1beta2Api
 from swagger_client.timeplus.sinks_v1beta2_api import SinksV1beta2Api
@@ -30,6 +33,7 @@ from swagger_client.timeplus.topology_v1beta2_api import TopologyV1beta2Api
 from swagger_client.timeplus.udfs_v1beta2_api import UDFsV1beta2Api
 from swagger_client.timeplus.views_v1beta2_api import ViewsV1beta2Api
 from swagger_client.timeplus.workspace_v1beta2_api import WorkspaceV1beta2Api
+from swagger_client.timeplus.workspaces_v1beta2_api import WorkspacesV1beta2Api
 # import ApiClient
 from swagger_client.api_client import ApiClient
 from swagger_client.configuration import Configuration
@@ -40,6 +44,7 @@ from swagger_client.models.alert_incident import AlertIncident
 from swagger_client.models.alert_timeline import AlertTimeline
 from swagger_client.models.analyze_sql_request import AnalyzeSQLRequest
 from swagger_client.models.batching_policy import BatchingPolicy
+from swagger_client.models.build import Build
 from swagger_client.models.column import Column
 from swagger_client.models.column_def import ColumnDef
 from swagger_client.models.columns_resp import ColumnsResp
@@ -58,14 +63,24 @@ from swagger_client.models.dashboard_panel import DashboardPanel
 from swagger_client.models.edge import Edge
 from swagger_client.models.error_response import ErrorResponse
 from swagger_client.models.event import Event
+from swagger_client.models.event_infer_request import EventInferRequest
+from swagger_client.models.event_infer_response import EventInferResponse
+from swagger_client.models.execute_query_request import ExecuteQueryRequest
+from swagger_client.models.external_stream import ExternalStream
 from swagger_client.models.external_stream_def import ExternalStreamDef
+from swagger_client.models.external_stream_setting import ExternalStreamSetting
 from swagger_client.models.format_query_request import FormatQueryRequest
 from swagger_client.models.format_query_response import FormatQueryResponse
 from swagger_client.models.global_metrics_result import GlobalMetricsResult
 from swagger_client.models.graph import Graph
+from swagger_client.models.info import Info
 from swagger_client.models.ingest_data import IngestData
 from swagger_client.models.invitation import Invitation
 from swagger_client.models.invitation_request import InvitationRequest
+from swagger_client.models.kafka_common import KafkaCommon
+from swagger_client.models.kafka_common_tls import KafkaCommonTls
+from swagger_client.models.keygen_license import KeygenLicense
+from swagger_client.models.license_license import LicenseLicense
 from swagger_client.models.node import Node
 from swagger_client.models.owner import Owner
 from swagger_client.models.payment import Payment
@@ -88,7 +103,7 @@ from swagger_client.models.stats_error import StatsError
 from swagger_client.models.stats_throughput import StatsThroughput
 from swagger_client.models.stream import Stream
 from swagger_client.models.stream_def import StreamDef
-from swagger_client.models.stream_setting import StreamSetting
+from swagger_client.models.stream_match_request import StreamMatchRequest
 from swagger_client.models.stream_stats import StreamStats
 from swagger_client.models.subscription import Subscription
 from swagger_client.models.time_columns import TimeColumns
@@ -100,6 +115,8 @@ from swagger_client.models.update_source_request import UpdateSourceRequest
 from swagger_client.models.update_stream_request import UpdateStreamRequest
 from swagger_client.models.update_view_request import UpdateViewRequest
 from swagger_client.models.update_workspace_request import UpdateWorkspaceRequest
+from swagger_client.models.v1beta2_licenses_body import V1beta2LicensesBody
+from swagger_client.models.v1beta2_list_kafka_topic_request import V1beta2ListKafkaTopicRequest
 from swagger_client.models.view import View
 from swagger_client.models.workspace import Workspace
 from swagger_client.models.workspace_settings import WorkspaceSettings

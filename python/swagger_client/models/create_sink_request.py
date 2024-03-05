@@ -32,7 +32,6 @@ class CreateSinkRequest(object):
         'name': 'str',
         'properties': 'dict(str, object)',
         'query': 'str',
-        'sql': 'str',
         'type': 'str'
     }
 
@@ -41,17 +40,15 @@ class CreateSinkRequest(object):
         'name': 'name',
         'properties': 'properties',
         'query': 'query',
-        'sql': 'sql',
         'type': 'type'
     }
 
-    def __init__(self, description=None, name=None, properties=None, query=None, sql=None, type=None):  # noqa: E501
+    def __init__(self, description=None, name=None, properties=None, query=None, type=None):  # noqa: E501
         """CreateSinkRequest - a model defined in Swagger"""  # noqa: E501
         self._description = None
         self._name = None
         self._properties = None
         self._query = None
-        self._sql = None
         self._type = None
         self.discriminator = None
         if description is not None:
@@ -59,10 +56,7 @@ class CreateSinkRequest(object):
         self.name = name
         if properties is not None:
             self.properties = properties
-        if query is not None:
-            self.query = query
-        if sql is not None:
-            self.sql = sql
+        self.query = query
         self.type = type
 
     @property
@@ -152,31 +146,10 @@ class CreateSinkRequest(object):
         :param query: The query of this CreateSinkRequest.  # noqa: E501
         :type: str
         """
+        if query is None:
+            raise ValueError("Invalid value for `query`, must not be `None`")  # noqa: E501
 
         self._query = query
-
-    @property
-    def sql(self):
-        """Gets the sql of this CreateSinkRequest.  # noqa: E501
-
-        Deprecated. Use `query` instead.  # noqa: E501
-
-        :return: The sql of this CreateSinkRequest.  # noqa: E501
-        :rtype: str
-        """
-        return self._sql
-
-    @sql.setter
-    def sql(self, sql):
-        """Sets the sql of this CreateSinkRequest.
-
-        Deprecated. Use `query` instead.  # noqa: E501
-
-        :param sql: The sql of this CreateSinkRequest.  # noqa: E501
-        :type: str
-        """
-
-        self._sql = sql
 
     @property
     def type(self):

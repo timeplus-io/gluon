@@ -28,28 +28,54 @@ class ExternalStreamDef(object):
                             and the value is json key in definition.
     """
     swagger_types = {
+        'columns': 'list[ColumnDef]',
         'description': 'str',
         'name': 'str',
-        'settings': 'list[StreamSetting]'
+        'settings': 'list[ExternalStreamSetting]'
     }
 
     attribute_map = {
+        'columns': 'columns',
         'description': 'description',
         'name': 'name',
         'settings': 'settings'
     }
 
-    def __init__(self, description=None, name=None, settings=None):  # noqa: E501
+    def __init__(self, columns=None, description=None, name=None, settings=None):  # noqa: E501
         """ExternalStreamDef - a model defined in Swagger"""  # noqa: E501
+        self._columns = None
         self._description = None
         self._name = None
         self._settings = None
         self.discriminator = None
+        self.columns = columns
         if description is not None:
             self.description = description
         self.name = name
-        if settings is not None:
-            self.settings = settings
+        self.settings = settings
+
+    @property
+    def columns(self):
+        """Gets the columns of this ExternalStreamDef.  # noqa: E501
+
+
+        :return: The columns of this ExternalStreamDef.  # noqa: E501
+        :rtype: list[ColumnDef]
+        """
+        return self._columns
+
+    @columns.setter
+    def columns(self, columns):
+        """Sets the columns of this ExternalStreamDef.
+
+
+        :param columns: The columns of this ExternalStreamDef.  # noqa: E501
+        :type: list[ColumnDef]
+        """
+        if columns is None:
+            raise ValueError("Invalid value for `columns`, must not be `None`")  # noqa: E501
+
+        self._columns = columns
 
     @property
     def description(self):
@@ -101,7 +127,7 @@ class ExternalStreamDef(object):
 
 
         :return: The settings of this ExternalStreamDef.  # noqa: E501
-        :rtype: list[StreamSetting]
+        :rtype: list[ExternalStreamSetting]
         """
         return self._settings
 
@@ -111,8 +137,10 @@ class ExternalStreamDef(object):
 
 
         :param settings: The settings of this ExternalStreamDef.  # noqa: E501
-        :type: list[StreamSetting]
+        :type: list[ExternalStreamSetting]
         """
+        if settings is None:
+            raise ValueError("Invalid value for `settings`, must not be `None`")  # noqa: E501
 
         self._settings = settings
 

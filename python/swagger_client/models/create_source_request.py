@@ -157,7 +157,7 @@ class CreateSourceRequest(object):
     def type(self):
         """Gets the type of this CreateSourceRequest.  # noqa: E501
 
-        Available types: [`ably`, `stream_generator`, `kafka`, `redpanda`, `confluent_cloud`, `pulsar`]. Additional configurations such as broker url and etc. should be passed through `properties`  # noqa: E501
+        Available types: [`ably`, `stream_generator`, `kafka`, `redpanda`, `confluent_cloud`, `pulsar`, `websocket`, `nats`, `nats_jetstream`]. Additional configurations such as broker url and etc. should be passed through `properties`  # noqa: E501
 
         :return: The type of this CreateSourceRequest.  # noqa: E501
         :rtype: str
@@ -168,7 +168,7 @@ class CreateSourceRequest(object):
     def type(self, type):
         """Sets the type of this CreateSourceRequest.
 
-        Available types: [`ably`, `stream_generator`, `kafka`, `redpanda`, `confluent_cloud`, `pulsar`]. Additional configurations such as broker url and etc. should be passed through `properties`  # noqa: E501
+        Available types: [`ably`, `stream_generator`, `kafka`, `redpanda`, `confluent_cloud`, `pulsar`, `websocket`, `nats`, `nats_jetstream`]. Additional configurations such as broker url and etc. should be passed through `properties`  # noqa: E501
 
         :param type: The type of this CreateSourceRequest.  # noqa: E501
         :type: str

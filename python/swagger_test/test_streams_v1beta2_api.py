@@ -28,13 +28,6 @@ class TestStreamsV1beta2Api(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_v1beta2_streams_external_post(self):
-        """Test case for v1beta2_streams_external_post
-
-        create an external stream  # noqa: E501
-        """
-        pass
-
     def test_v1beta2_streams_get(self):
         """Test case for v1beta2_streams_get
 

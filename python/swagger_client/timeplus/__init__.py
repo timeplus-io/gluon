@@ -6,8 +6,11 @@ from __future__ import absolute_import
 from swagger_client.timeplus.api_keys_v1beta2_api import APIKeysV1beta2Api
 from swagger_client.timeplus.alerts_v1beta2_api import AlertsV1beta2Api
 from swagger_client.timeplus.dashboards_v1beta2_api import DashboardsV1beta2Api
+from swagger_client.timeplus.external_streams_v1beta2_api import ExternalStreamsV1beta2Api
 from swagger_client.timeplus.invitations_v1beta2_api import InvitationsV1beta2Api
+from swagger_client.timeplus.license_v1beta2_api import LicenseV1beta2Api
 from swagger_client.timeplus.metrics_v1beta2_api import MetricsV1beta2Api
+from swagger_client.timeplus.misc_api import MiscApi
 from swagger_client.timeplus.queries_v1beta2_api import QueriesV1beta2Api
 from swagger_client.timeplus.saved_queries_v1beta2_api import SavedQueriesV1beta2Api
 from swagger_client.timeplus.sinks_v1beta2_api import SinksV1beta2Api
@@ -18,3 +21,4 @@ from swagger_client.timeplus.topology_v1beta2_api import TopologyV1beta2Api
 from swagger_client.timeplus.udfs_v1beta2_api import UDFsV1beta2Api
 from swagger_client.timeplus.views_v1beta2_api import ViewsV1beta2Api
 from swagger_client.timeplus.workspace_v1beta2_api import WorkspaceV1beta2Api
+from swagger_client.timeplus.workspaces_v1beta2_api import WorkspacesV1beta2Api

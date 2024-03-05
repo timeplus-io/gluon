@@ -55,12 +55,10 @@ class ColumnsResp(object):
             self.codec = codec
         if default is not None:
             self.default = default
-        if name is not None:
-            self.name = name
+        self.name = name
         if nullable is not None:
             self.nullable = nullable
-        if type is not None:
-            self.type = type
+        self.type = type
 
     @property
     def codec(self):
@@ -122,6 +120,8 @@ class ColumnsResp(object):
         :param name: The name of this ColumnsResp.  # noqa: E501
         :type: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
@@ -164,6 +164,8 @@ class ColumnsResp(object):
         :param type: The type of this ColumnsResp.  # noqa: E501
         :type: str
         """
+        if type is None:
+            raise ValueError("Invalid value for `type`, must not be `None`")  # noqa: E501
 
         self._type = type
 

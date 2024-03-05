@@ -156,15 +156,10 @@ class RESTClientObject(object):
                     url += '?' + urlencode(query_params)
                 if re.search('json', headers['Content-Type'], re.IGNORECASE):
                     request_body = '{}'
-                    # if body is not None:
-                    #     request_body = json.dumps(body)
-
-                    # no need to dump in case body is already a string
                     if not isinstance(body, str):
                         request_body = json.dumps(body)
                     else:
                         request_body = body
-
                     r = self.pool_manager.request(
                         method, url,
                         body=request_body,

@@ -15,23 +15,24 @@ from __future__ import absolute_import
 import unittest
 
 import swagger_client
-from swagger_client.models.stream_setting import StreamSetting  # noqa: E501
+from swagger_client.timeplus.misc_api import MiscApi  # noqa: E501
 from swagger_client.rest import ApiException
 
 
-class TestStreamSetting(unittest.TestCase):
-    """StreamSetting unit test stubs"""
+class TestMiscApi(unittest.TestCase):
+    """MiscApi unit test stubs"""
 
     def setUp(self):
-        pass
+        self.api = MiscApi()  # noqa: E501
 
     def tearDown(self):
         pass
 
-    def testStreamSetting(self):
-        """Test StreamSetting"""
-        # FIXME: construct object with mandatory attributes with example values
-        # model = swagger_client.models.stream_setting.StreamSetting()  # noqa: E501
+    def test_info_get(self):
+        """Test case for info_get
+
+        get the version information  # noqa: E501
+        """
         pass
 
 

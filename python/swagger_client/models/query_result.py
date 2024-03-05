@@ -28,46 +28,18 @@ class QueryResult(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'data': 'list[list[object]]',
         'header': 'list[Column]'
     }
 
     attribute_map = {
-        'data': 'data',
         'header': 'header'
     }
 
-    def __init__(self, data=None, header=None):  # noqa: E501
+    def __init__(self, header=None):  # noqa: E501
         """QueryResult - a model defined in Swagger"""  # noqa: E501
-        self._data = None
         self._header = None
         self.discriminator = None
-        if data is not None:
-            self.data = data
         self.header = header
-
-    @property
-    def data(self):
-        """Gets the data of this QueryResult.  # noqa: E501
-
-        deprecated  # noqa: E501
-
-        :return: The data of this QueryResult.  # noqa: E501
-        :rtype: list[list[object]]
-        """
-        return self._data
-
-    @data.setter
-    def data(self, data):
-        """Sets the data of this QueryResult.
-
-        deprecated  # noqa: E501
-
-        :param data: The data of this QueryResult.  # noqa: E501
-        :type: list[list[object]]
-        """
-
-        self._data = data
 
     @property
     def header(self):

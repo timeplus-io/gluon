@@ -4,7 +4,6 @@ All URIs are relative to *//us.timeplus.cloud/{workspace-id}/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**v1beta2_streams_external_post**](StreamsV1beta2Api.md#v1beta2_streams_external_post) | **POST** /v1beta2/streams/external | create an external stream
 [**v1beta2_streams_get**](StreamsV1beta2Api.md#v1beta2_streams_get) | **GET** /v1beta2/streams | list streams
 [**v1beta2_streams_name_delete**](StreamsV1beta2Api.md#v1beta2_streams_name_delete) | **DELETE** /v1beta2/streams/{name} | delete a stream
 [**v1beta2_streams_name_get**](StreamsV1beta2Api.md#v1beta2_streams_name_get) | **GET** /v1beta2/streams/{name} | get a stream
@@ -12,60 +11,6 @@ Method | HTTP request | Description
 [**v1beta2_streams_name_patch**](StreamsV1beta2Api.md#v1beta2_streams_name_patch) | **PATCH** /v1beta2/streams/{name} | update a stream
 [**v1beta2_streams_name_stats_get**](StreamsV1beta2Api.md#v1beta2_streams_name_stats_get) | **GET** /v1beta2/streams/{name}/stats | get the stats of a stream
 [**v1beta2_streams_post**](StreamsV1beta2Api.md#v1beta2_streams_post) | **POST** /v1beta2/streams | create a stream
-
-# **v1beta2_streams_external_post**
-> ExternalStreamDef v1beta2_streams_external_post(body)
-
-create an external stream
-
-Create an external stream.
-
-### Example
-```python
-from __future__ import print_function
-import time
-import swagger_client
-from swagger_client.rest import ApiException
-from pprint import pprint
-
-# Configure API key authorization: ApiKeyAuth
-configuration = swagger_client.Configuration()
-configuration.api_key['X-Api-Key'] = 'YOUR_API_KEY'
-# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-# configuration.api_key_prefix['X-Api-Key'] = 'Bearer'
-
-# create an instance of the API class
-api_instance = swagger_client.StreamsV1beta2Api(swagger_client.ApiClient(configuration))
-body = swagger_client.ExternalStreamDef() # ExternalStreamDef | create external stream request parameters
-
-try:
-    # create an external stream
-    api_response = api_instance.v1beta2_streams_external_post(body)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling StreamsV1beta2Api->v1beta2_streams_external_post: %s\n" % e)
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**ExternalStreamDef**](ExternalStreamDef.md)| create external stream request parameters | 
-
-### Return type
-
-[**ExternalStreamDef**](ExternalStreamDef.md)
-
-### Authorization
-
-[ApiKeyAuth](../README.md#ApiKeyAuth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **v1beta2_streams_get**
 > list[Stream] v1beta2_streams_get()

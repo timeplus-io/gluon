@@ -35,6 +35,13 @@ class TestQueriesV1beta2Api(unittest.TestCase):
         """
         pass
 
+    def test_v1beta2_queries_exec_post(self):
+        """Test case for v1beta2_queries_exec_post
+
+        execute a DDL query  # noqa: E501
+        """
+        pass
+
     def test_v1beta2_queries_get(self):
         """Test case for v1beta2_queries_get
 

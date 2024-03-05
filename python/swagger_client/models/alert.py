@@ -373,6 +373,7 @@ class Alert(object):
         :param resolve_query: The resolve_query of this Alert.  # noqa: E501
         :type: Query
         """
+        # comment it out due to the limitation of swagger codegen
         # if resolve_query is None:
         #     raise ValueError("Invalid value for `resolve_query`, must not be `None`")  # noqa: E501
 
@@ -463,6 +464,7 @@ class Alert(object):
         :param trigger_query: The trigger_query of this Alert.  # noqa: E501
         :type: Query
         """
+        # comment it out due to the limitation of swagger codegen
         # if trigger_query is None:
         #     raise ValueError("Invalid value for `trigger_query`, must not be `None`")  # noqa: E501
 

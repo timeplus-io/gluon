@@ -41,7 +41,6 @@ class Stream(object):
         'mode': 'str',
         'name': 'str',
         'primary_key': 'str',
-        'settings': 'list[StreamSetting]',
         'ttl': 'str',
         'ttl_expression': 'str'
     }
@@ -60,12 +59,11 @@ class Stream(object):
         'mode': 'mode',
         'name': 'name',
         'primary_key': 'primary_key',
-        'settings': 'settings',
         'ttl': 'ttl',
         'ttl_expression': 'ttl_expression'
     }
 
-    def __init__(self, columns=None, created_at=None, created_by=None, description=None, engine=None, is_external=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, mode=None, name=None, primary_key=None, settings=None, ttl=None, ttl_expression=None):  # noqa: E501
+    def __init__(self, columns=None, created_at=None, created_by=None, description=None, engine=None, is_external=None, last_updated_at=None, last_updated_by=None, logstore_retention_bytes=None, logstore_retention_ms=None, mode=None, name=None, primary_key=None, ttl=None, ttl_expression=None):  # noqa: E501
         """Stream - a model defined in Swagger"""  # noqa: E501
         self._columns = None
         self._created_at = None
@@ -80,7 +78,6 @@ class Stream(object):
         self._mode = None
         self._name = None
         self._primary_key = None
-        self._settings = None
         self._ttl = None
         self._ttl_expression = None
         self.discriminator = None
@@ -91,7 +88,8 @@ class Stream(object):
             self.created_by = created_by
         self.description = description
         self.engine = engine
-        self.is_external = is_external
+        if is_external is not None:
+            self.is_external = is_external
         if last_updated_at is not None:
             self.last_updated_at = last_updated_at
         if last_updated_by is not None:
@@ -102,8 +100,6 @@ class Stream(object):
         self.name = name
         if primary_key is not None:
             self.primary_key = primary_key
-        if settings is not None:
-            self.settings = settings
         self.ttl = ttl
         self.ttl_expression = ttl_expression
 
@@ -222,6 +218,7 @@ class Stream(object):
     def is_external(self):
         """Gets the is_external of this Stream.  # noqa: E501
 
+        Deprecated.  # noqa: E501
 
         :return: The is_external of this Stream.  # noqa: E501
         :rtype: bool
@@ -232,12 +229,11 @@ class Stream(object):
     def is_external(self, is_external):
         """Sets the is_external of this Stream.
 
+        Deprecated.  # noqa: E501
 
         :param is_external: The is_external of this Stream.  # noqa: E501
         :type: bool
         """
-        if is_external is None:
-            raise ValueError("Invalid value for `is_external`, must not be `None`")  # noqa: E501
 
         self._is_external = is_external
 
@@ -355,12 +351,12 @@ class Stream(object):
         """
         if mode is None:
             raise ValueError("Invalid value for `mode`, must not be `None`")  # noqa: E501
-        # allowed_values = ["append", "changelog", "changelog_kv", "versioned_kv"]  # noqa: E501
-        # # if mode not in allowed_values:
-        #     raise ValueError(
-        #         "Invalid value for `mode` ({0}), must be one of {1}"  # noqa: E501
-        #         .format(mode, allowed_values)
-        #     )
+        allowed_values = ["append", "changelog", "changelog_kv", "versioned_kv"]  # noqa: E501
+        if mode not in allowed_values:
+            raise ValueError(
+                "Invalid value for `mode` ({0}), must be one of {1}"  # noqa: E501
+                .format(mode, allowed_values)
+            )
 
         self._mode = mode
 
@@ -409,29 +405,6 @@ class Stream(object):
         """
 
         self._primary_key = primary_key
-
-    @property
-    def settings(self):
-        """Gets the settings of this Stream.  # noqa: E501
-
-        Only available for external stream.  # noqa: E501
-
-        :return: The settings of this Stream.  # noqa: E501
-        :rtype: list[StreamSetting]
-        """
-        return self._settings
-
-    @settings.setter
-    def settings(self, settings):
-        """Sets the settings of this Stream.
-
-        Only available for external stream.  # noqa: E501
-
-        :param settings: The settings of this Stream.  # noqa: E501
-        :type: list[StreamSetting]
-        """
-
-        self._settings = settings
 
     @property
     def ttl(self):

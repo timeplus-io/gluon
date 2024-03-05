@@ -42,10 +42,8 @@ class IngestData(object):
         self._columns = None
         self._data = None
         self.discriminator = None
-        if columns is not None:
-            self.columns = columns
-        if data is not None:
-            self.data = data
+        self.columns = columns
+        self.data = data
 
     @property
     def columns(self):
@@ -65,6 +63,8 @@ class IngestData(object):
         :param columns: The columns of this IngestData.  # noqa: E501
         :type: list[str]
         """
+        if columns is None:
+            raise ValueError("Invalid value for `columns`, must not be `None`")  # noqa: E501
 
         self._columns = columns
 
@@ -86,6 +86,8 @@ class IngestData(object):
         :param data: The data of this IngestData.  # noqa: E501
         :type: list[list[object]]
         """
+        if data is None:
+            raise ValueError("Invalid value for `data`, must not be `None`")  # noqa: E501
 
         self._data = data
 

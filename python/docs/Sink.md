@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **last_updated_by** | [**Owner**](Owner.md) |  | [optional] 
 **message** | **str** |  | 
 **name** | **str** |  | 
+**plan** | [**SQLAnalyzeResult**](SQLAnalyzeResult.md) |  | [optional] 
 **properties** | **dict(str, object)** |  | 
 **query** | **str** |  | 
 **status** | **str** |  | 
