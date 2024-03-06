@@ -24,3 +24,11 @@ def test_dbapi_live(conn):
     assert row1 is not None
     assert len(rows) == 3
     assert len(query_result) == 1
+
+
+def test_dbapi_show_streams(conn):
+    cursor = conn.execute("show streams")
+    cursor.next()
+    row = cursor.fetchone()
+
+    assert row is not None

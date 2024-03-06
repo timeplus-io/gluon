@@ -228,8 +228,8 @@ class Cursor(object):
         self._is_streaming = analyze_result.is_streaming
         self._query_type = analyze_result.query_type
 
-        if self._query_type != "SELECT":
-            raise Error("only select query is supported now")
+        # if self._query_type != "SELECT":
+        #     raise Error("only select query is supported now")
 
         self._run_stream_query(sql)
         self._results = self._stream_query_iter()
