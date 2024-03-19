@@ -7,6 +7,7 @@ from timeplus.stream import Stream  # noqa: F401
 from timeplus.external_stream import ExternalStream  # noqa: F401
 from timeplus.view import View  # noqa: F401
 from timeplus.schema import Schema  # noqa: F401
+from timeplus.topology import Topology  # noqa: F401
 
 from timeplus.source import Source  # noqa: F401
 from timeplus.sink import Sink  # noqa: F401
