@@ -32,6 +32,7 @@ class Dashboard:
             return list_response
         except ApiException as e:
             pprint(
-                "Exception when calling DashboardsV1beta2Api->v1beta2_dashboards_get: %s\n" % e
+                "Exception when calling DashboardsV1beta2Api->v1beta2_dashboards_get: %s\n"
+                % e
             )
             raise e

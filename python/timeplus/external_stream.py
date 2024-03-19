@@ -1,4 +1,3 @@
-from pprint import pprint
 import swagger_client
 from swagger_client.rest import ApiException
 
@@ -143,7 +142,7 @@ class ExternalStream:
             self._metadata = resp
             return self
         except ApiException as e:
-            raise TimeplusAPIError(f"no such stream with id {self._name}")
+            raise TimeplusAPIError(f"no such stream with id {self._name} {e}")
 
     def metadata(self):
         """

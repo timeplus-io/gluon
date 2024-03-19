@@ -104,37 +104,27 @@ class Stream:
         ApiException: If an error occurs during the API call.
         """
 
-        if not self._columns:
-            raise ApiException("columns is required to create stream")
-
-        if not self._name:
-            raise ApiException("name is required to create stream")
+        if not self._columns or not self._name:
+            raise ApiException("columns or name is required to create stream")
 
         body = {"columns": self._columns, "name": self._name}
 
-        if self._event_time_cloumn:
-            body["event_time_column"] = self._event_time_cloumn
-
-        if self._event_time_timezone:
-            body["event_time_timezone"] = self._event_time_timezone
-
-        if self._logstore_retention_bytes:
-            body["logstore_retention_bytes"] = self._logstore_retention_bytes
-
-        if self._logstore_retention_ms:
-            body["logstore_retention_ms"] = self._logstore_retention_ms
-
-        if self._ttl_expression:
-            body["ttl_expression"] = self._ttl_expression
-
-        if self._description:
-            body["description"] = self._description
-
-        if self._mode:
-            body["mode"] = self._mode
-
-        if self._primary_key:
-            body["primary_key"] = self._primary_key
+        body["event_time_column"] = (
+            self._event_time_cloumn if self._event_time_cloumn else None
+        )
+        body["event_time_timezone"] = (
+            self._event_time_timezone if self._event_time_timezone else None
+        )
+        body["logstore_retention_bytes"] = (
+            self._logstore_retention_bytes if self._logstore_retention_bytes else None
+        )
+        body["logstore_retention_ms"] = (
+            self._logstore_retention_ms if self._logstore_retention_ms else None
+        )
+        body["ttl_expression"] = self._ttl_expression if self._ttl_expression else None
+        body["description"] = self._description if self._description else None
+        body["mode"] = self._mode if self._mode else None
+        body["primary_key"] = self._primary_key if self._primary_key else None
 
         try:
             self._metadata = self._api_instance.v1beta2_streams_post(body)

@@ -31,7 +31,5 @@ class UDF:
             list_response = self._api_instance.v1beta2_udfs_get()
             return list_response
         except ApiException as e:
-            pprint(
-                "Exception when calling UDFsV1beta2Api->v1beta2_udfs_get: %s\n" % e
-            )
+            pprint("Exception when calling UDFsV1beta2Api->v1beta2_udfs_get: %s\n" % e)
             raise e
