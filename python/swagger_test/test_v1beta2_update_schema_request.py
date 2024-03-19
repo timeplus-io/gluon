@@ -15,12 +15,12 @@ from __future__ import absolute_import
 import unittest
 
 import swagger_client
-from swagger_client.models.external_stream_setting import ExternalStreamSetting  # noqa: E501
+from swagger_client.models.v1beta2_update_schema_request import V1beta2UpdateSchemaRequest  # noqa: E501
 from swagger_client.rest import ApiException
 
 
-class TestExternalStreamSetting(unittest.TestCase):
-    """ExternalStreamSetting unit test stubs"""
+class TestV1beta2UpdateSchemaRequest(unittest.TestCase):
+    """V1beta2UpdateSchemaRequest unit test stubs"""
 
     def setUp(self):
         pass
@@ -28,10 +28,10 @@ class TestExternalStreamSetting(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testExternalStreamSetting(self):
-        """Test ExternalStreamSetting"""
+    def testV1beta2UpdateSchemaRequest(self):
+        """Test V1beta2UpdateSchemaRequest"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = swagger_client.models.external_stream_setting.ExternalStreamSetting()  # noqa: E501
+        # model = swagger_client.models.v1beta2_update_schema_request.V1beta2UpdateSchemaRequest()  # noqa: E501
         pass
 
 

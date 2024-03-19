@@ -1,9 +1,8 @@
-# ExternalStream
+# ExternalTable
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**columns** | [**list[ColumnsResp]**](ColumnsResp.md) |  | [optional] 
 **created_at** | **str** |  | [optional] 
 **created_by** | [**Owner**](Owner.md) |  | [optional] 
 **description** | **str** |  | 

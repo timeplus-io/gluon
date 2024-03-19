@@ -6,14 +6,14 @@ Name | Type | Description | Notes
 **analysis** | [**SQLAnalyzeResult**](SQLAnalyzeResult.md) |  | 
 **created_at** | **str** |  | [optional] 
 **created_by** | [**Owner**](Owner.md) |  | [optional] 
-**description** | **str** |  | 
+**description** | **str** | deprecated | 
 **duration** | **int** |  | 
 **end_time** | **int** |  | 
 **id** | **str** |  | 
 **last_updated_at** | **str** |  | [optional] 
 **last_updated_by** | [**Owner**](Owner.md) |  | [optional] 
 **message** | **str** |  | 
-**name** | **str** |  | 
+**name** | **str** | deprecated | 
 **response_time** | **int** |  | 
 **result** | [**QueryResult**](QueryResult.md) |  | 
 **sinks** | [**dict(str, SinkStat)**](SinkStat.md) | deprecated | [optional] 

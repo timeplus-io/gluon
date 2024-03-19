@@ -188,6 +188,7 @@ class Query(object):
     def description(self):
         """Gets the description of this Query.  # noqa: E501
 
+        deprecated  # noqa: E501
 
         :return: The description of this Query.  # noqa: E501
         :rtype: str
@@ -198,6 +199,7 @@ class Query(object):
     def description(self, description):
         """Sets the description of this Query.
 
+        deprecated  # noqa: E501
 
         :param description: The description of this Query.  # noqa: E501
         :type: str
@@ -345,6 +347,7 @@ class Query(object):
     def name(self):
         """Gets the name of this Query.  # noqa: E501
 
+        deprecated  # noqa: E501
 
         :return: The name of this Query.  # noqa: E501
         :rtype: str
@@ -355,6 +358,7 @@ class Query(object):
     def name(self, name):
         """Sets the name of this Query.
 
+        deprecated  # noqa: E501
 
         :param name: The name of this Query.  # noqa: E501
         :type: str
@@ -499,7 +503,7 @@ class Query(object):
         """
         if status is None:
             raise ValueError("Invalid value for `status`, must not be `None`")  # noqa: E501
-        allowed_values = ["init", "running", "finished", "canceled", "failed"]  # noqa: E501
+        allowed_values = ["running", "finished", "canceled", "failed"]  # noqa: E501
         if status not in allowed_values:
             raise ValueError(
                 "Invalid value for `status` ({0}), must be one of {1}"  # noqa: E501

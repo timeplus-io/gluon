@@ -1,12 +1,10 @@
-# ExternalStreamDef
+# StreamSetting
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**columns** | [**list[ColumnDef]**](ColumnDef.md) |  | 
-**description** | **str** |  | [optional] 
-**name** | **str** |  | 
-**settings** | [**list[StreamSetting]**](StreamSetting.md) |  | 
+**key** | **str** |  | [optional] 
+**value** | **str** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -1,4 +1,3 @@
-from pprint import pprint
 import swagger_client
 from swagger_client.rest import ApiException
 
@@ -33,7 +32,7 @@ class ExternalStream:
         stream_name (str): The name of the stream.
 
         Returns:
-        Stream: The current stream object.
+        ExternalStream: The current stream object.
         """
         self._name = stream_name
         return self
@@ -47,7 +46,7 @@ class ExternalStream:
         column_type (str): The type of the column.
 
         Returns:
-        Stream: The current stream object.
+        ExternalStream: The current stream object.
         """
         if self._columns is None:
             self._columns = []
@@ -57,10 +56,29 @@ class ExternalStream:
         return self
 
     def description(self, description):
+        """
+        Assigns a description to the stream.
+
+        Args:
+        description (str): The description of the stream.
+
+        Returns:
+        ExternalStream: The current stream object.
+        """
         self._description = description
         return self
 
     def add_settings(self, key, value):
+        """
+        Assign a setting to the stream.
+
+        Args:
+        key (str): The key of the setting.
+        value (str): The value of the setting.
+
+        Returns:
+        ExternalStream: The current stream object.
+        """
         if self._settings is None:
             self._settings = []
 
@@ -73,7 +91,7 @@ class ExternalStream:
         Sends a request to the API to create the external stream.
 
         Returns:
-        Stream: The current external stream object.
+        ExternalStream: The current external stream object.
 
         Raises:
         ApiException: If an error occurs during the API call.
@@ -133,7 +151,7 @@ class ExternalStream:
         Retrieves the metadata of the externa stream from the API.
 
         Returns:
-        Stream: The current external stream object with its metadata.
+        ExternalStream: The current external stream object with its metadata.
 
         Raises:
         TimeplusAPIError: If the external stream does not exist.
@@ -143,14 +161,14 @@ class ExternalStream:
             self._metadata = resp
             return self
         except ApiException as e:
-            raise TimeplusAPIError(f"no such stream with id {self._name}")
+            raise TimeplusAPIError(f"no such stream with id {self._name} {e}")
 
     def metadata(self):
         """
         Retrieve the internal api object swagger_client.models.stream.Stream
 
         Returns:
-        swagger_client.models.stream.Stream: API object of the stream.
+        swagger_client.models.external_stream.ExternalStream: API object of the stream.
         """
 
         return self._metadata

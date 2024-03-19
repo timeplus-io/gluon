@@ -489,7 +489,7 @@ definitions:
         type: string
       settings:
         items:
-          $ref: '#/definitions/ExternalStreamSetting'
+          $ref: '#/definitions/StreamSetting'
         type: array
     required:
     - description
@@ -509,19 +509,54 @@ definitions:
         type: string
       settings:
         items:
-          $ref: '#/definitions/ExternalStreamSetting'
+          $ref: '#/definitions/StreamSetting'
         type: array
     required:
     - columns
     - name
     - settings
     type: object
-  ExternalStreamSetting:
+  ExternalTable:
     properties:
-      key:
+      created_at:
+        example: "2023-02-01 23:22:59"
         type: string
-      value:
+      created_by:
+        $ref: '#/definitions/Owner'
+      description:
+        example: my test stream
         type: string
+      last_updated_at:
+        example: "2023-02-05 11:12:13"
+        type: string
+      last_updated_by:
+        $ref: '#/definitions/Owner'
+      name:
+        example: test_external_stream
+        type: string
+      settings:
+        items:
+          $ref: '#/definitions/StreamSetting'
+        type: array
+    required:
+    - description
+    - name
+    type: object
+  ExternalTableDef:
+    properties:
+      description:
+        example: a sample kafka external stream
+        type: string
+      name:
+        example: external_kafka
+        type: string
+      settings:
+        items:
+          $ref: '#/definitions/StreamSetting'
+        type: array
+    required:
+    - name
+    - settings
     type: object
   FormatQueryRequest:
     properties:
@@ -678,6 +713,7 @@ definitions:
       created_by:
         $ref: '#/definitions/Owner'
       description:
+        description: deprecated
         example: ad-hoc streaming query
         type: string
       duration:
@@ -697,6 +733,7 @@ definitions:
       message:
         type: string
       name:
+        description: deprecated
         example: test_query
         type: string
       response_time:
@@ -717,7 +754,6 @@ definitions:
         type: integer
       status:
         enum:
-        - init
         - running
         - finished
         - canceled
@@ -868,6 +904,28 @@ definitions:
     - name
     - sql
     - tags
+    type: object
+  SchemaResp:
+    properties:
+      content:
+        example: ""
+        type: string
+      created_at:
+        example: "2023-02-01 23:22:59"
+        type: string
+      created_by:
+        $ref: '#/definitions/Owner'
+      last_updated_at:
+        example: "2023-02-05 11:12:13"
+        type: string
+      last_updated_by:
+        $ref: '#/definitions/Owner'
+      name:
+        example: my_schema
+        type: string
+      type:
+        example: Protobuf
+        type: string
     type: object
   Sink:
     properties:
@@ -1204,6 +1262,13 @@ definitions:
         type: array
     required:
     - events
+    type: object
+  StreamSetting:
+    properties:
+      key:
+        type: string
+      value:
+        type: string
     type: object
   StreamStats:
     properties:
@@ -1716,10 +1781,46 @@ definitions:
     - time
     - value
     type: object
+  v1beta2.CreateSchemaRequest:
+    properties:
+      content:
+        example: ""
+        type: string
+      name:
+        example: my_schema
+        type: string
+      type:
+        enum:
+        - Protobuf
+        example: Protobuf
+        type: string
+    required:
+    - content
+    - name
+    - type
+    type: object
   v1beta2.ListKafkaTopicRequest:
     properties:
       properties:
         $ref: '#/definitions/kafka.Common'
+    type: object
+  v1beta2.UpdateSchemaRequest:
+    properties:
+      content:
+        example: ""
+        type: string
+      name:
+        example: my_schema
+        type: string
+      type:
+        enum:
+        - Protobuf
+        example: Protobuf
+        type: string
+    required:
+    - content
+    - name
+    - type
     type: object
   workspace.Settings:
     properties:
@@ -2423,6 +2524,127 @@ paths:
       summary: get an external stream
       tags:
       - External streams v1beta2
+  /v1beta2/external_tables:
+    get:
+      consumes:
+      - application/json
+      description: Get all external tables.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/ExternalTable'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list external tables
+      tags:
+      - External tables v1beta2
+    post:
+      consumes:
+      - application/json
+      description: Create an external table.
+      parameters:
+      - description: create external table request parameters
+        in: body
+        name: table
+        required: true
+        schema:
+          $ref: '#/definitions/ExternalTableDef'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/ExternalTableDef'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create an external table
+      tags:
+      - External tables v1beta2
+  /v1beta2/external_tables/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the external table with the given name.
+      parameters:
+      - description: external table name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: delete an external table
+      tags:
+      - External tables v1beta2
+    get:
+      consumes:
+      - application/json
+      description: Get the external table with the given name.
+      parameters:
+      - description: external table name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ExternalTable'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get an external table
+      tags:
+      - External tables v1beta2
   /v1beta2/format:
     post:
       consumes:
@@ -3118,6 +3340,164 @@ paths:
       summary: update a saved query
       tags:
       - Saved queries v1beta2
+  /v1beta2/schemas:
+    get:
+      consumes:
+      - application/json
+      description: Get all schemas.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/SchemaResp'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: list schemas
+      tags:
+      - Schemas v1beta2
+    post:
+      consumes:
+      - application/json
+      description: Create a schema
+      parameters:
+      - description: create Schema request parameters
+        in: body
+        name: Schema
+        required: true
+        schema:
+          $ref: '#/definitions/v1beta2.CreateSchemaRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/v1beta2.CreateSchemaRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: create a schema
+      tags:
+      - Schemas v1beta2
+  /v1beta2/schemas/{name}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete the schema with the given name.
+      parameters:
+      - description: schema
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: delete a schema
+      tags:
+      - Schemas v1beta2
+    get:
+      consumes:
+      - application/json
+      description: get schema with the given name.
+      parameters:
+      - description: schema name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/SchemaResp'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: get a schema
+      tags:
+      - Schemas v1beta2
+    put:
+      consumes:
+      - application/json
+      description: Update the specific schema with the given content.
+      parameters:
+      - description: update Schema request parameters
+        in: body
+        name: Schema
+        required: true
+        schema:
+          $ref: '#/definitions/v1beta2.UpdateSchemaRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1beta2.UpdateSchemaRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: update a schema
+      tags:
+      - Schemas v1beta2
   /v1beta2/sinks:
     get:
       consumes:

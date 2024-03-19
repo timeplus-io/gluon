@@ -145,8 +145,7 @@ class Sink:
             return self
         except ApiException as e:
             print(
-                "Exception when calling SinksV1beta2Api->v1beta2_sinks_post: %s\n"
-                % e
+                "Exception when calling SinksV1beta2Api->v1beta2_sinks_post: %s\n" % e
             )
             raise e
 
@@ -164,10 +163,7 @@ class Sink:
             list_response = self._api_instance.v1beta2_sinks_get()
             return list_response
         except ApiException as e:
-            print(
-                "Exception when calling SinksV1beta2Api->v1beta2_sinks_get: %s\n"
-                % e
-            )
+            print("Exception when calling SinksV1beta2Api->v1beta2_sinks_get: %s\n" % e)
             raise e
 
     def delete(self):
@@ -195,8 +191,7 @@ class Sink:
             return self
         except ApiException as e:
             print(
-                "Exception when calling SinksV1beta2Api->v1beta2_sinks_id_get: %s\n"
-                % e
+                "Exception when calling SinksV1beta2Api->v1beta2_sinks_id_get: %s\n" % e
             )
             raise TimeplusAPIError(f"no such sink with id {self.id()}")
 

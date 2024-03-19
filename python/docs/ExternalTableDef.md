@@ -1,10 +1,11 @@
-# ExternalStreamSetting
+# ExternalTableDef
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**key** | **str** |  | [optional] 
-**value** | **str** |  | [optional] 
+**description** | **str** |  | [optional] 
+**name** | **str** |  | 
+**settings** | [**list[StreamSetting]**](StreamSetting.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
