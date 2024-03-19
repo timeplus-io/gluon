@@ -85,7 +85,7 @@ class Schema:
         body = {"name": self._name, "type": self._type, "content": self._content}
 
         try:
-            self._metadata = self._api_instance.v1beta2_create_schema_request(body)
+            self._metadata = self._api_instance.v1beta2_schemas_post(body)
             return self
         except ApiException as e:
             pprint(
