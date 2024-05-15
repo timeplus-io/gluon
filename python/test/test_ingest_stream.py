@@ -42,8 +42,12 @@ def test_stream_ingest_lines(test_environment,test_stream):
         Stream(env=test_environment)
         .name("test_stream")
         .column("raw", "string")
+        .replication_factor(3)
+        .shards(3)
         .create()
     )
+    time.sleep(2)
+
     payload = '{"time":1,"data":"abcd"}\n{"time":2,"data":"xyz"}'
 
     # Ingest data in 'lines' format
@@ -85,8 +89,12 @@ def test_stream_ingest_raw(test_environment,test_stream):
         Stream(env=test_environment)
         .name("test_stream")
         .column("raw", "string")
+        .replication_factor(3)
+        .shards(3)
         .create()
     )
+
+    time.sleep(2)
 
     # Ingest data in 'raw' format
     try:
