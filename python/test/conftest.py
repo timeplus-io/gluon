@@ -34,9 +34,11 @@ def test_stream(test_environment):
 
     try:
         stream.delete()
-        time.sleep(1)
+        time.sleep(3)
     except Exception:
         pass
+
+    time.sleep(3)
 
     # Create a new stream
     stream = (
@@ -49,7 +51,7 @@ def test_stream(test_environment):
         .create()
     )
 
-    time.sleep(1)
+    time.sleep(3)
 
     value = [["time", "data"], [[0, "abcd"]]]
     stream.ingest(*value)

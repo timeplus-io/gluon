@@ -1,3 +1,4 @@
+import time
 from sqlalchemy import text, select, MetaData, Table
 from timeplus import View
 
@@ -58,11 +59,30 @@ def test_table_names(engine):
         assert "car_live_data" in tables
 
 
-def test_view_names(engine):
+def test_view_names(test_environment, engine):
+    view_name = "example_mv"
+    view = View(env=test_environment).name(view_name)
+
+    try:
+        view.delete()
+    except Exception:
+        pass
+
+    view = (
+        View(env=test_environment)
+        .name(view_name)
+        .query("select * from test_stream")
+        .create()
+    )
+
+    time.sleep(1)
+
     with engine.connect() as conn:
         views = engine.dialect.get_view_names(conn)
         print(views)
-        assert "car_info" in views
+        assert "example_mv" in views
+
+    view.delete()
 
 
 def test_materialized_view_names(engine,test_environment,test_stream):
