@@ -49,7 +49,6 @@ def test_stream(test_environment):
 
     try:
         stream.delete()
-        time.sleep(3)
     except Exception:
         pass
 
@@ -70,7 +69,8 @@ def test_stream(test_environment):
 
     time.sleep(3)
 
-    value = [["time", "data"], [[0, "abcd"]]]
+    # ingest four rows for test
+    value = [["time", "data"], [[0, "abcd"],[1, "abcd"],[2, "abcd"],[3, "abcd"]]]
     stream.ingest(*value)
     # Provide the stream to the test
     return stream

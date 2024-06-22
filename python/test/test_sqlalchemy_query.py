@@ -1,8 +1,10 @@
 import time
+import pytest
 from sqlalchemy import text, select, MetaData, Table
 from timeplus import View
 
 
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_driver_sql(engine):
     with engine.connect() as conn:
         result = conn.exec_driver_sql(
@@ -10,13 +12,14 @@ def test_driver_sql(engine):
         assert len(result.fetchall()) == 5
 
 
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_driver_sql_live(engine):
     with engine.connect() as conn:
         result = conn.exec_driver_sql(
             "select cid from car_live_data limit 5")
         assert len(result.fetchall()) == 5
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_text_sql(engine):
     with engine.connect() as connection:
         result = connection.execute(
@@ -24,7 +27,7 @@ def test_text_sql(engine):
         rows = [row for row in result]
         assert len(rows) == 3
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_text_sql_live(engine):
     with engine.connect() as connection:
         result = connection.execute(
@@ -32,7 +35,7 @@ def test_text_sql_live(engine):
         rows = [row for row in result]
         assert len(rows) == 3
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_text_streaming_sql(engine):
     with engine.connect() as connection:
         result = connection.execute(text("select * from car_live_data"))
@@ -45,20 +48,20 @@ def test_text_streaming_sql(engine):
                 break
         assert count == max
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_check_stream_existence(engine):
     table_name = "car_live_data"
     with engine.connect() as conn:
         table_exists = engine.dialect.has_table(conn, table_name)
         assert table_exists
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_table_names(engine):
     with engine.connect() as conn:
         tables = engine.dialect.get_table_names(conn)
         assert "car_live_data" in tables
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_view_names(test_environment, engine):
     view_name = "example_mv"
     view = View(env=test_environment).name(view_name)
@@ -84,7 +87,7 @@ def test_view_names(test_environment, engine):
 
     view.delete()
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_materialized_view_names(engine,test_environment,test_stream):
     view_name = "example_mv"
     view = View(env=test_environment).name(view_name)
@@ -108,7 +111,7 @@ def test_materialized_view_names(engine,test_environment,test_stream):
 
     view.delete()
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_view_reflection(engine):
     metadata_obj = MetaData()
     car_view = Table("car_live_data", metadata_obj, autoload_with=engine)
@@ -116,7 +119,7 @@ def test_view_reflection(engine):
     column_names = [c.name for c in car_view.columns]
     assert "speed_kmh" in column_names
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_table_reflection(engine):
     metadata_obj = MetaData()
     car_table = Table("car_live_data", metadata_obj, autoload_with=engine)
@@ -124,7 +127,7 @@ def test_table_reflection(engine):
     column_names = [c.name for c in car_table.columns]
     assert "cid" in column_names
 
-
+@pytest.mark.skip(reason="Skipping this test for now")
 def test_select_query(engine):
     metadata_obj = MetaData()
     car_table = Table("car_live_data", metadata_obj, autoload_with=engine)

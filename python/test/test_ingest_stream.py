@@ -1,15 +1,15 @@
 import json
 import time
 import os
-
 import pytest
+
 from timeplus import Stream, Query
 import datetime
 
 time_wait = 5
 
 def test_ingest(test_environment, test_stream):
-    # there is one row data in test stream already
+    # there is 4 row data in test stream already
     time.sleep(time_wait)
     # wait previous data ingested
     data = [["time", "data"], [[1, "efgh"]]]
@@ -33,8 +33,8 @@ def test_ingest(test_environment, test_stream):
     print(results)
 
     assert len(results) > 1, "No data returned from the stream"
-    assert results[1][0] == 1, "Returned time does not match the ingested integer"
-    assert results[1][1] == 'efgh', "Returned data does not match the ingested string"
+    assert results[4][0] == 1, "Returned time does not match the ingested integer"
+    assert results[4][1] == 'efgh', "Returned data does not match the ingested string"
 
     query.delete()
 
@@ -131,7 +131,7 @@ def test_stream_ingest_raw(test_environment,test_stream):
 
 
 def test_json_ingest(test_environment, test_stream):
-    # there is one row data in test stream already
+    # there is 4 row data in test stream already
     time.sleep(time_wait)
     # wait previous data ingested
     payload = """
@@ -159,9 +159,9 @@ def test_json_ingest(test_environment, test_stream):
     print(results)
 
     assert len(results) > 1, "No data returned from the stream"
-    assert results[1][0] == 2, "Returned data does not match the ingested data"
-    assert results[1][1] == 'hello', "Returned data does not match the ingested data"
-    assert results[2][0] == 1, "Returned data does not match the ingested data"
-    assert results[2][1] == 'world', "Returned data does not match the ingested data"
+    assert results[4][0] == 2, "Returned data does not match the ingested data"
+    assert results[4][1] == 'hello', "Returned data does not match the ingested data"
+    assert results[5][0] == 1, "Returned data does not match the ingested data"
+    assert results[5][1] == 'world', "Returned data does not match the ingested data"
 
     query.delete()

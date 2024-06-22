@@ -84,9 +84,12 @@ def connect(
     Connection: A Connection object.
     """
     address = f"{scheme}://{host}:{port}"
-    apikey = password
     workspace = path
-    return Connection(address, apikey, workspace, user, password)
+    if user is not None and password is not None:
+        return Connection(address, None, workspace, user, password)
+    else:
+        apikey = password
+        return Connection(address, apikey, workspace, None, None)
 
 
 class Connection(object):
@@ -108,12 +111,15 @@ class Connection(object):
         self.env = Environment().address(address).workspace(workspace)
 
         if apikey is not None:
+            print("set api key")
             self.env.apikey(apikey)
 
         if username is not None:
+            print("set username")
             self.env.username(username)
 
         if password is not None:
+            print("set password")
             self.env.password(password)
         
         self.closed = False
