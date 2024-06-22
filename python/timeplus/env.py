@@ -58,6 +58,32 @@ class Environment:
             self._configuration.host = f"{self._address}/api"
         return self
 
+    def username(self, value):
+        """
+        Method to set the username for the connection.
+
+        Parameters:
+        value: String - username.
+
+        Returns:
+        Environment: The current Environment instance.
+        """
+        self._configuration.username = value
+        return self
+
+    def password(self, value):
+        """
+        Method to set the password for the connection.
+
+        Parameters:
+        value: String - user password.
+
+        Returns:
+        Environment: The current Environment instance.
+        """
+        self._configuration.password = value
+        return self
+
     def _conf(self):
         """Internal method to get the current configuration."""
         return self._configuration

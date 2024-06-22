@@ -20,9 +20,23 @@ def test_environment():
     api_key = os.environ.get("TIMEPLUS_API_KEY")
     api_address = os.environ.get("TIMEPLUS_HOST")
     workspace = os.environ.get("TIMEPLUS_WORKSPACE")
+    username = os.environ.get("TIMEPLUS_USERNAME")
+    password = os.environ.get("TIMEPLUS_PASSWORD")
+
     print(f"api address:{api_address}, workspace:{workspace}")
 
-    return Environment().address(api_address).apikey(api_key).workspace(workspace)
+    env = Environment().address(api_address).workspace(workspace)
+
+    if api_key is not None:
+        env.apikey(api_key)
+    
+    if username is not None:
+        env.username(username)
+
+    if password is not None:
+        env.password(password)
+
+    return env
 
 
 @pytest.fixture
@@ -40,13 +54,15 @@ def test_stream(test_environment):
 
     time.sleep(3)
 
+    replication_number = os.environ.get("TIMEPLUS_REPLICATION_NUMBER")
+
     # Create a new stream
     stream = (
         Stream(env=test_environment)
         .name(stream_name)
         .column("time", "integer")
         .column("data", "string")
-        .replication_factor(3)
+        .replication_factor(int(replication_number))
         .shards(3)
         .create()
     )

@@ -1,5 +1,6 @@
 import json
 import time
+import os
 
 import pytest
 from timeplus import Stream, Query
@@ -41,11 +42,13 @@ def test_ingest(test_environment, test_stream):
 def test_stream_ingest_lines(test_environment,test_stream):
     test_stream.delete()
 
+    replication_number = os.environ.get("TIMEPLUS_REPLICATION_NUMBER")
+
     stream = (
         Stream(env=test_environment)
         .name("test_stream")
         .column("raw", "string")
-        .replication_factor(3)
+        .replication_factor(int(replication_number))
         .shards(3)
         .create()
     )
@@ -88,11 +91,13 @@ def test_stream_ingest_raw(test_environment,test_stream):
     {"a":2,"b":"hello"}
     """
 
+    replication_number = os.environ.get("TIMEPLUS_REPLICATION_NUMBER")
+
     stream = (
         Stream(env=test_environment)
         .name("test_stream")
         .column("raw", "string")
-        .replication_factor(3)
+        .replication_factor(int(replication_number))
         .shards(3)
         .create()
     )
