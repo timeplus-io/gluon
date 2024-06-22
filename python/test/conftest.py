@@ -5,6 +5,7 @@ conftest.py
 import pytest
 import os
 import time
+from urllib.parse import urlparse
 from timeplus.dbapi import connect
 
 from timeplus import Environment
@@ -78,21 +79,51 @@ def test_stream(test_environment):
 @pytest.fixture
 def engine():
     api_key = os.environ.get("TIMEPLUS_API_KEY")
-    api_address = "dev.timeplus.cloud"
-    port = 443
+    username = os.environ.get("TIMEPLUS_USERNAME")
+    password = os.environ.get("TIMEPLUS_PASSWORD")
+    api_address = os.environ.get("TIMEPLUS_HOST")
+    parsed_url = urlparse(api_address)
+    api_netloc = parsed_url.netloc
+    api_schema = parsed_url.scheme
+
     workspace = os.environ.get("TIMEPLUS_WORKSPACE") or "tp-demo"
 
-    engine = create_engine(
-        f"timeplus://:{api_key}@{api_address}:{port}/{workspace}")
+    if api_key is not None:
+        engine_connection_string = f"timeplus://:{api_key}@{api_netloc}/{workspace}"
+        print(f"create engine with connection {engine_connection_string}")
+        engine = create_engine(engine_connection_string)
+        return engine
+    else:
+        engine = create_engine(
+            f"timeplus://{username}:{password}@{api_netloc}/{workspace}")
 
-    return engine
+        return engine
 
 
 @pytest.fixture
 def conn():
     api_key = os.environ.get("TIMEPLUS_API_KEY")
+    username = os.environ.get("TIMEPLUS_USERNAME")
+    password = os.environ.get("TIMEPLUS_PASSWORD")
+    api_address = os.environ.get("TIMEPLUS_HOST")
+    parsed_url = urlparse(api_address)
+
+    schema = parsed_url.scheme
+    host = parsed_url.hostname
+    port = parsed_url.port
+
+    if schema == "https" and port is None:
+        port = 443
+
+    if schema == "http" and port is None:
+        port = 80
+
     api_address = "dev.timeplus.cloud"
     workspace = os.environ.get("TIMEPLUS_WORKSPACE")
 
-    conn = connect(host=api_address, password=api_key, path=workspace)
-    return conn
+    if api_key is not None:
+        conn = connect(host=host, port=port, scheme=schema, password=api_key, path=workspace)
+        return conn
+    else:
+        conn = connect(host=host, port=port, scheme=schema, user= username, password=password, path=workspace)
+        return conn

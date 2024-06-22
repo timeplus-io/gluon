@@ -86,14 +86,14 @@ def connect(
     address = f"{scheme}://{host}:{port}"
     apikey = password
     workspace = path
-    return Connection(address, apikey, workspace)
+    return Connection(address, apikey, workspace, user, password)
 
 
 class Connection(object):
     """Connection to a Timeplus workspace."""
 
     def __init__(
-        self, address="https://us.timeplus.cloud", apikey=None, workspace=None
+        self, address="https://us.timeplus.cloud", apikey=None, workspace=None, username=None, password=None
     ):
         """
         Constructor for the Connection class.
@@ -102,8 +102,20 @@ class Connection(object):
         address: String - Server address. Default is "https://us.timeplus.cloud".
         apikey: String - API key for the connection. Default is None.
         workspace: String - Workspace for the connection. Default is None.
+        username: String - username for the connection. Default is None.
+        password: String - password for the connection. Default is None.
         """
-        self.env = Environment().address(address).workspace(workspace).apikey(apikey)
+        self.env = Environment().address(address).workspace(workspace)
+
+        if apikey is not None:
+            self.env.apikey(apikey)
+
+        if username is not None:
+            self.env.username(username)
+
+        if password is not None:
+            self.env.password(password)
+        
         self.closed = False
         self.cursors = []
 
