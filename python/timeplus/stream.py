@@ -29,6 +29,8 @@ class Stream:
         self._description = None
         self._mode = "append"
         self._primary_key = None
+        self._replication_factor = None
+        self._shards = None
 
     def name(self, stream_name):
         """
@@ -93,6 +95,14 @@ class Stream:
         self._primary_key = primary_key
         return self
 
+    def replication_factor(self, replication_factor):
+        self._replication_factor = replication_factor
+        return self
+
+    def shards(self, shards):
+        self._shards = shards
+        return self
+
     def create(self):
         """
         Sends a request to the API to create the stream.
@@ -125,6 +135,9 @@ class Stream:
         body["description"] = self._description if self._description else None
         body["mode"] = self._mode if self._mode else None
         body["primary_key"] = self._primary_key if self._primary_key else None
+        body["replication_factor"] = self._replication_factor if self._replication_factor else None
+        body["shards"] = self._shards if self._shards else None
+
 
         try:
             self._metadata = self._api_instance.v1beta2_streams_post(body)

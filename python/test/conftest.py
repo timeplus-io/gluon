@@ -4,6 +4,7 @@ conftest.py
 
 import pytest
 import os
+import time
 from timeplus.dbapi import connect
 
 from timeplus import Environment
@@ -33,8 +34,11 @@ def test_stream(test_environment):
 
     try:
         stream.delete()
+        time.sleep(3)
     except Exception:
         pass
+
+    time.sleep(3)
 
     # Create a new stream
     stream = (
@@ -42,8 +46,12 @@ def test_stream(test_environment):
         .name(stream_name)
         .column("time", "integer")
         .column("data", "string")
+        .replication_factor(3)
+        .shards(3)
         .create()
     )
+
+    time.sleep(3)
 
     value = [["time", "data"], [[0, "abcd"]]]
     stream.ingest(*value)

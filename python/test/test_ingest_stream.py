@@ -5,15 +5,19 @@ import pytest
 from timeplus import Stream, Query
 import datetime
 
+time_wait = 5
 
 def test_ingest(test_environment, test_stream):
+    # there is one row data in test stream already
+    time.sleep(time_wait)
+    # wait previous data ingested
     data = [["time", "data"], [[1, "efgh"]]]
     try:
         test_stream.ingest(*data)
     except Exception as e:
         pytest.fail(f"Ingest method failed with exception {e}")
 
-    time.sleep(3)
+    time.sleep(time_wait)
 
     query = (
         Query(env=test_environment)
@@ -26,7 +30,6 @@ def test_ingest(test_environment, test_stream):
         if event.event == "message":
             results.extend(json.loads(event.data))
     print(results)
-    print(results[1][1])
 
     assert len(results) > 1, "No data returned from the stream"
     assert results[1][0] == 1, "Returned time does not match the ingested integer"
@@ -42,8 +45,12 @@ def test_stream_ingest_lines(test_environment,test_stream):
         Stream(env=test_environment)
         .name("test_stream")
         .column("raw", "string")
+        .replication_factor(3)
+        .shards(3)
         .create()
     )
+    time.sleep(time_wait)
+
     payload = '{"time":1,"data":"abcd"}\n{"time":2,"data":"xyz"}'
 
     # Ingest data in 'lines' format
@@ -52,7 +59,7 @@ def test_stream_ingest_lines(test_environment,test_stream):
     except Exception as e:
         pytest.fail(f"Ingest lines method failed with exception {e}")
 
-    time.sleep(3)
+    time.sleep(time_wait)
 
     query = (
         Query(env=test_environment)
@@ -85,8 +92,12 @@ def test_stream_ingest_raw(test_environment,test_stream):
         Stream(env=test_environment)
         .name("test_stream")
         .column("raw", "string")
+        .replication_factor(3)
+        .shards(3)
         .create()
     )
+
+    time.sleep(time_wait)
 
     # Ingest data in 'raw' format
     try:
@@ -94,7 +105,7 @@ def test_stream_ingest_raw(test_environment,test_stream):
     except Exception as e:
         pytest.fail(f"Ingest raw method failed with exception {e}")
 
-    time.sleep(3)
+    time.sleep(time_wait)
 
     query = (
         Query(env=test_environment)
@@ -115,6 +126,9 @@ def test_stream_ingest_raw(test_environment,test_stream):
 
 
 def test_json_ingest(test_environment, test_stream):
+    # there is one row data in test stream already
+    time.sleep(time_wait)
+    # wait previous data ingested
     payload = """
     {"time":2,"data":"hello"}
     {"time":1,"data":"world"}
@@ -126,7 +140,7 @@ def test_json_ingest(test_environment, test_stream):
     except Exception as e:
         pytest.fail(f"Ingest streaming method failed with exception {e}")
 
-    time.sleep(3)
+    time.sleep(time_wait)
 
     query = (
         Query(env=test_environment)
@@ -138,8 +152,6 @@ def test_json_ingest(test_environment, test_stream):
         if event.event == "message":
             results.extend(json.loads(event.data))
     print(results)
-    print(results[0][0])
-    print(results[0])
 
     assert len(results) > 1, "No data returned from the stream"
     assert results[1][0] == 2, "Returned data does not match the ingested data"

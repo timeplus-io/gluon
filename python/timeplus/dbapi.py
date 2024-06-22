@@ -3,7 +3,7 @@ import re
 import itertools
 from collections import namedtuple
 
-from timeplus import Environment, Query, Stream, View
+from timeplus import Environment, Query, Stream, View, ExternalStream
 from timeplus.error import Error
 
 
@@ -151,20 +151,27 @@ class Connection(object):
     # since some SQL is not exposed through API yet
     def _exist_table(self, name):
         stream = Stream(env=self.env).name(name)
-        return stream.exist()
+        external_stream = ExternalStream(env=self.env).name(name)
+        return stream.exist() or external_stream.exist()
 
     def _exist_view(self, name):
         view = View(env=self.env).name(name)
         return view.exist()
 
     def _get_table(self, name):
-        return Stream(env=self.env).name(name).get()
+        try:
+            return Stream(env=self.env).name(name).get()
+        except:
+            return ExternalStream(env=self.env).name(name).get()
 
     def _get_view(self, name):
         return View(env=self.env).name(name).get()
 
     def _list_table(self):
-        return Stream(env=self.env).list()
+        streams =  Stream(env=self.env).list()
+        estreams = ExternalStream(env=self.env).list()
+
+        return streams + estreams
 
     def _list_view(self):
         return View(env=self.env).list()
