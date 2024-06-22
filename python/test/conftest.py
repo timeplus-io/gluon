@@ -83,13 +83,21 @@ def engine():
     password = os.environ.get("TIMEPLUS_PASSWORD")
     api_address = os.environ.get("TIMEPLUS_HOST")
     parsed_url = urlparse(api_address)
-    api_netloc = parsed_url.netloc
-    api_schema = parsed_url.scheme
 
     workspace = os.environ.get("TIMEPLUS_WORKSPACE") or "tp-demo"
 
+    schema = parsed_url.scheme
+    host = parsed_url.hostname
+    port = parsed_url.port
+
+    if schema == "https" and port is None:
+        port = 443
+
+    if schema == "http" and port is None:
+        port = 80
+
     if api_key is not None:
-        engine_connection_string = f"timeplus://:{api_key}@{api_netloc}/{workspace}"
+        engine_connection_string = f"timeplus://:{api_key}@{host}:{port}/{workspace}"
         print(f"create engine with connection {engine_connection_string}")
         engine = create_engine(engine_connection_string)
         return engine

@@ -1,7 +1,6 @@
-import pytest
 from sqlalchemy import text
 
-@pytest.mark.skip(reason="Skipping this test for now")
+
 def test_select_basic_types(engine):
     with engine.connect() as conn:
         result = conn.execute(text(
@@ -20,7 +19,7 @@ def test_select_basic_types(engine):
             assert isinstance(row[9], bool)
             assert isinstance(row[10], str)
 
-@pytest.mark.skip(reason="Skipping this test for now")
+
 def test_select_composite_array_tuple(engine):
     with engine.connect() as conn:
         result = conn.execute(text(
@@ -34,7 +33,7 @@ def test_select_composite_array_tuple(engine):
             assert isinstance(row[1][1], str)
             assert isinstance(row[1][2], float)
 
-@pytest.mark.skip(reason="Skipping this test for now")
+
 def test_select_composite_map(engine):
     with engine.connect() as conn:
         result = conn.execute(text(
