@@ -97,7 +97,12 @@ class Connection(object):
     """Connection to a Timeplus workspace."""
 
     def __init__(
-        self, address="https://us.timeplus.cloud", apikey=None, workspace=None, username=None, password=None
+        self,
+        address="https://us.timeplus.cloud",
+        apikey=None,
+        workspace=None,
+        username=None,
+        password=None,
     ):
         """
         Constructor for the Connection class.
@@ -123,7 +128,7 @@ class Connection(object):
 
         if password is not None:
             self.env.password(password)
-        
+
         self.closed = False
         self.cursors = []
 
@@ -181,14 +186,14 @@ class Connection(object):
     def _get_table(self, name):
         try:
             return Stream(env=self.env).name(name).get()
-        except:
+        except:  # noqa: E722
             return ExternalStream(env=self.env).name(name).get()
 
     def _get_view(self, name):
         return View(env=self.env).name(name).get()
 
     def _list_table(self):
-        streams =  Stream(env=self.env).list()
+        streams = Stream(env=self.env).list()
         estreams = ExternalStream(env=self.env).list()
 
         return streams + estreams
