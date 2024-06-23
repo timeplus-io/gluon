@@ -52,6 +52,7 @@ jobs:
           TIMEPLUS_API_KEY: ${{ secrets.TIMEPLUS_API_KEY }}
           TIMEPLUS_HOST: ${{ secrets.TIMEPLUS_HOST }}
           TIMEPLUS_WORKSPACE: ${{ secrets.TIMEPLUS_WORKSPACE }}
+          TIMEPLUS_REPLICATION_NUMBER: 3
         run: |
           make test
       - name: Upload package
