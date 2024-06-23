@@ -33,7 +33,7 @@ def test_query_with_stream(test_environment, test_stream):
         if count >= limit:
             break
 
-    assert len(results) == 4
+    assert len(results) >= 4 # there are records from ingest test
 
     query.cancel()
     # Without query.cancel(), there will be an error:
@@ -57,5 +57,5 @@ def test_query_with_table(test_environment, test_stream):
     for event in query.result():
         if event.event == "message":
             results.extend(json.loads(event.data))
-    assert len(results) == 4
+    assert len(results) >= 4 # there are records from ingest test
     query.delete()

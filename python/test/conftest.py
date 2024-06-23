@@ -16,7 +16,7 @@ from sqlalchemy.dialects import registry
 
 registry.register("timeplus", "timeplus.sqlalchemy", "TimeplusDialect")
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def test_environment():
     api_key = os.environ.get("TIMEPLUS_API_KEY")
     api_address = os.environ.get("TIMEPLUS_HOST")
@@ -40,7 +40,7 @@ def test_environment():
     return env
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def test_stream(test_environment):
     stream_name = "test_stream"
 
@@ -67,11 +67,14 @@ def test_stream(test_environment):
         .create()
     )
 
-    time.sleep(3)
+    time.sleep(5)
 
     # ingest four rows for test
     value = [["time", "data"], [[0, "abcd"],[1, "abcd"],[2, "abcd"],[3, "abcd"]]]
     stream.ingest(*value)
+
+    # wait ingest done
+    time.sleep(3) 
     # Provide the stream to the test
     return stream
 
@@ -103,7 +106,7 @@ def engine():
         return engine
     else:
         engine = create_engine(
-            f"timeplus://{username}:{password}@{api_netloc}/{workspace}")
+            f"timeplus://{username}:{password}@{host}:{port}/{workspace}")
 
         return engine
 

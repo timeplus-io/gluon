@@ -8,6 +8,7 @@ import datetime
 
 time_wait = 5
 
+
 def test_ingest(test_environment, test_stream):
     # there is 4 row data in test stream already
     time.sleep(time_wait)
@@ -30,23 +31,21 @@ def test_ingest(test_environment, test_stream):
     for event in query.result():
         if event.event == "message":
             results.extend(json.loads(event.data))
-    print(results)
 
+    result_length = len(results)
     assert len(results) > 1, "No data returned from the stream"
-    assert results[4][0] == 1, "Returned time does not match the ingested integer"
-    assert results[4][1] == 'efgh', "Returned data does not match the ingested string"
+    assert results[result_length-1][0] == 1, "Returned time does not match the ingested integer"
+    assert results[result_length-1][1] == 'efgh', "Returned data does not match the ingested string"
 
     query.delete()
 
 
-def test_stream_ingest_lines(test_environment,test_stream):
-    test_stream.delete()
-
+def test_stream_ingest_lines(test_environment):
     replication_number = os.environ.get("TIMEPLUS_REPLICATION_NUMBER")
 
     stream = (
         Stream(env=test_environment)
-        .name("test_stream")
+        .name("test_stream_raw")
         .column("raw", "string")
         .replication_factor(int(replication_number))
         .shards(3)
@@ -66,25 +65,24 @@ def test_stream_ingest_lines(test_environment,test_stream):
 
     query = (
         Query(env=test_environment)
-        .sql(query="SELECT * FROM table(test_stream)")
+        .sql(query="SELECT * FROM table(test_stream_raw)")
         .create()
     )
     results = []
     for event in query.result():
         if event.event == "message":
             results.extend(json.loads(event.data))
-    print(results)
-    print(results[0][0])
+
+    result_length = len(results)
 
     assert len(results) > 1, "No data returned from the stream"
-    assert results[0][0] == '{"time":1,"data":"abcd"}', "Returned data does not match the ingested data"
-    assert results[1][0] == '{"time":2,"data":"xyz"}', "Returned data does not match the ingested data"
+    assert results[result_length-2][0] == '{"time":1,"data":"abcd"}', "Returned data does not match the ingested data"
+    assert results[result_length-1][0] == '{"time":2,"data":"xyz"}', "Returned data does not match the ingested data"
 
     query.delete()
+    stream.delete()
 
-
-def test_stream_ingest_raw(test_environment,test_stream):
-    test_stream.delete()
+def test_stream_ingest_raw(test_environment):
 
     payload = """
     {"a":1,"b":"world"}
@@ -95,7 +93,7 @@ def test_stream_ingest_raw(test_environment,test_stream):
 
     stream = (
         Stream(env=test_environment)
-        .name("test_stream")
+        .name("test_stream_raw")
         .column("raw", "string")
         .replication_factor(int(replication_number))
         .shards(3)
@@ -114,20 +112,20 @@ def test_stream_ingest_raw(test_environment,test_stream):
 
     query = (
         Query(env=test_environment)
-        .sql(query="SELECT * FROM table(test_stream)")
+        .sql(query="SELECT * FROM table(test_stream_raw)")
         .create()
     )
     results = []
     for event in query.result():
         if event.event == "message":
             results.extend(json.loads(event.data))
-    print(results)
-    print(results[0][0])
-
+    
+    result_length = len(results)
     assert results is not None, "No data returned from the stream"
-    assert results[0][0] == payload, "Returned data does not match the ingested data"
+    assert results[result_length-1][0] == payload, "Returned data does not match the ingested data"
 
     query.delete()
+    stream.delete()
 
 
 def test_json_ingest(test_environment, test_stream):
@@ -156,12 +154,14 @@ def test_json_ingest(test_environment, test_stream):
     for event in query.result():
         if event.event == "message":
             results.extend(json.loads(event.data))
+
     print(results)
 
+    result_length = len(results)
     assert len(results) > 1, "No data returned from the stream"
-    assert results[4][0] == 2, "Returned data does not match the ingested data"
-    assert results[4][1] == 'hello', "Returned data does not match the ingested data"
-    assert results[5][0] == 1, "Returned data does not match the ingested data"
-    assert results[5][1] == 'world', "Returned data does not match the ingested data"
+    assert results[result_length-2][0] == 2, "Returned data does not match the ingested data"
+    assert results[result_length-2][1] == 'hello', "Returned data does not match the ingested data"
+    assert results[result_length-1][0] == 1, "Returned data does not match the ingested data"
+    assert results[result_length-1][1] == 'world', "Returned data does not match the ingested data"
 
     query.delete()

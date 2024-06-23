@@ -1,3 +1,4 @@
+import os
 import json
 import re
 import itertools
@@ -108,18 +109,19 @@ class Connection(object):
         username: String - username for the connection. Default is None.
         password: String - password for the connection. Default is None.
         """
+
+        if os.environ.get("TIMEPLUS_SQLALCHEMY_SCHEMA") == "http":
+            address = address.replace("https://", "http://")
+
         self.env = Environment().address(address).workspace(workspace)
 
         if apikey is not None:
-            print("set api key")
             self.env.apikey(apikey)
 
         if username is not None:
-            print("set username")
             self.env.username(username)
 
         if password is not None:
-            print("set password")
             self.env.password(password)
         
         self.closed = False
