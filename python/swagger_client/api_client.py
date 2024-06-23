@@ -76,7 +76,10 @@ class ApiClient(object):
         self.user_agent = 'Swagger-Codegen/1.0.0/python'
 
     def __del__(self):
-        self.pool.close()
+        try: # TODO: skip close exection
+            self.pool.close()
+        except Exception:
+            pass
         self.pool.join()
 
     @property

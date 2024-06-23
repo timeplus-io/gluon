@@ -40,24 +40,13 @@ def test_ingest(test_environment, test_stream):
     query.delete()
 
 
-def test_stream_ingest_lines(test_environment):
-    replication_number = os.environ.get("TIMEPLUS_REPLICATION_NUMBER")
-
-    stream = (
-        Stream(env=test_environment)
-        .name("test_stream_raw")
-        .column("raw", "string")
-        .replication_factor(int(replication_number))
-        .shards(3)
-        .create()
-    )
-    time.sleep(time_wait)
+def test_stream_ingest_lines(test_environment, test_stream_raw):
 
     payload = '{"time":1,"data":"abcd"}\n{"time":2,"data":"xyz"}'
 
     # Ingest data in 'lines' format
     try:
-        stream.ingest(payload=payload, format="lines")
+        test_stream_raw.ingest(payload=payload, format="lines")
     except Exception as e:
         pytest.fail(f"Ingest lines method failed with exception {e}")
 
@@ -80,31 +69,16 @@ def test_stream_ingest_lines(test_environment):
     assert results[result_length-1][0] == '{"time":2,"data":"xyz"}', "Returned data does not match the ingested data"
 
     query.delete()
-    stream.delete()
 
-def test_stream_ingest_raw(test_environment):
-
+def test_stream_ingest_raw(test_environment, test_stream_raw):
     payload = """
     {"a":1,"b":"world"}
     {"a":2,"b":"hello"}
     """
 
-    replication_number = os.environ.get("TIMEPLUS_REPLICATION_NUMBER")
-
-    stream = (
-        Stream(env=test_environment)
-        .name("test_stream_raw")
-        .column("raw", "string")
-        .replication_factor(int(replication_number))
-        .shards(3)
-        .create()
-    )
-
-    time.sleep(time_wait)
-
     # Ingest data in 'raw' format
     try:
-        stream.ingest(payload=payload, format="raw")
+        test_stream_raw.ingest(payload=payload, format="raw")
     except Exception as e:
         pytest.fail(f"Ingest raw method failed with exception {e}")
 
@@ -125,7 +99,6 @@ def test_stream_ingest_raw(test_environment):
     assert results[result_length-1][0] == payload, "Returned data does not match the ingested data"
 
     query.delete()
-    stream.delete()
 
 
 def test_json_ingest(test_environment, test_stream):

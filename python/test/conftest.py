@@ -16,6 +16,8 @@ from sqlalchemy.dialects import registry
 
 registry.register("timeplus", "timeplus.sqlalchemy", "TimeplusDialect")
 
+time_wait = 5
+
 @pytest.fixture(scope='session')
 def test_environment():
     api_key = os.environ.get("TIMEPLUS_API_KEY")
@@ -52,7 +54,7 @@ def test_stream(test_environment):
     except Exception:
         pass
 
-    time.sleep(3)
+    time.sleep(time_wait)
 
     replication_number = os.environ.get("TIMEPLUS_REPLICATION_NUMBER")
 
@@ -67,16 +69,51 @@ def test_stream(test_environment):
         .create()
     )
 
-    time.sleep(5)
+    time.sleep(time_wait)
 
     # ingest four rows for test
     value = [["time", "data"], [[0, "abcd"],[1, "abcd"],[2, "abcd"],[3, "abcd"]]]
     stream.ingest(*value)
 
     # wait ingest done
-    time.sleep(3) 
+    time.sleep(time_wait) 
     # Provide the stream to the test
-    return stream
+    yield stream
+
+    stream.delete()
+
+
+@pytest.fixture(scope='session')
+def test_stream_raw(test_environment):
+    stream_name = "test_stream_raw"
+
+    # Create a new stream instance with the given name
+    stream = Stream(env=test_environment).name(stream_name)
+
+    try:
+        stream.delete()
+    except Exception:
+        pass
+
+    time.sleep(time_wait)
+
+    replication_number = os.environ.get("TIMEPLUS_REPLICATION_NUMBER")
+
+    # Create a new stream
+    stream = (
+        Stream(env=test_environment)
+        .name(stream_name)
+        .column("raw", "string")
+        .replication_factor(int(replication_number))
+        .shards(3)
+        .create()
+    )
+
+    time.sleep(time_wait)
+    # Provide the stream to the test
+    yield stream
+
+    stream.delete()
 
 
 @pytest.fixture
