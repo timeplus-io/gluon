@@ -135,9 +135,10 @@ class Stream:
         body["description"] = self._description if self._description else None
         body["mode"] = self._mode if self._mode else None
         body["primary_key"] = self._primary_key if self._primary_key else None
-        body["replication_factor"] = self._replication_factor if self._replication_factor else None
+        body["replication_factor"] = (
+            self._replication_factor if self._replication_factor else None
+        )
         body["shards"] = self._shards if self._shards else None
-
 
         try:
             self._metadata = self._api_instance.v1beta2_streams_post(body)

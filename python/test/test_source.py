@@ -1,3 +1,4 @@
+import pytest
 from timeplus import Source, Stream
 
 
@@ -50,6 +51,7 @@ def test_source_generator(test_environment):
     assert not Source(env=test_environment).id(source_id).exist()
 
 
+@pytest.mark.skipif(reason="Skipping this test due to kafka source move to external stream")
 def test_source_kafka(test_environment):
     stream_name = "test_kafka"
     source_name = "test_kafka"

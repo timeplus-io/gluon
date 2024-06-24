@@ -17,6 +17,7 @@ from multiprocessing.pool import ThreadPool
 import os
 import re
 import tempfile
+import base64
 
 # python 2 and python 3 compatibility library
 import six
@@ -75,7 +76,10 @@ class ApiClient(object):
         self.user_agent = 'Swagger-Codegen/1.0.0/python'
 
     def __del__(self):
-        self.pool.close()
+        try: # TODO: skip close exection
+            self.pool.close()
+        except Exception:
+            pass
         self.pool.join()
 
     @property
@@ -133,6 +137,10 @@ class ApiClient(object):
             post_params = self.sanitize_for_serialization(post_params)
             post_params = self.parameters_to_tuples(post_params,
                                                     collection_formats)
+
+        if self.configuration.username and self.configuration.password:
+            auth_header = f"{self.configuration.username}:{self.configuration.password}"
+            header_params['Authorization'] = 'Basic ' + base64.b64encode(auth_header.encode()).decode()
 
         # auth setting
         self.update_params_for_auth(header_params, query_params, auth_settings)
@@ -312,6 +320,7 @@ class ApiClient(object):
             If parameter async_req is False or missing,
             then the method will return the response directly.
         """
+
         if not async_req:
             return self.__call_api(resource_path, method,
                                    path_params, query_params, header_params,

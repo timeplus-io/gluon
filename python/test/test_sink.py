@@ -1,6 +1,7 @@
+import pytest
 from timeplus import Sink
 
-
+@pytest.mark.skipif(reason="Skipping this test due to kafka sink move to external stream")
 def test_sink_kafka(test_environment):
     sink_name = "test_kafka_sink"
 

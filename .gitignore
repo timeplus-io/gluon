@@ -1,5 +1,5 @@
 .vscode
-env.sh
+env*.sh
 .pypirc
 
 
