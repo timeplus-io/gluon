@@ -351,7 +351,7 @@ class Stream(object):
         """
         if mode is None:
             raise ValueError("Invalid value for `mode`, must not be `None`")  # noqa: E501
-        allowed_values = ["append", "changelog", "changelog_kv", "versioned_kv"]  # noqa: E501
+        allowed_values = ["append", "changelog", "changelog_kv", "versioned_kv", ""]  # noqa: E501
         if mode not in allowed_values:
             raise ValueError(
                 "Invalid value for `mode` ({0}), must be one of {1}"  # noqa: E501
