@@ -31,6 +31,7 @@ class Stream:
         self._primary_key = None
         self._replication_factor = None
         self._shards = None
+        self._engine = None
 
     def name(self, stream_name):
         """
@@ -91,6 +92,10 @@ class Stream:
         self._mode = mode
         return self
 
+    def engine(self, engine):
+        self._engine = engine
+        return self
+
     def primary_key(self, primary_key):
         self._primary_key = primary_key
         return self
@@ -139,6 +144,7 @@ class Stream:
             self._replication_factor if self._replication_factor else None
         )
         body["shards"] = self._shards if self._shards else None
+        body["engine"] = self._engine if self._engine else None
 
         try:
             self._metadata = self._api_instance.v1beta2_streams_post(body)

@@ -59,8 +59,9 @@ class QueryResult(object):
         :param header: The header of this QueryResult.  # noqa: E501
         :type: list[Column]
         """
-        if header is None:
-            raise ValueError("Invalid value for `header`, must not be `None`")  # noqa: E501
+        # it is possible for specific query, the header is None
+        # if header is None:
+        #    raise ValueError("Invalid value for `header`, must not be `None`")  # noqa: E501
 
         self._header = header
 
